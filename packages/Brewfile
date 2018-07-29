@@ -1,15 +1,78 @@
+# === Taps ===
+
 tap "colindean/fonts-nonfree"
 tap "drud/ddev"
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/core"
 tap "homebrew/fuse"
-tap "homebrew/php"
 tap "homebrew/services"
+
+# === Casks ===
+
+# IDEs
+cask "phpstorm"
+cask "sublime-text"
+cask "visual-studio-code"
+
+# Developer Tools
+cask "docker"
+cask "fork"
+cask "hyper"
+cask "imageoptim
+cask "iterm2"
+cask "kdiff3"
+cask "lando"
+cask "meld"
+cask "mongodb-compass-community"
+cask "postman"
+cask "sequel-pro"
+cask "vagrant"
+cask "virtualbox"
+
+# Browsers
+cask "google-chrome"
+cask "firefox"
+
+# Work Tools
+cask "dropbox"
+cask "evernote"
+#cask "gnucash"
+cask "google-drive"
+#cask "grammarly"
+cask "itsycal"
+cask "rambox"
+cask "slack"
+cask "zoomus"
+
+# System Utilities
+cask "commander-one"
+cask "divvy"
+#cask "flux"
+cask "karabiner-elements"
+cask "rocket"
+cask "the-unarchiver"
+
+# Media
+cask "gimp"
+cask "handbrake"
+#cask "jubler"
+cask "paintbrush"
+cask "rawtherapee"
+cask "vlc"
+
+# Misc
+cask "steam"
 cask "osxfuse"
+cask "buttercup"
+cask "colindean/fonts-nonfree/font-microsoft-office"
+
+# === Formulae ===
+
 brew "openssl"
 brew "bash"
 brew "gettext"
+brew "composer"
 brew "coreutils"
 brew "dnsmasq", restart_service: true
 brew "ffmpeg"
@@ -26,6 +89,7 @@ brew "libxml2"
 brew "readline"
 brew "mosh"
 brew "ntfs-3g"
+brew "php"
 brew "pv"
 brew "python"
 brew "ripgrep"
@@ -36,6 +100,8 @@ brew "wget"
 brew "yarn"
 brew "youtube-dl"
 brew "drud/ddev/ddev"
-cask "buttercup"
-cask "meld"
-cask "colindean/fonts-nonfree/font-microsoft-office"
+
+# === Mac App Store Applications ===
+mas 'LastPass', id: 926036361
+mas 'Monosnap', id: 540348655
+mas 'Todoist', id: 585829637
