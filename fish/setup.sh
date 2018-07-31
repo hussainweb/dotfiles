@@ -43,6 +43,21 @@ set_fish_shell() {
         fi
         substep_info "Running fish initial setup"
         fish -c "setup"
+
+        substep_info "Installing fisher"
+        curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs https://git.io/fisher
+        fisher
+
+        substep_info "Installing oh-my-fish"
+        curl -L https://get.oh-my.fish | fish
+
+        substep_info "Installing oh-my-fish plugins and themes"
+        omf install
+        omf install brew cd fonts powerline
+        omf install artisan blt
+        omf install bobthefish
+        omf theme bobthefish
+        omf reload
     fi
 }
 
@@ -51,4 +66,3 @@ if set_fish_shell; then
 else
     error "Failed setting up fish shell."
 fi
-

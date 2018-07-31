@@ -1,11 +1,19 @@
-# Get OS X Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
+# Get OS X Software Updates, and update installed fisher plugins,
+# omf plugins, Composer dependencies, Homebrew, npm,
+# and their installed packages
 function update
     sudo softwareupdate -i -a
+
     brew update
     brew upgrade --force --all
+    brew prune
     brew cleanup
+
+    fisher up
+    omf update
+
     npm install npm -g
     npm update -g
-    sudo gem update --system
-    sudo gem update
+
+    composer global update
 end
