@@ -1,0 +1,29 @@
+// Place your settings in this file to overwrite the default settings
+{
+    "composer.executablePath": "/usr/local/bin/composer",
+    "materialTheme.cache.workbench.settings": {
+        "themeColours": "Darker",
+        "accent": "Breaking Bad",
+        "accentPrevious": "Orange"
+    },
+    "workbench.iconTheme": "eq-material-theme-icons",
+    "editor.lineHeight": 24,
+    "editor.fontSize": 14,
+    "editor.fontLigatures": true,
+    "window.zoomLevel": 0,
+    "workbench.colorTheme": "Night Owl",
+    "workbench.colorCustomizations": {
+        "activityBarBadge.background": "#388E3C",
+        "list.activeSelectionForeground": "#388E3C",
+        "list.inactiveSelectionForeground": "#388E3C",
+        "list.highlightForeground": "#388E3C",
+        "scrollbarSlider.activeBackground": "#388E3C50",
+        "editorSuggestWidget.highlightForeground": "#388E3C",
+        "textLink.foreground": "#388E3C",
+        "progressBar.background": "#388E3C",
+        "pickerGroup.foreground": "#388E3C",
+        "tab.activeBorder": "#388E3C",
+        "notificationLink.foreground": "#388E3C"
+    },
+    "materialTheme.fixIconsRunning": false
+}
