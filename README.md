@@ -18,16 +18,14 @@ Just follow these instructions to use this repo as is. If you are creating your 
 1. Restore your safely backed up ssh keys to `~/.ssh/`
     1. Alternatively, generate new ssh keys, and add these to your GitHub account
 1. [Install Homebrew](https://brew.sh/) and git
-
-  ```bash
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  brew install git
-  ```
+   ```bash
+   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+   brew install git
+   ```
 1. Clone this repository (or the one you created)
-
-  ```
-  git clone git@github.com:hussainweb/dotfiles.git
-  ```
+   ```
+   git clone git@github.com:hussainweb/dotfiles.git
+   ```
 1. Run the `bootstrap.sh` script
     1. Alternatively, only run the `setup.sh` scripts in specific subfolders if you don't need everything
 1. (Optional) Install missing applications from the internet
