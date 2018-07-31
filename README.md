@@ -11,6 +11,10 @@ Since this repository is based on [rkalis/dotfiles](https://github.com/rkalis/do
 
 ## Usage
 
+I suggest using this repository as a base to form your own dotfiles collection or just as a reference to see what I use. What works for me probably won't work for you and what works for you probably won't work for me. In other words, everyone's different. I don't see why you would use these dotfiles without any changes at all.
+
+Just follow these instructions to use this repo as is. If you are creating your own repository, don't forget to change the git URL in step 3.
+
 1. Restore your safely backed up ssh keys to `~/.ssh/`
     1. Alternatively, generate new ssh keys, and add these to your GitHub account
 1. [Install Homebrew](https://brew.sh/) and git
@@ -19,7 +23,7 @@ Since this repository is based on [rkalis/dotfiles](https://github.com/rkalis/do
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   brew install git
   ```
-1. Clone this repository
+1. Clone this repository (or the one you created)
 
   ```
   git clone git@github.com:hussainweb/dotfiles.git
