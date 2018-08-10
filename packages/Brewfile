@@ -19,7 +19,7 @@ cask "visual-studio-code"
 cask "docker"
 cask "fork"
 cask "hyper"
-cask "imageoptim
+cask "imageoptim"
 cask "iterm2"
 cask "kdiff3"
 cask "lando"
