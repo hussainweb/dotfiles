@@ -54,6 +54,7 @@ cask "rocket"
 cask "the-unarchiver"
 
 # Media
+cask "kid3"
 cask "gimp"
 cask "handbrake"
 #cask "jubler"
