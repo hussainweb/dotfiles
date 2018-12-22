@@ -9,6 +9,8 @@ function update
     brew prune
     brew cleanup
 
+    mas upgrade
+
     fisher up
     omf update
 

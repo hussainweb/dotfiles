@@ -2,8 +2,10 @@
 aaron-bond.better-comments
 akamud.vscode-theme-onedark
 akamud.vscode-theme-onelight
+alexkrechik.cucumberautocomplete
 codezombiech.gitignore
 DavidAnson.vscode-markdownlint
+dbaeumer.vscode-eslint
 dssiqueira.drupal-8-snippets
 Equinusocio.vsc-material-theme
 felixfbecker.php-debug
@@ -22,6 +24,7 @@ mikestead.dotenv
 ms-azuretools.vscode-cosmosdb
 ms-python.python
 ms-vscode.azure-account
+ms-vscode.Go
 ms-vsliveshare.vsliveshare
 ms-vsliveshare.vsliveshare-audio
 ms-vsliveshare.vsliveshare-pack
