@@ -79,10 +79,12 @@ brew "dnsmasq", restart_service: true
 brew "exercism"
 brew "ffmpeg"
 brew "fish"
+brew "gd"
 brew "git"
 brew "gnupg"
 brew "gnu-sed", args: ["with-default-names"]
 brew "gpatch"
+brew "graphviz"
 brew "highlight"
 brew "htop"
 brew "jq"
