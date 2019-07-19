@@ -56,6 +56,29 @@ This folder is a collection of the programs and utilities I use frequently. Thes
 
 This folder is a collection of my own repos, some of which are even private. The existing lists can easily be edited or replaced by custom lists.
 
+## How to update
+
+This section is still WIP. I have only given brief instructions here on how to update this repository with the latest configuration.
+
+### Visual Studio Code
+
+The list of extensions for VSCode is present in the file [packages/code --install-extension.list](packages/code --install-extension.list). To generate the updated extension list (and also copy it to clipboard), run this command:
+
+```bash
+$ code --list-extensions | pbcopy
+```
+
+The VSCode settings are present in [vscode/settings.json](vscode/settings.json). To update this with current one, simply copy it using this command:
+
+```bash
+# In the vscode directory
+$ cp ~/Library/Application\ Support/Code/User/settings.json .
+```
+
+### Homebrew
+
+WIP.
+
 ## Credits
 
 Thanks [@raklis](https://github.com/rkalis), [@wesbos](https://github.com/wesbos), and many others for the inspiration.
