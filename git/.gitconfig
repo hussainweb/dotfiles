@@ -1,6 +1,11 @@
 [user]
 	name = hw
 	email = hussainweb@gmail.com
+	signingkey = E1CE98447E2C7887
+[commit]
+	gpgsign = true
+[diff]
+	tool = opendiff
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f

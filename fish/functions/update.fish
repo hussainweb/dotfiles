@@ -1,12 +1,11 @@
 # Get OS X Software Updates, and update installed fisher plugins,
 # omf plugins, Composer dependencies, Homebrew, npm,
 # and their installed packages
-function update
+function update --description 'Get OS X Software Updates and update Homebrew, mas, and npm packages'
     sudo softwareupdate -i -a
 
     brew update
     brew upgrade --force --all
-    brew prune
     brew cleanup
 
     mas upgrade
