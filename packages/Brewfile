@@ -57,6 +57,7 @@ cask "divvy"
 #cask "flux"
 cask "karabiner-elements"
 cask "krisp"
+cask "pock"
 cask "spectacle"
 cask "the-unarchiver"
 
