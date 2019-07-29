@@ -79,6 +79,7 @@ cask "colindean/fonts-nonfree/font-microsoft-office"
 
 # === Formulae ===
 
+brew "ansible"
 brew "awscli"
 brew "bash"
 brew "brew-cask-completion"
