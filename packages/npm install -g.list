@@ -4,3 +4,4 @@ eslint
 gulp-cli
 typescript
 vue-cli
+webpack-cli
