@@ -132,6 +132,7 @@ brew "youtube-dl"
 brew "drud/ddev/ddev"
 
 # === Mac App Store Applications ===
+mas 'GIPHY Capture', id: 668208984
 mas 'LastPass', id: 926036361
 mas 'Monosnap', id: 540348655
 mas 'Todoist', id: 585829637
