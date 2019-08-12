@@ -9,6 +9,9 @@
     "editor.lineHeight": 24,
     "editor.fontSize": 14,
     "editor.fontLigatures": true,
+    "files.associations": {
+        "**/*.yml": "ansible"
+    },
     "window.zoomLevel": 0,
     "workbench.colorTheme": "Palenight Theme",
     "workbench.colorCustomizations": {
@@ -81,5 +84,7 @@
             "value": "#42b883"
         }
     ],
-    "workbench.iconTheme": "material-icon-theme"
+    "workbench.iconTheme": "material-icon-theme",
+    "gitProjectManager.openInNewWindow": true,
+    "gitProjectManager.baseProjectsFolders": ["~/work"]
 }

@@ -3,6 +3,7 @@ aaron-bond.better-comments
 akamud.vscode-theme-onedark
 akamud.vscode-theme-onelight
 alexkrechik.cucumberautocomplete
+bmewburn.vscode-intelephense-client
 codezombiech.gitignore
 CoenraadS.bracket-pair-colorizer-2
 DavidAnson.vscode-markdownlint
@@ -11,18 +12,17 @@ donjayamanne.githistory
 dssiqueira.drupal-8-snippets
 eamodio.gitlens
 Equinusocio.vsc-material-theme
+felipecaputo.git-project-manager
 felixfbecker.php-debug
 felixfbecker.php-intellisense
 felixfbecker.php-pack
 formulahendry.auto-rename-tag
-hollowtree.vue-snippets
 ikappas.composer
 ikappas.phpcs
 ivory-lab.jenkinsfile-support
 joaompinto.asciidoctor-vscode
 johnpapa.vscode-peacock
 karigari.chat
-liuji-jim.vue
 marcostazi.VS-code-drupal
 mauve.terraform
 mechatroner.rainbow-csv
@@ -34,6 +34,7 @@ ms-kubernetes-tools.vscode-kubernetes-tools
 ms-python.python
 ms-vscode.azure-account
 ms-vscode.Go
+ms-vscode.vscode-typescript-tslint-plugin
 ms-vsliveshare.vsliveshare
 ms-vsliveshare.vsliveshare-audio
 ms-vsliveshare.vsliveshare-pack
@@ -41,6 +42,7 @@ oderwat.indent-rainbow
 PKief.material-icon-theme
 pnp.polacode
 ra100.rockstar-language
+redhat.vscode-openshift-connector
 redhat.vscode-yaml
 robinbentley.sass-indented
 sdras.night-owl
@@ -49,6 +51,7 @@ taniarascia.new-moon-vscode
 tootone.org-mode
 twxs.cmake
 vscode-icons-team.vscode-icons
+vscoss.vscode-ansible
 whizkydee.material-palenight-theme
 wix.vscode-import-cost
 yzane.markdown-pdf
