@@ -49,7 +49,11 @@ set_fish_shell() {
         fisher
 
         substep_info "Installing oh-my-fish"
-        curl -L https://get.oh-my.fish | fish
+        # OMF installer spawns a new fish shell at the end.
+        # Run it in noninteractive mode to avoid that.
+        curl -L https://get.oh-my.fish > install
+        fish install -y --noninteractive
+        rm install
 
         substep_info "Installing oh-my-fish plugins and themes"
         omf install
