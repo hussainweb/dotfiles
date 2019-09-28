@@ -5,10 +5,15 @@ tap "drud/ddev"
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/core"
+tap "homebrew/cask-fonts"
 tap "homebrew/fuse"
 tap "homebrew/services"
 
 # === Casks ===
+
+# Fonts
+cask "font-cascadia"
+cask "font-inconsolata"
 
 # IDEs
 cask "phpstorm"
