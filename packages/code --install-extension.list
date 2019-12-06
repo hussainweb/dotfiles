@@ -4,6 +4,7 @@ akamud.vscode-theme-onedark
 akamud.vscode-theme-onelight
 alexkrechik.cucumberautocomplete
 bmewburn.vscode-intelephense-client
+christian-kohler.npm-intellisense
 codezombiech.gitignore
 CoenraadS.bracket-pair-colorizer-2
 DavidAnson.vscode-markdownlint
@@ -11,12 +12,16 @@ dbaeumer.vscode-eslint
 donjayamanne.githistory
 dssiqueira.drupal-8-snippets
 eamodio.gitlens
+eg2.vscode-npm-script
 Equinusocio.vsc-material-theme
+esbenp.prettier-vscode
 felipecaputo.git-project-manager
 felixfbecker.php-debug
 felixfbecker.php-intellisense
 felixfbecker.php-pack
 formulahendry.auto-rename-tag
+foxundermoon.shell-format
+GitHub.vscode-pull-request-github
 ikappas.composer
 ikappas.phpcs
 ivory-lab.jenkinsfile-support
@@ -26,6 +31,7 @@ karigari.chat
 marcostazi.VS-code-drupal
 mauve.terraform
 mechatroner.rainbow-csv
+MehediDracula.php-namespace-resolver
 mhutchie.git-graph
 mikestead.dotenv
 ms-azuretools.vscode-cosmosdb
@@ -42,7 +48,9 @@ oderwat.indent-rainbow
 PKief.material-icon-theme
 pnp.polacode
 ra100.rockstar-language
+redhat.java
 redhat.vscode-openshift-connector
+redhat.vscode-xml
 redhat.vscode-yaml
 robinbentley.sass-indented
 sdras.night-owl
@@ -50,6 +58,12 @@ shd101wyy.markdown-preview-enhanced
 taniarascia.new-moon-vscode
 tootone.org-mode
 twxs.cmake
+VisualStudioExptTeam.vscodeintellicode
+vscjava.vscode-java-debug
+vscjava.vscode-java-dependency
+vscjava.vscode-java-pack
+vscjava.vscode-java-test
+vscjava.vscode-maven
 vscode-icons-team.vscode-icons
 vscoss.vscode-ansible
 whizkydee.material-palenight-theme
