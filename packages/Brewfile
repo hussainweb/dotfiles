@@ -40,6 +40,7 @@ cask "virtualbox"
 # Browsers
 cask "google-chrome"
 cask "firefox"
+cask "microsoft-edge"
 
 # Work Tools
 cask "dropbox"
