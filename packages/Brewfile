@@ -67,7 +67,7 @@ cask "divvy"
 cask "karabiner-elements"
 cask "krisp"
 cask "pock"
-cask "spectacle"
+cask "rectangle"
 cask "the-clock"
 cask "the-unarchiver"
 
