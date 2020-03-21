@@ -39,6 +39,7 @@ cask "vagrant"
 cask "virtualbox"
 
 # Browsers
+cask "choosy"
 cask "google-chrome"
 cask "firefox"
 cask "microsoft-edge"
