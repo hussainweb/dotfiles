@@ -69,7 +69,6 @@ cask "karabiner-elements"
 cask "krisp"
 cask "pock"
 cask "rectangle"
-cask "the-clock"
 cask "the-unarchiver"
 
 # Media
@@ -149,3 +148,4 @@ brew "drud/ddev/ddev"
 mas 'GIPHY Capture', id: 668208984
 mas 'Monosnap', id: 540348655
 mas 'Todoist', id: 585829637
+mas 'World Clock Pro', id: 858446756
