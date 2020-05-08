@@ -105,6 +105,7 @@ brew "fx"
 brew "fish"
 brew "gd"
 brew "git"
+brew "git-delta"
 brew "git-extras"
 brew "gnupg"
 brew "gnu-sed", args: ["with-default-names"]
