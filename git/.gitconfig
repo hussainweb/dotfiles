@@ -49,6 +49,11 @@
 [diff]
 	tool = opendiff
 [core]
+  editor = code -rw
 	pager = delta
 [interactive]
 	diffFilter = delta --color-only
+[merge]
+  tool = vscode
+[mergetool "vscode"]
+	cmd = code --wait $MERGED
