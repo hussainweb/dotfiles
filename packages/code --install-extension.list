@@ -3,6 +3,7 @@ aaron-bond.better-comments
 akamud.vscode-theme-onedark
 akamud.vscode-theme-onelight
 alexkrechik.cucumberautocomplete
+arcticicestudio.nord-visual-studio-code
 bmewburn.vscode-intelephense-client
 christian-kohler.npm-intellisense
 codezombiech.gitignore
@@ -12,8 +13,11 @@ dbaeumer.vscode-eslint
 donjayamanne.githistory
 dssiqueira.drupal-8-snippets
 eamodio.gitlens
+EditorConfig.EditorConfig
 eg2.vscode-npm-script
+Equinusocio.vsc-community-material-theme
 Equinusocio.vsc-material-theme
+equinusocio.vsc-material-theme-icons
 esbenp.prettier-vscode
 felipecaputo.git-project-manager
 felixfbecker.php-debug

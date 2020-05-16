@@ -13,7 +13,7 @@
         "**/*.yml": "ansible"
     },
     "window.zoomLevel": 0,
-    "workbench.colorTheme": "Palenight Theme",
+    "workbench.colorTheme": "Nord",
     "workbench.colorCustomizations": {
         "activityBarBadge.background": "#388E3C",
         "list.activeSelectionForeground": "#388E3C",
@@ -29,7 +29,7 @@
     },
     "materialTheme.fixIconsRunning": false,
     "liveshare.guestApprovalRequired": true,
-    "editor.fontFamily": "'Fira Code', Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontFamily": "Cascadia,'Fira Code', Menlo, Monaco, 'Courier New', monospace",
     "peacock.favoriteColors": [
         {
             "name": "Angular Red",
@@ -86,5 +86,34 @@
     ],
     "workbench.iconTheme": "material-icon-theme",
     "gitProjectManager.openInNewWindow": true,
-    "gitProjectManager.baseProjectsFolders": ["~/work"]
+    "gitProjectManager.baseProjectsFolders": [
+        "~/work"
+    ],
+    "search.useIgnoreFiles": false,
+    "php.validate.enable": false,
+    "phpcs.enable": false,
+    "[dockerfile]": {
+        "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+    },
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "git.autofetch": true,
+    "editor.tabSize": 2,
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "editor.renderWhitespace": "none",
+    "go.formatTool": "goimports",
+    "python.jediEnabled": false,
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "go.useLanguageServer": false,
+    "python.formatting.provider": "black",
+    "php.suggest.basic": false,
+    "php.memoryLimit": "4096M",
+    "files.autoSave": "onFocusChange"
 }
