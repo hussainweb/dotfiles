@@ -7,13 +7,17 @@ tap "homebrew/cask"
 tap "homebrew/core"
 tap "homebrew/cask-fonts"
 tap "homebrew/services"
+tap "saulpw/vd"
+tap "zaquestion/tap"
 
 # === Casks ===
 
 # Fonts
 cask "font-cascadia"
+cask "font-firacode-nerd-font"
 cask "font-inconsolata"
 cask "font-jetbrains-mono"
+#cask "font-microsoft-office"
 
 # IDEs
 cask "phpstorm"
@@ -52,31 +56,40 @@ cask "google-drive"
 #cask "grammarly"
 cask "itsycal"
 cask "lastpass"
+cask "meetingbar"
 cask "microsoft-office"
 cask "notion"
 cask "onedrive"
 #cask "rambox"
+cask "skype"
 cask "slack"
 cask "zoomus"
 
 # System Utilities
 cask "authy"
+#cask "ccleaner"
 cask "commander-one"
+cask "disk-inventory-x"
 cask "divvy"
 #cask "flux"
+cask "istat-menus"
 cask "karabiner-elements"
 cask "krisp"
+cask "mounty"
 cask "pock"
 cask "rectangle"
 cask "the-unarchiver"
+cask "vanilla"
 
 # Media
 cask "adobe-acrobat-reader"
 cask "adobe-creative-cloud"
+#cask "edex-ui"
 cask "kid3"
 cask "gimp"
 cask "handbrake"
 #cask "jubler"
+cask "obs"
 cask "paintbrush"
 cask "vlc"
 
@@ -84,7 +97,6 @@ cask "vlc"
 #cask "steam"
 cask "osxfuse"
 cask "buttercup"
-cask "colindean/fonts-nonfree/font-microsoft-office"
 
 # === Formulae ===
 
@@ -116,6 +128,7 @@ brew "htop"
 brew "hub"
 brew "jq"
 brew "kubernetes-cli"
+brew "lab"
 brew "librsvg"
 brew "libxml2"
 brew "readline"
@@ -130,15 +143,18 @@ brew "php"
 brew "pinentry"
 brew "pinentry-mac"
 brew "pv"
-brew "python"
 brew "python3"
+brew "python@3.8"
 brew "ripgrep"
+brew "rustup-init"
 brew "shellcheck"
+brew "sqlite"
 brew "ssh-copy-id"
 brew "terminal-notifier"
 brew "terraform"
 brew "tig"
 brew "tree"
+brew "visidata"
 brew "watch"
 brew "wget"
 brew "xz"
@@ -147,7 +163,6 @@ brew "youtube-dl"
 brew "drud/ddev/ddev"
 
 # === Mac App Store Applications ===
-mas 'GIPHY Capture', id: 668208984
 mas 'Monosnap', id: 540348655
 mas 'Todoist', id: 585829637
 mas 'World Clock Pro', id: 858446756
