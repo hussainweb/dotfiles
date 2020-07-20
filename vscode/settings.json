@@ -6,8 +6,7 @@
         "accent": "Breaking Bad",
         "accentPrevious": "Orange"
     },
-    "editor.lineHeight": 24,
-    "editor.fontSize": 14,
+    "editor.fontSize": 18,
     "editor.fontLigatures": true,
     "files.associations": {
         "**/*.yml": "ansible"
@@ -115,5 +114,31 @@
     "python.formatting.provider": "black",
     "php.suggest.basic": false,
     "php.memoryLimit": "4096M",
-    "files.autoSave": "onFocusChange"
+    "files.autoSave": "onFocusChange",
+    "customizeUI.titleBar": "inline",
+    "customizeUI.activityBar": "regular",
+    "window.titleBarStyle": "native",
+    "terraform.languageServer": {
+        "external": true,
+        "args": [
+            "serve"
+        ]
+    },
+    "terraform.indexing": {
+        "enabled": false
+    },
+    "dimmer.enabled": true,
+    "editor.multiCursorModifier": "alt",
+    "dimmer.opacity": 70,
+    "terminal.integrated.minimumContrastRatio": 4.5,
+    "terminal.integrated.fontSize": 16,
+    "java.semanticHighlighting.enabled": false,
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "python.languageServer": "Pylance",
+    "todo-tree.tree.showScanModeButton": false
 }
