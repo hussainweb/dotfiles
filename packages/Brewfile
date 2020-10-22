@@ -110,6 +110,7 @@ brew "coreutils"
 brew "dep"
 brew "dnsmasq", restart_service: true
 brew "docker-completion"
+brew "doctl"
 brew "exercism"
 brew "ffmpeg"
 brew "fx"
