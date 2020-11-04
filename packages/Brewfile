@@ -107,6 +107,7 @@ brew "brew-cask-completion"
 brew "gettext"
 brew "composer"
 brew "coreutils"
+brew "ctop"
 brew "dep"
 brew "dnsmasq", restart_service: true
 brew "docker-completion"
