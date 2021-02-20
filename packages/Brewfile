@@ -13,7 +13,7 @@ tap "zaquestion/tap"
 # === Casks ===
 
 # Fonts
-cask "font-cascadia"
+cask "font-cascadia-code"
 cask "font-fira-code-nerd-font"
 cask "font-hack"
 cask "font-inconsolata"
@@ -33,7 +33,7 @@ cask "iterm2"
 cask "lando"
 cask "lens"
 cask "meld"
-cask "mongodb-compass-community"
+cask "mongodb-compass"
 cask "postman"
 cask "sequel-ace"
 cask "sublime-merge"
