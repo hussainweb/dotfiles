@@ -14,6 +14,9 @@ tap "zaquestion/tap"
 
 # Fonts
 cask "font-cascadia-code"
+cask "font-cascadia-code-pl"
+cask "font-cascadia-mono"
+cask "font-cascadia-mono-pl"
 cask "font-fira-code-nerd-font"
 cask "font-hack"
 cask "font-inconsolata"
