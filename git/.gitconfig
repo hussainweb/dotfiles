@@ -49,13 +49,15 @@
 [diff]
 	tool = opendiff
 [core]
-	editor = code -rw
+  editor = code -rw
 	pager = delta
 [interactive]
 	diffFilter = delta --color-only
 [merge]
-	tool = vscode
+  tool = vscode
 [mergetool "vscode"]
 	cmd = code --wait $MERGED
 [pull]
 	ff = only
+[init]
+	defaultBranch = main
