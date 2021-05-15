@@ -47,6 +47,10 @@ set_fish_shell() {
         substep_info "Installing fisher"
         curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs https://git.io/fisher
         fisher
+        fisher install jorgebucaran/fisher
+        fisher install jethrokuan/z
+        fisher install PatrickF1/fzf.fish
+        fisher install jorgebucaran/nvm.fish
 
         substep_info "Installing oh-my-fish"
         # OMF installer spawns a new fish shell at the end.
