@@ -3,9 +3,6 @@
     "composer.executablePath": "/usr/local/bin/composer",
     "editor.fontSize": 18,
     "editor.fontLigatures": true,
-    "files.associations": {
-        "**/*.yml": "ansible"
-    },
     "window.zoomLevel": 0,
     "workbench.colorTheme": "Nord",
     "workbench.colorCustomizations": {},
