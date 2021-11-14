@@ -196,6 +196,7 @@ brew "youtube-dl"
 brew "drud/ddev/ddev"
 
 # === Mac App Store Applications ===
-#mas 'Monosnap', id: 540348655
-mas 'Todoist', id: 585829637
-mas 'World Clock Pro', id: 858446756
+mas "Brother iPrint&Scan", id: 1193539993
+mas "Jira", id: 1475897096
+mas "Notability", id: 360593530
+mas "Todoist", id: 585829637
