@@ -4,6 +4,7 @@ tap "colindean/fonts-nonfree"
 tap "drud/ddev"
 tap "homebrew/bundle"
 tap "homebrew/cask"
+tap "homebrew/cask-drivers"
 tap "homebrew/core"
 tap "homebrew/cask-fonts"
 tap "homebrew/services"
@@ -98,6 +99,10 @@ cask "vlc"
 #cask "steam"
 cask "osxfuse"
 cask "buttercup"
+
+# Devices
+cask "elgato-control-center"
+cask "logitech-options"
 
 # === Formulae ===
 
