@@ -10,7 +10,6 @@ tap "homebrew/cask-fonts"
 tap "homebrew/services"
 tap "humbug/box"
 tap "saulpw/vd"
-tap "zaquestion/tap"
 
 # === Casks ===
 
@@ -148,7 +147,6 @@ brew "htop"
 brew "hub"
 brew "jq"
 brew "kubernetes-cli"
-brew "lab"
 brew "lastpass-cli"
 brew "lazygit"
 brew "librsvg"
