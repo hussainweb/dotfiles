@@ -107,7 +107,7 @@ cask "buttercup"
 
 # Devices
 cask "elgato-control-center"
-cask "logitech-options"
+cask "logi-options-plus"
 
 # === Formulae ===
 
