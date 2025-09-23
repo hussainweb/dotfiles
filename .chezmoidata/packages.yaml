@@ -74,6 +74,7 @@ packages:
         - gnupg
         - httpie
         - jq
+        - make
         - mas
         - mkcert
         - mosh
@@ -156,7 +157,6 @@ packages:
         - karabiner-elements
         - loop
         - maccy
-        - make
         - mounty
         - rectangle
         - shortcat
