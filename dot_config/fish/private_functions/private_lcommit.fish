@@ -4,5 +4,16 @@ function lcommit
         echo "No staged changes found."
         return 1
     end
-    echo $diff | llm --system "Write a concise, conventional commit-style message describing these changes."
+
+    # Join any provided args into one context string
+    set -l context (string join ' ' -- $argv)
+
+    # Build the system prompt
+    if test -n "$context"
+        set -f system_prompt "Write a concise, conventional commit-style message describing these changes. Additional context: $context"
+    else
+        set -f system_prompt "Write a concise, conventional commit-style message describing these changes."
+    end
+
+    echo $diff | llm --system "$system_prompt"
 end
