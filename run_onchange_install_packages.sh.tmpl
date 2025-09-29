@@ -12,6 +12,16 @@ brew {{ . | quote }}
 {{ range .packages.homebrew.essential.casks -}}
 cask {{ . | quote }}
 {{ end -}}
+
+# Install large-apps only on personal machines
+{{ if .personal -}}
+{{ range .packages.homebrew.large_apps.brews -}}
+brew {{ . | quote }}
+{{ end -}}
+{{ range .packages.homebrew.large_apps.casks -}}
+cask {{ . | quote }}
+{{ end -}}
+{{ end -}}
 EOF
 {{ else if eq .chezmoi.os "linux" -}}
 sudo apt update

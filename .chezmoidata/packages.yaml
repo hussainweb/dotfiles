@@ -165,5 +165,13 @@ packages:
         - tailscale
         - tailscale-app
 
+    large_apps:
+      brews: []
+      casks:
+        - gnucash
+        - microsoft-office
+        - microsoft-teams
+        - whatsapp
+
   apt:
     - curl
