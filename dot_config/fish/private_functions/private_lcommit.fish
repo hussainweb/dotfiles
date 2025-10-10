@@ -15,5 +15,7 @@ function lcommit
         set -f system_prompt "Write a concise, conventional commit-style message describing these changes."
     end
 
-    echo $diff | llm --system "$system_prompt"
+    set -l commit_message (echo $diff | llm --system "$system_prompt")
+    echo $commit_message
+    echo $commit_message | pbcopy
 end
