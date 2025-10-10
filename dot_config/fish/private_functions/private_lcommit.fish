@@ -9,9 +9,17 @@ function lcommit
     set -l context (string join ' ' -- $argv)
 
     # Build the system prompt
-    set -f system_prompt "Write a concise, conventional commit-style message describing these changes. Use the proper type: feat, fix, chore, ci, docs, refactor, style, or test. For example, if this is only dependency updates, use chore."
+    set -f system_prompt 'Write a concise, conventional commit-style message describing these changes. Use the proper type: feat, fix, chore, ci, docs, refactor, style, or test.
+
+For example:
+- use chore for dependency updates.
+- use ci for changes to GitHub Actions or other pipelines.
+- and so on.
+'
+
     if test -n "$context"
-        set -f system_prompt "$system_prompt Additional context: $context"
+        set -f system_prompt "$system_prompt
+Additional context: $context"
     end
 
     echo $diff | llm --system "$system_prompt" | tee /dev/tty | pbcopy
