@@ -29,6 +29,7 @@ packages:
         - httpie
         - lla
         - lsd
+        - lstr
         - ripgrep
         - the_silver_searcher
         - xh
@@ -167,6 +168,7 @@ packages:
     large_apps:
       brews: []
       casks:
+        - dayflow
         - gnucash
         - microsoft-office
         - microsoft-teams
