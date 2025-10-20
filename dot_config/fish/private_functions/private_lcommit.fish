@@ -22,5 +22,7 @@ For example:
 Additional context: $context"
     end
 
-    echo $diff | llm --system "$system_prompt" | tee /dev/tty | pbcopy
+    set -l msg (echo $diff | llm --system "$system_prompt" | string collect)
+    printf "%s" "$msg" | tee /dev/tty | pbcopy
+    printf "\n"
 end
