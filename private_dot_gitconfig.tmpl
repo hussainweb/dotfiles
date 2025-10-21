@@ -31,16 +31,18 @@
 	defaultBranch = main
 
 [core]
-{{ if eq .chezmoi.os "darwin" }}	editor = code -rw{{- end }}
+{{ if eq .chezmoi.os "darwin" }}	editor = subl --wait{{- end }}
 	pager = delta
 
 [interactive]
 	diffFilter = delta --color-only --features=interactive
 {{ if eq .chezmoi.os "darwin" }}
 [merge]
-	tool = vscode
+	tool = cursor
 [mergetool "vscode"]
 	cmd = code --wait $MERGED
+[mergetool "cursor"]
+	cmd = cursor --wait $MERGED
 {{ end }}
 [delta]
 	features = decorations
