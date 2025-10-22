@@ -5,10 +5,12 @@ if ! command -v asdf &> /dev/null
   exit
 end
 
+asdf completion fish > ~/.config/fish/completions/asdf.fish
+
 asdf plugin add php || true
 asdf plugin add python || true
 asdf plugin add golang || true
 asdf plugin add rust || true
 
 asdf install python latest
-asdf global python latest
+asdf set -u python latest
