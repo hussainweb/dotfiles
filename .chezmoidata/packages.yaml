@@ -40,6 +40,7 @@ packages:
         - repomix
 
         # Developer tools
+        - asdf
         - awscli
         - ddev
         - direnv
