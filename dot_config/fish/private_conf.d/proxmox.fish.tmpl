@@ -1,0 +1,5 @@
+{{- if .personal -}}
+set -Ux PM_API_URL https://erebor.husain.me:8006/api2/json
+set -Ux PM_API_TOKEN_ID terraform@pve!coder-aule
+set -Ux PM_API_TOKEN_SECRET {{ onepasswordRead "op://Private/wqeyffrbuhswc3kfd7vjb6q2qa/Tokens/coder-aule" "my.1password.com" }}
+{{- end }}
