@@ -37,7 +37,9 @@ packages:
         # AI tools
         - llm
         - ollama
+        - opencode
         - repomix
+        - specify
 
         # Developer tools
         - asdf
