@@ -139,7 +139,6 @@ packages:
         # Browsers
         - choosy
         - google-chrome
-        - microsoft-edge
 
         # Work Tools
         - notion
@@ -171,6 +170,7 @@ packages:
     large_apps:
       brews: []
       casks:
+        - chatgpt-atlas
         - dayflow
         - gnucash
         - microsoft-office
