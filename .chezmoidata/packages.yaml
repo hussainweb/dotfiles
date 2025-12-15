@@ -173,6 +173,10 @@ packages:
     large_apps:
       brews: []
       casks:
+        # IDEs
+        - antigravity
+
+        # Others
         - chatgpt-atlas
         - dayflow
         - gnucash

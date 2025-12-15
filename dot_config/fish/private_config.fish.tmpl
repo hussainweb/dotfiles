@@ -17,3 +17,8 @@ test -e {$HOME}/.config/op/plugins.sh ; and source {$HOME}/.config/op/plugins.sh
 test -e {{ .chezmoi.homeDir }}/.orbstack/shell/init2.fish ; and source ~/.orbstack/shell/init2.fish 2>/dev/null || :
 
 starship init fish | source
+
+{{ if .personal -}}
+# Added by Antigravity
+fish_add_path /Users/hw/.antigravity/antigravity/bin
+{{- end }}
