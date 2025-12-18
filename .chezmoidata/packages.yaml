@@ -156,7 +156,6 @@ packages:
         - logseq
 
         # System Utilities
-        - cleanshot
         - disk-inventory-x
         - divvy
         - handbrake-app
@@ -166,6 +165,7 @@ packages:
         - mounty
         - rectangle
         - shortcat
+        - shottr
         - sloth
         - stats
         - tailscale-app
