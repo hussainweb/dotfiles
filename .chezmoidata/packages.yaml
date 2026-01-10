@@ -169,6 +169,7 @@ packages:
         - sloth
         - stats
         - tailscale-app
+        - wispr-flow
 
     large_apps:
       brews: []
