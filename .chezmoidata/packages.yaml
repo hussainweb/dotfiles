@@ -55,6 +55,7 @@ packages:
         - hyperfine
         - kubernetes-cli
         - lazygit
+        - mise
         - tailspin
         - ut
 
