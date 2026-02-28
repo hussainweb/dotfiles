@@ -43,7 +43,6 @@ packages:
         - specify
 
         # Developer tools
-        - asdf
         - awscli
         - ddev
         - direnv
