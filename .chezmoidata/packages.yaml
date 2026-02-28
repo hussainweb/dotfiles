@@ -52,9 +52,11 @@ packages:
         - helm
         - hub
         - hyperfine
+        - jira-cli
         - kubernetes-cli
         - lazygit
         - mise
+        - playwright-cli
         - tailspin
         - ut
 
