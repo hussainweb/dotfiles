@@ -127,7 +127,8 @@ packages:
         - zed
 
         # AI Tools
-        - chatgpt
+        - claude
+        - claude-code
 
         # Developer Tools
         - ghostty
@@ -180,7 +181,6 @@ packages:
         - antigravity
 
         # Others
-        - chatgpt-atlas
         - dayflow
         - gnucash
         - microsoft-office
