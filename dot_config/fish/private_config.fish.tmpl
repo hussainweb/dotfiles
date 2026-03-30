@@ -26,3 +26,7 @@ starship init fish | source
 # Added by Antigravity
 fish_add_path /Users/hw/.antigravity/antigravity/bin
 {{- end }}
+
+{{ if .personal -}}
+atuin init fish | source
+{{- end }}

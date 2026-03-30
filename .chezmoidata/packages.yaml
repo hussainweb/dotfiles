@@ -69,6 +69,7 @@ packages:
         - uv
 
         # System tools
+        - atuin
         - coder
         - curl
         - curlie
