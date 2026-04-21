@@ -198,3 +198,10 @@ packages:
   apt:
     - curl
     - git
+
+  # Generic tool initialization
+  init:
+    rtk:
+      - rtk init -g
+      - rtk init -g --gemini
+      - rtk init --agent antigravity

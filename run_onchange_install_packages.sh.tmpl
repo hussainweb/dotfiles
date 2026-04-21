@@ -107,3 +107,13 @@ if command -v npm &> /dev/null; then
     {{ end -}}
 fi
 {{ end -}}
+
+# Generic tool initialization
+{{ range $tool, $cmds := .packages.init -}}
+if command -v {{ $tool }} &> /dev/null; then
+    {{ range $cmds -}}
+    echo "Initializing {{ $tool }}: {{ . }}"
+    {{ . }}
+    {{ end -}}
+fi
+{{ end -}}
