@@ -30,6 +30,15 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply hussainweb
 ```
 *(Replace `hussainweb` with your GitHub username if applicable)*
 
+## Package Management
+
+This repository uses a structured approach to manage packages via `.chezmoidata/packages.yaml`. Packages are categorized to provide flexibility:
+
+* **Homebrew Brews**: Categorized into `minimal` (essential tools), `development` (languages and dev workflows), `standard` (modern CLI suite), and `macos` (OS-specific tools).
+* **Homebrew Casks**: Organized into `cli` (as casks), `fonts`, and various GUI categories (`minimal`, `standard`, `development`, `personal`, `large_apps`).
+* **Machine-Specific**: Supports targeted cask installations for specific machines (e.g., `the-good-machine`).
+* **Cross-Platform Support**: Includes `npm` and `apt` package lists for fallback or Linux environments.
+
 ## Configured Tools
 
 These dotfiles include custom configurations and scripts for the following tools:
@@ -47,6 +56,6 @@ These dotfiles include custom configurations and scripts for the following tools
 ## Repository Structure
 
 * `install.sh`: Bootstrap script to install Homebrew, chezmoi, and apply the dotfiles.
-* `.chezmoidata/packages.yaml`: Defines Homebrew taps, brews, casks, and apt packages to be installed.
+* `.chezmoidata/packages.yaml`: Defines categorized Homebrew taps, brews, casks, npm, and apt packages.
 * `dot_config/`: Configurations for applications typically found in `~/.config/` (Fish, Starship, Ghostty, Atuin, etc.).
 * `run_once_*` / `run_onchange_*`: chezmoi scripts executed during the apply phase to install packages and configure the system.
