@@ -1,32 +1,109 @@
 #!/bin/bash
-{{ if eq .chezmoi.os "darwin" -}}
-# Add all taps
-{{ range .packages.homebrew.essential.taps -}}
-brew tap {{ . }}
+
+# Ensure Homebrew is in PATH for Linux
+{{ if eq .chezmoi.os "linux" -}}
+if ! command -v brew &> /dev/null; then
+    if [[ -d /home/linuxbrew/.linuxbrew ]]; then
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    fi
+fi
+
+# Fallback APT installation for essential bootstrap tools
+sudo apt update
+sudo apt install -y {{ range .packages.apt }}{{ . | quote }} {{ end }}
 {{ end -}}
-# Install essential packages
+
+# Stop if brew is not available
+if ! command -v brew &> /dev/null; then
+    echo "Homebrew not found. Skipping brew bundle."
+    exit 0
+fi
+
+# Use brew bundle to install all packages
 brew bundle --file=/dev/stdin <<EOF
-{{ range .packages.homebrew.essential.brews -}}
+{{ range .packages.taps -}}
+tap {{ . | quote }}
+{{ end -}}
+
+# Essential CLI tools (Everywhere)
+{{ range .packages.brews.minimal -}}
 brew {{ . | quote }}
 {{ end -}}
-{{ range .packages.homebrew.essential.casks -}}
+
+# Development CLI tools (if enabled and not transient)
+{{ if and .development (not .transient) -}}
+{{ range .packages.brews.development -}}
+brew {{ . | quote }}
+{{ end -}}
+{{ end -}}
+
+# Full/Standard CLI suite (if not transient)
+{{ if not .transient -}}
+{{ range .packages.brews.standard -}}
+brew {{ . | quote }}
+{{ end -}}
+{{ end -}}
+
+{{ if eq .chezmoi.os "darwin" -}}
+# macOS Specific Brews
+{{ range .packages.brews.macos -}}
+brew {{ . | quote }}
+{{ end -}}
+
+# CLI Casks (only on macOS)
+{{ range .packages.casks.cli -}}
 cask {{ . | quote }}
 {{ end -}}
 
-# Install large-apps only on personal machines
-{{ if .personal -}}
-{{ range .packages.homebrew.large_apps.brews -}}
-brew {{ . | quote }}
+# Fonts
+{{ range .packages.casks.fonts -}}
+cask {{ . | quote }}
 {{ end -}}
-{{ range .packages.homebrew.large_apps.casks -}}
+
+# Essential GUI Apps (Browsers, Editor, Terminal)
+{{ if not .transient -}}
+{{ range .packages.casks.gui_minimal -}}
+cask {{ . | quote }}
+{{ end -}}
+
+# Standard Power-User GUI Apps
+{{ range .packages.casks.gui_standard -}}
+cask {{ . | quote }}
+{{ end -}}
+
+# Development-specific GUI Apps
+{{ if .development -}}
+{{ range .packages.casks.gui_development -}}
 cask {{ . | quote }}
 {{ end -}}
 {{ end -}}
-EOF
-{{ else if eq .chezmoi.os "linux" -}}
-sudo apt update
-{{ if .packages.apt -}}
-sudo apt install -y {{ range .packages.apt }} \
-  {{ . | quote }}{{ end }}
+
+# Personal/Work GUI Apps
+{{ if .personal -}}
+{{ range .packages.casks.gui_personal -}}
+cask {{ . | quote }}
 {{ end -}}
+{{ range .packages.casks.large_apps -}}
+cask {{ . | quote }}
+{{ end -}}
+
+# Hardware-specific Casks
+{{- if (index .packages.casks.hardware .computerName) }}
+{{- range (index .packages.casks.hardware .computerName) }}
+cask {{ . | quote }}
+{{- end }}
+{{- end }}
+{{ end -}}
+{{ end -}}
+{{ end -}}
+EOF
+
+# Install NPM tools on Linux development machines (Mac uses Casks)
+{{ if and (eq .chezmoi.os "linux") .development (not .transient) -}}
+if command -v npm &> /dev/null; then
+    echo "Installing global NPM packages..."
+    {{ range .packages.npm -}}
+    sudo npm install -g {{ . | quote }}
+    {{ end -}}
+fi
 {{ end -}}

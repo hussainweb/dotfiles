@@ -1,193 +1,200 @@
 packages:
-  homebrew:
-    essential:
-      taps:
-        - ddev/ddev
-        - ksdme/tap
-      brews:
-        # Shell
-        - fish
-        - starship
-        - zellij
+  # Homebrew Taps
+  taps:
+    - ddev/ddev
+    - ksdme/tap
 
-        # Modern CLI replacements
-        - bat
-        - bottom
-        - broot
-        - btop
-        - cheat
-        - curlie
-        - difftastic
-        - doggo
-        - duf
-        - dust
-        - eza
-        - fd
-        - fzf
-        - gping
-        - hexyl
-        - htop
-        - httpie
-        - lla
-        - lsd
-        - lstr
-        - ripgrep
-        - the_silver_searcher
-        - xh
+  # Command-line tools (Homebrew formulas)
+  brews:
+    # Essential tools for any system (headless, transient, or laptop)
+    minimal:
+      - atuin
+      - bat
+      - btop
+      - curl
+      - eza
+      - fd
+      - fish
+      - fzf
+      - git
+      - jq
+      - ripgrep
+      - starship
+      - tree
+      - wget
+      - zellij
 
-        # AI tools
-        - llm
-        - ollama
-        - opencode
-        - repomix
-        - rtk
-        - specify
+    # Development-specific tools (languages, AI CLI, dev workflows)
+    development:
+      - awscli
+      - ddev
+      - direnv
+      - gh
+      - go
+      - go-task
+      - hub
+      - hyperfine
+      - lazygit
+      - llm
+      - mise
+      - node
+      - ollama
+      - opencode
+      - opentofu
+      - php
+      - python3
+      - repomix
+      - rtk
+      - uv
 
-        # Developer tools
-        - awscli
-        - ddev
-        - direnv
-        - dyff
-        - gh
-        - go-task
-        - helm
-        - hub
-        - hyperfine
-        - jira-cli
-        - kubernetes-cli
-        - lazygit
-        - mise
-        - playwright-cli
-        - tailspin
-        - ut
+    # Full suite of modern CLI tools for long-lived machines
+    standard:
+      - bottom
+      - broot
+      - cheat
+      - coder
+      - curlie
+      - difftastic
+      - doggo
+      - duf
+      - dust
+      - dyff
+      - ffmpeg
+      - fx
+      - git-delta
+      - git-extras
+      - git-lfs
+      - git-quick-stats
+      - glow
+      - gnupg
+      - gping
+      - handbrake
+      - helm
+      - hexyl
+      - htop
+      - httpie
+      - jira-cli
+      - kubernetes-cli
+      - lla
+      - lsd
+      - lstr
+      - make
+      - mkcert
+      - mosh
+      - pinentry
+      - playwright-cli
+      - pv
+      - specify
+      - superfile
+      - tailspin
+      - the_silver_searcher
+      - ut
+      - watch
+      - xh
+      - xxh
+      - xz
+      - yt-dlp
 
-        # Languages
-        - go
-        - php
-        - python3
-        - node
-        - opentofu
-        - uv
+    # macOS specific formulas
+    macos:
+      - mas
+      - pinentry-mac
 
-        # System tools
-        - atuin
-        - coder
-        - curl
-        - curlie
-        - fx
-        - git
-        - git-delta
-        - git-extras
-        - git-lfs
-        - git-quick-stats
-        - glow
-        - gnupg
-        - httpie
-        - jq
-        - make
-        - mas
-        - mkcert
-        - mosh
-        - pinentry
-        - pinentry-mac
-        - pv
-        - superfile
-        - tree
-        - watch
-        - wget
-        - xxh
-        - yt-dlp
-        - xz
+  # NPM global packages (fallback for Linux development where Casks don't exist)
+  npm:
+    - "@anthropic-ai/claude-code"
+    - "@google/generative-ai-cli"
 
-        # Media
-        - ffmpeg
-        - handbrake
-        
-      casks:
-        # Fonts
-        - font-0xproto-nerd-font
-        - font-monaspice-nerd-font
-        - font-cascadia-code
-        - font-cascadia-code-pl
-        - font-cascadia-mono
-        - font-cascadia-mono-pl
-        - font-caskaydia-cove-nerd-font
-        - font-droid-sans-mono-nerd-font
-        - font-fira-code-nerd-font
-        - font-go-mono-nerd-font
-        - font-hack
-        - font-hack-nerd-font
-        - font-inconsolata
-        - font-inconsolata-nerd-font
-        - font-jetbrains-mono
-        - font-jetbrains-mono-nerd-font
+  # macOS Casks (GUI apps and some CLI tools)
+  casks:
+    # CLI-only tools distributed as casks (preferred on macOS)
+    cli:
+      - 1password-cli
+      - claude-code
 
-        # IDEs
-        - cursor
-        - sublime-text
-        - visual-studio-code
-        - zed
+    # Fonts
+    fonts:
+      - font-0xproto-nerd-font
+      - font-cascadia-code
+      - font-cascadia-code-pl
+      - font-cascadia-mono
+      - font-cascadia-mono-pl
+      - font-caskaydia-cove-nerd-font
+      - font-droid-sans-mono-nerd-font
+      - font-fira-code-nerd-font
+      - font-go-mono-nerd-font
+      - font-hack
+      - font-hack-nerd-font
+      - font-inconsolata
+      - font-inconsolata-nerd-font
+      - font-jetbrains-mono
+      - font-jetbrains-mono-nerd-font
+      - font-monaspice-nerd-font
 
-        # AI Tools
-        - claude
-        - claude-code
+    # Essential GUI (Browsers, Editor, Terminal, Passwords)
+    gui_minimal:
+      - 1password
+      - choosy
+      - comet
+      - ghostty
+      - google-chrome
+      - sublime-text
 
-        # Developer Tools
-        - ghostty
-        - gitup-app
-        - imageoptim
-        - orbstack
-        - warp
+    # Power-user tools (Standard macOS setup)
+    gui_standard:
+      - karabiner-elements
+      - loop
+      - maccy
+      - mounty
+      - raycast
+      - rectangle
+      - shortcat
+      - shottr
+      - sloth
+      - stats
+      - tailscale-app
+      - wispr-flow
 
-        # Tools
-        - 1password
-        - 1password-cli
+    # Developer-specific GUI tools
+    gui_development:
+      - cursor
+      - gitup-app
+      - imageoptim
+      - orbstack
+      - visual-studio-code
+      - warp
+      - zed
 
-        # Browsers
-        - choosy
-        - comet
-        - google-chrome
+    # Apps for personal/main machines (Multimedia, Social, Notes)
+    gui_personal:
+      - claude
+      - disk-inventory-x
+      - divvy
+      - handbrake-app
+      - logseq
+      - notion
+      - notion-calendar
+      - slack
+      - the-unarchiver
+      - vlc
+      - zoom
 
-        # Work Tools
-        - notion
-        - notion-calendar
-        - raycast
-        - slack
-        - the-unarchiver
-        - vlc
-        - zoom
-
-        # Productivity
-        - logseq
-
-        # System Utilities
-        - disk-inventory-x
-        - divvy
-        - handbrake-app
-        - karabiner-elements
-        - loop
-        - maccy
-        - mounty
-        - rectangle
-        - shortcat
-        - shottr
-        - sloth
-        - stats
-        - tailscale-app
-        - wispr-flow
-
+    # Large applications
     large_apps:
-      brews: []
-      casks:
-        # IDEs
-        - antigravity
+      - antigravity
+      - dayflow
+      - gnucash
+      - microsoft-office
+      - microsoft-teams
+      - whatsapp
 
-        # Others
-        - dayflow
-        - gnucash
-        - microsoft-office
-        - microsoft-teams
-        - whatsapp
+    # Hardware/Machine specific
+    hardware:
+      the-good-machine:
+        - elgato-stream-deck
+        - logi-options-plus
 
+  # APT packages (fallback or bootstrap for Linux)
   apt:
     - curl
+    - git
