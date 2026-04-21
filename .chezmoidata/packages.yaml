@@ -157,7 +157,6 @@ packages:
 
     # Developer-specific GUI tools
     gui_development:
-      - cursor
       - gitup-app
       - imageoptim
       - orbstack

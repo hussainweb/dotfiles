@@ -38,11 +38,9 @@
 	diffFilter = delta --color-only --features=interactive
 {{ if eq .chezmoi.os "darwin" }}
 [merge]
-	tool = cursor
+	tool = vscode
 [mergetool "vscode"]
 	cmd = code --wait $MERGED
-[mergetool "cursor"]
-	cmd = cursor --wait $MERGED
 {{ end }}
 [delta]
 	features = decorations
