@@ -142,14 +142,15 @@ packages:
 
     # Power-user tools (Standard macOS setup)
     gui_standard:
+      - dayflow
       - karabiner-elements
       - loop
       - maccy
+      - macshot
       - mounty
       - raycast
       - rectangle
       - shortcat
-      - macshot
       - sloth
       - stats
       - tailscale-app
@@ -181,7 +182,6 @@ packages:
     # Large applications
     large_apps:
       - antigravity
-      - dayflow
       - gnucash
       - microsoft-office
       - microsoft-teams
