@@ -17,6 +17,7 @@ packages:
       - fish
       - fzf
       - git
+      - helix
       - jq
       - ripgrep
       - starship
