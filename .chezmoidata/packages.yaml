@@ -192,6 +192,7 @@ packages:
     # Hardware/Machine specific
     hardware:
       the-good-machine:
+        - elgato-control-center
         - elgato-stream-deck
         - logi-options-plus
 
