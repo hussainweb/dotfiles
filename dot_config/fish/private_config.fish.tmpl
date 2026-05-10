@@ -1,7 +1,15 @@
 fish_add_path -g "{{ .chezmoi.homeDir }}/.composer/vendor/bin"
-{{ if .personal -}}
-fish_add_path -g "/opt/homebrew/bin" "/opt/homebrew/sbin"
-{{- end }}
+
+# Set up Homebrew
+if test -d /opt/homebrew/bin
+    /opt/homebrew/bin/brew shellenv | source
+else if test -d /home/linuxbrew/.linuxbrew/bin
+    /home/linuxbrew/.linuxbrew/bin/brew shellenv | source
+else if test -d /usr/local/bin
+    if test -f /usr/local/bin/brew
+        /usr/local/bin/brew shellenv | source
+    end
+end
 
 set -x GPG_TTY (tty)
 set -x fish_emoji_width 2

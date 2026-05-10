@@ -435,12 +435,13 @@ compute:
   ssh:
     ssh-agent-forwarding: false
     ssh-command: ""
-    ssh-key-path: /Users/hw/.ssh/id_ed25519
+    ssh-key-path: {{ .chezmoi.homeDir }}/.ssh/id_ed25519
     ssh-port: 22
     ssh-private-ip: false
     ssh-retry-max: 0
     ssh-user: root
-config: /Users/hw/Library/Application Support/doctl/config.yaml
+    config: {{ .chezmoi.homeDir }}/Library/Application Support/doctl/config.yaml
+
 configuration:
   get:
     engine: ""

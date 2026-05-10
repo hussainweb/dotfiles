@@ -1,3 +1,7 @@
 {{ if eq .chezmoi.os "darwin" -}}
+{{- if stat "/opt/homebrew/bin/pinentry-mac" -}}
 pinentry-program /opt/homebrew/bin/pinentry-mac
+{{- else -}}
+pinentry-program /usr/local/bin/pinentry-mac
+{{- end }}
 {{ end -}}
