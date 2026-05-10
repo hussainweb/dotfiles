@@ -44,6 +44,13 @@ brew {{ . | quote }}
 {{ end -}}
 {{ end -}}
 
+# Personal CLI tools (if personal machine)
+{{ if .personal -}}
+{{ range .packages.brews.personal -}}
+brew {{ . | quote }}
+{{ end -}}
+{{ end -}}
+
 {{ if eq .chezmoi.os "darwin" -}}
 # macOS Specific Brews
 {{ range .packages.brews.macos -}}

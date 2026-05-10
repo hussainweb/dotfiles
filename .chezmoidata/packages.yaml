@@ -17,8 +17,10 @@ packages:
       - fish
       - fzf
       - git
+      - go-task
       - helix
       - jq
+      - mise
       - ripgrep
       - starship
       - tree
@@ -32,14 +34,11 @@ packages:
       - direnv
       - gh
       - go
-      - go-task
       - hub
       - hyperfine
       - lazygit
       - llm
-      - mise
       - node
-      - ollama
       - opencode
       - opentofu
       - php
@@ -60,7 +59,6 @@ packages:
       - duf
       - dust
       - dyff
-      - ffmpeg
       - fx
       - git-delta
       - git-extras
@@ -69,13 +67,10 @@ packages:
       - glow
       - gnupg
       - gping
-      - handbrake
-      - helm
       - hexyl
       - htop
       - httpie
       - jira-cli
-      - kubernetes-cli
       - lla
       - lsd
       - lstr
@@ -94,6 +89,14 @@ packages:
       - xh
       - xxh
       - xz
+
+    # Tools for personal/main machines only
+    personal:
+      - ffmpeg
+      - handbrake
+      - helm
+      - kubernetes-cli
+      - ollama
       - yt-dlp
 
     # macOS specific formulas
