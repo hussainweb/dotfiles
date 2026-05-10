@@ -49,7 +49,6 @@ These dotfiles include custom configurations and scripts for the following tools
 * **[Atuin](https://atuin.sh/)**: Magical shell history synchronization.
 * **Git**: Custom gitconfig and abbreviations.
 * **GnuPG**: GPG agent configuration.
-* **DigitalOcean CLI (`doctl`)**: Application support configuration.
 * **Linode CLI**: Configuration template.
 * **Python**: `.pypirc` for package publishing.
 
