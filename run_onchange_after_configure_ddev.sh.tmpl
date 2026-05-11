@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# DDEV global configuration for headless machines
+# This script runs when the IP address changes or the machine configuration changes.
+
+{{ if and .development (not .transient) -}}
+# Detected IP: {{ if eq .chezmoi.os "darwin" -}}
+{{ (output "sh" "-c" "ipconfig getifaddr en0 || ipconfig getifaddr en1" | trim) }}
+{{- else -}}
+{{ (output "sh" "-c" "hostname -I | awk '{print $1}'" | trim) }}
+{{- end }}
+
+{{ if .ssh_host -}}
+if command -v ddev &> /dev/null; then
+    {{ if eq .chezmoi.os "darwin" -}}
+    IP=$(ipconfig getifaddr en0 || ipconfig getifaddr en1)
+    {{- else -}}
+    IP=$(hostname -I | awk '{print $1}')
+    {{- end }}
+    
+    if [ -n "$IP" ]; then
+        echo "Configuring DDEV with sslip.io for IP: $IP"
+        # Use ddev config global to set the FQDN and other headless-friendly settings
+        ddev config global --project-tld="${IP}.sslip.io" --router-bind-all-interfaces=true --no-tui=true
+    fi
+fi
+{{- else -}}
+# For non-headless machines, we might want to ensure it's back to defaults
+# but only if it was previously set to sslip.io to avoid unnecessary changes.
+if [ -f "$HOME/.ddev/global_config.yaml" ]; then
+    CURRENT_TLD=$(grep "^project_tld:" "$HOME/.ddev/global_config.yaml" | awk '{print $2}')
+    if [[ "$CURRENT_TLD" == *".sslip.io" ]]; then
+        if command -v ddev &> /dev/null; then
+            echo "Resetting DDEV to default ddev.site configuration"
+            ddev config global --project-tld="ddev.site" --router-bind-all-interfaces=false --no-tui=false
+        fi
+    fi
+fi
+{{- end }}
+{{- end }}
