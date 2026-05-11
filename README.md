@@ -52,6 +52,31 @@ These dotfiles include custom configurations and scripts for the following tools
 * **Linode CLI**: Configuration template.
 * **Python**: `.pypirc` for package publishing.
 
+## GPG Key Setup
+
+The git configuration expects a GPG secret key with ID `E1CE98447E2C7887` to be present for commit signing. This key is not automatically managed by chezmoi and must be imported manually.
+
+### Importing an existing key
+
+If you already have this key on another machine, you can export it and import it here:
+
+1. **On the machine with the key:**
+   ```bash
+   gpg --export-secret-keys E1CE98447E2C7887 > private.key
+   ```
+2. **Transfer `private.key` to the new machine.**
+3. **On the new machine:**
+   ```bash
+   gpg --import private.key
+   # You may also need to trust the key
+   gpg --edit-key E1CE98447E2C7887 trust
+   ```
+
+Once imported, you can verify it with:
+```bash
+gpg --list-secret-keys E1CE98447E2C7887
+```
+
 ## Repository Structure
 
 * `install.sh`: Bootstrap script to install Homebrew, chezmoi, and apply the dotfiles.

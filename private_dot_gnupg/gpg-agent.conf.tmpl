@@ -4,4 +4,13 @@ pinentry-program /opt/homebrew/bin/pinentry-mac
 {{- else -}}
 pinentry-program /usr/local/bin/pinentry-mac
 {{- end }}
+{{- else if eq .chezmoi.os "linux" -}}
+{{- if stat "/home/linuxbrew/.linuxbrew/bin/pinentry" -}}
+pinentry-program /home/linuxbrew/.linuxbrew/bin/pinentry
+{{- else if stat "/usr/bin/pinentry" -}}
+pinentry-program /usr/bin/pinentry
+{{- end }}
 {{ end -}}
+
+default-cache-ttl 86400
+max-cache-ttl 86400
