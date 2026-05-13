@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 # 1. Native installation (Linux only)
+# We must keep native installations because some tools (like Warp) expect 
+# shells to be at standard system paths (/usr/bin/zsh) for their 
+# initialization scripts to work correctly.
 {{- if (eq .chezmoi.os "linux") }}
 {{- if or (eq .chezmoi.osRelease.id "ubuntu") (eq .chezmoi.osRelease.id "debian") }}
 export DEBIAN_FRONTEND=noninteractive
