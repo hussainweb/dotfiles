@@ -22,10 +22,5 @@ fi
 
 if [ "$CURRENT_SHELL" != "$WANTED_SHELL" ]; then
     echo "Switching default shell from $CURRENT_SHELL to $WANTED_SHELL..."
-    # Attempt to change shell without sudo if possible, but usually sudo is needed
-    if [ "$(uname)" == "Darwin" ]; then
-        sudo chsh -s "$WANTED_SHELL" "$USER"
-    else
-        sudo chsh -s "$WANTED_SHELL" "$USER"
-    fi
+    sudo chsh -s "$WANTED_SHELL" "$USER"
 fi
