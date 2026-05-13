@@ -2,6 +2,7 @@ packages:
   # Homebrew Taps
   taps:
     - ddev/ddev
+    - entireio/tap
     - ksdme/tap
 
   # Command-line tools (Homebrew formulas)
@@ -105,17 +106,13 @@ packages:
       - mas
       - pinentry-mac
 
-  # NPM global packages (fallback for Linux development where Casks don't exist)
-  npm:
-    - "@anthropic-ai/claude-code"
-    - "@google/generative-ai-cli"
-
   # macOS Casks (GUI apps and some CLI tools)
   casks:
     # CLI-only tools distributed as casks (preferred on macOS)
     cli:
       - 1password-cli
       - claude-code
+      - entire
 
     # Fonts
     fonts:
@@ -204,6 +201,15 @@ packages:
   apt:
     - curl
     - git
+
+  # Linux-specific configurations (fallbacks for when Casks/Brews don't apply)
+  linux:
+    npm:
+      - "@anthropic-ai/claude-code"
+      - "@google/generative-ai-cli"
+    scripts:
+      - name: entire
+        command: curl -fsSL https://entire.io/install.sh | bash
 
   # Generic tool initialization
   init:
