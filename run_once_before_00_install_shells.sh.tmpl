@@ -1,5 +1,26 @@
 #!/usr/bin/env bash
 
+# 1. Native installation (Linux only)
+{{- if (eq .chezmoi.os "linux") }}
+{{- if or (eq .chezmoi.osRelease.id "ubuntu") (eq .chezmoi.osRelease.id "debian") }}
+export DEBIAN_FRONTEND=noninteractive
+# Add fish PPA/Repo if missing
+if ! command -v fish &> /dev/null; then
+    {{- if (eq .chezmoi.osRelease.id "ubuntu") }}
+    sudo apt-add-repository -y ppa:fish-shell/release-4
+    {{- else if (eq .chezmoi.osRelease.id "debian") }}
+    echo "deb http://download.opensuse.org/repositories/shells:/fish:/release:/4/Debian_{{ .chezmoi.osRelease.versionID }}/ /" | sudo tee /etc/apt/sources.list.d/shells:fish:release:4.list
+    curl -fsSL https://download.opensuse.org/repositories/shells:fish:release:4/Debian_{{ .chezmoi.osRelease.versionID }}/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/shells_fish_release_4.gpg > /dev/null
+    {{- end }}
+fi
+sudo apt-get update
+sudo apt-get -yq install fish zsh
+{{- else if (eq .chezmoi.osRelease.id "fedora") }}
+sudo dnf -yq install fish zsh
+{{- end }}
+{{- end }}
+
+# 2. Homebrew installation (MacOS & Linux)
 # Install Homebrew if missing
 type brew &> /dev/null || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
@@ -10,6 +31,6 @@ elif [[ -d /home/linuxbrew/.linuxbrew/bin ]]; then
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
-# Install shells via Homebrew if missing
-command -v fish &> /dev/null || brew install fish
-command -v zsh &> /dev/null || brew install zsh
+# Install shells via Homebrew - this provides the latest versions
+# coexisting with the native ones.
+brew install fish zsh

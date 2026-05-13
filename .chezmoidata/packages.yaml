@@ -203,6 +203,8 @@ packages:
   apt:
     - curl
     - git
+    - fish
+    - zsh
 
   # Linux-specific configurations (fallbacks for when Casks/Brews don't apply)
   linux:
