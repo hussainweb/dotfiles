@@ -14,10 +14,16 @@ if [ -z "$WANTED_SHELL" ]; then
     exit 0
 fi
 
-CURRENT_SHELL=$(dscl . -read /Users/$USER UserShell | awk '{print $2}')
-# Fallback for Linux if dscl fails
+# Ensure the shell is in /etc/shells
+if ! grep -qxF "$WANTED_SHELL" /etc/shells; then
+    echo "Adding $WANTED_SHELL to /etc/shells..."
+    echo "$WANTED_SHELL" | sudo tee -a /etc/shells
+fi
+
+CURRENT_SHELL=$(dscl . -read /Users/$USER UserShell 2>/dev/null | awk '{print $2}')
+# Fallback for Linux
 if [ -z "$CURRENT_SHELL" ]; then
-    CURRENT_SHELL=$SHELL
+    CURRENT_SHELL=$(getent passwd "$USER" | cut -d: -f7)
 fi
 
 if [ "$CURRENT_SHELL" != "$WANTED_SHELL" ]; then
