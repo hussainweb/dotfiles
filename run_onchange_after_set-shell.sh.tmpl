@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+# .zshrc hash: {{ include "dot_zshrc.tmpl" | sha256sum }}
+# config.fish hash: {{ include "dot_config/fish/private_config.fish.tmpl" | sha256sum }}
+
+{{ if .personal -}}
+WANTED_SHELL=$(command -v fish)
+{{- else -}}
+WANTED_SHELL=$(command -v zsh)
+{{- end }}
+
+if [ -z "$WANTED_SHELL" ]; then
+    echo "Wanted shell not found, skipping chsh"
+    exit 0
+fi
+
+CURRENT_SHELL=$(dscl . -read /Users/$USER UserShell | awk '{print $2}')
+# Fallback for Linux if dscl fails
+if [ -z "$CURRENT_SHELL" ]; then
+    CURRENT_SHELL=$SHELL
+fi
+
+if [ "$CURRENT_SHELL" != "$WANTED_SHELL" ]; then
+    echo "Switching default shell from $CURRENT_SHELL to $WANTED_SHELL..."
+    # Attempt to change shell without sudo if possible, but usually sudo is needed
+    if [ "$(uname)" == "Darwin" ]; then
+        sudo chsh -s "$WANTED_SHELL" "$USER"
+    else
+        sudo chsh -s "$WANTED_SHELL" "$USER"
+    fi
+fi
