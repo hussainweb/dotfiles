@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 {{- if (eq .chezmoi.os "darwin") }}
-type brew &> /dev/null || curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh
+type brew &> /dev/null || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 {{- end }}
 
 if command -v starship &> /dev/null

@@ -1,51 +1,35 @@
 #!/usr/bin/env bash
 
+install_fish=false
+install_zsh=false
+
+command -v fish &> /dev/null || install_fish=true
+command -v zsh &> /dev/null || install_zsh=true
+
+if [ "$install_fish" = true ] || [ "$install_zsh" = true ]; then
 {{- if (eq .chezmoi.os "darwin") }}
-type brew &> /dev/null || curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh
-{{- end }}
+  # Install Homebrew if missing
+  type brew &> /dev/null || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-# Install Fish
-if ! command -v fish &> /dev/null
-then
-{{- if (eq .chezmoi.os "darwin") }}
-  brew install fish
-{{- end }}
-
-{{- if (eq .chezmoi.os "linux") }}
-  {{- if (eq .chezmoi.osRelease.id "ubuntu") }}
-  export DEBIAN_FRONTEND=noninteractive
-  sudo apt-add-repository -y ppa:fish-shell/release-3
-  sudo apt-get update
-  sudo apt-get -yq install fish
-  {{- end }}
-  {{- if (eq .chezmoi.osRelease.id "debian") }}
-  export DEBIAN_FRONTEND=noninteractive
-  echo 'deb http://download.opensuse.org/repositories/shells:/fish:/release:/3/Debian_10/ /' | sudo tee /etc/apt/sources.list.d/shells:fish:release:3.list
-  curl -fsSL https://download.opensuse.org/repositories/shells:fish:release:3/Debian_10/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/shells_fish_release_3.gpg > /dev/null
-  sudo apt-get update
-  sudo apt-get -yq install fish
-  {{- end }}
-  {{- if (eq .chezmoi.osRelease.id "fedora") }}
-  dnf -yq install fish
-  {{- end }}
-{{- end }}
-fi
-
-# Install Zsh
-if ! command -v zsh &> /dev/null
-then
-{{- if (eq .chezmoi.os "darwin") }}
-  brew install zsh
-{{- end }}
-
-{{- if (eq .chezmoi.os "linux") }}
+  [ "$install_fish" = true ] && brew install fish
+  [ "$install_zsh" = true ] && brew install zsh
+{{- else if (eq .chezmoi.os "linux") }}
   {{- if or (eq .chezmoi.osRelease.id "ubuntu") (eq .chezmoi.osRelease.id "debian") }}
   export DEBIAN_FRONTEND=noninteractive
-  sudo apt-get update
-  sudo apt-get -yq install zsh
+  {{- if (eq .chezmoi.osRelease.id "ubuntu") }}
+  [ "$install_fish" = true ] && sudo apt-add-repository -y ppa:fish-shell/release-4
+  {{- else if (eq .chezmoi.osRelease.id "debian") }}
+  if [ "$install_fish" = true ]; then
+    echo "deb http://download.opensuse.org/repositories/shells:/fish:/release:/4/Debian_{{ .chezmoi.osRelease.versionID }}/ /" | sudo tee /etc/apt/sources.list.d/shells:fish:release:4.list
+    curl -fsSL https://download.opensuse.org/repositories/shells:fish:release:4/Debian_{{ .chezmoi.osRelease.versionID }}/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/shells_fish_release_4.gpg > /dev/null
+  fi
   {{- end }}
-  {{- if (eq .chezmoi.osRelease.id "fedora") }}
-  dnf -yq install zsh
+  sudo apt-get update
+  [ "$install_fish" = true ] && sudo apt-get -yq install fish
+  [ "$install_zsh" = true ] && sudo apt-get -yq install zsh
+  {{- else if (eq .chezmoi.osRelease.id "fedora") }}
+  [ "$install_fish" = true ] && dnf -yq install fish
+  [ "$install_zsh" = true ] && dnf -yq install zsh
   {{- end }}
 {{- end }}
 fi
