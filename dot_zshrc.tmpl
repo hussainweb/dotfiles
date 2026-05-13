@@ -78,10 +78,11 @@ if [[ -n "$HOMEBREW_PREFIX" ]]; then
   
   # zsh-abbr (fish-like abbreviations)
   if [[ -f "$HOMEBREW_PREFIX/share/zsh-abbr/zsh-abbr.zsh" ]]; then
+    export ABBR_QUIET=1
     source "$HOMEBREW_PREFIX/share/zsh-abbr/zsh-abbr.zsh"
     # Set up abbreviations from shared data
     {{ range $key, $val := .aliases -}}
-    abbr add {{ $key }}='{{ $val }}' --force 2>/dev/null
+    abbr add --session --force {{ $key | quote }}={{ $val | quote }}
     {{ end }}
   fi
 fi
