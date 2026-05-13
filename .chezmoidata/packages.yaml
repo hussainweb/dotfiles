@@ -15,6 +15,7 @@ packages:
       - eza
       - fd
       - fish
+      - zsh
       - fzf
       - git
       - go-task
