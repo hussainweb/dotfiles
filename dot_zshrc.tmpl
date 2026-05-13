@@ -38,6 +38,8 @@ fpath=($HOME/.config/zsh/functions $fpath)
 autoload -Uz compinit
 compinit -i
 autoload -Uz lcommit
+autoload -Uz update
+autoload -Uz emptytrash
 
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
@@ -51,6 +53,32 @@ setopt HIST_IGNORE_SPACE
 {{ range $key, $val := .aliases -}}
 alias {{ $key }}='{{ $val }}'
 {{ end }}
+
+# Abbreviations expansion
+typeset -A abbreviations
+{{ range $key, $val := .aliases -}}
+abbreviations[{{ $key }}]='{{ $val }}'
+{{ end }}
+
+magic-abbrev-expand() {
+    local MATCH
+    # Enable extended globbing for (#m)
+    setopt localoptions extendedglob
+    # Find the last word (non-space characters)
+    LBUFFER=${LBUFFER%%(#m)[^[:space:]]#}
+    # Replace it with abbreviation if it exists
+    LBUFFER+=${abbreviations[$MATCH]:-$MATCH}
+    zle self-insert
+}
+
+no-magic-abbrev-expand() {
+    LBUFFER+=' '
+}
+
+zle -N magic-abbrev-expand
+zle -N no-magic-abbrev-expand
+bindkey " " magic-abbrev-expand
+bindkey "^ " no-magic-abbrev-expand # Ctrl+Space to insert literal space without expanding
 
 # Tool initializations
 [[ -f ${HOME}/.config/op/plugins.sh ]] && . ${HOME}/.config/op/plugins.sh

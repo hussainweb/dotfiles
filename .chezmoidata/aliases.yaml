@@ -1,4 +1,17 @@
 aliases:
+  # General
+  l: ll -a
+  ll: ls -l
+  ls: eza -gF --group-directories-first --git
+
+  # Directory Navigation
+  "..": cd ..
+  "...": cd ../..
+  "....": cd ../../..
+  ".....": cd ../../../..
+  "......": cd ../../../../..
+
+  # Git
   g: git
   gf: git fetch
   gfa: git fetch --all
@@ -14,4 +27,13 @@ aliases:
   gd: git diff
   gd.: git diff .
   gco: git checkout
+
+  # GitHub PRs
+  gpc: gh pr create -f
+  gps: gh pr status
+  gpm: gh pr merge
+
+  # Other
   bs: brew services
+  cw: cd ~/work
+  pubkey: cat ~/.ssh/id_rsa.pub | pbcopy && echo '=> Public key copied to pasteboard.'

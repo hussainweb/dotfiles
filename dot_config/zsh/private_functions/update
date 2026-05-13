@@ -1,0 +1,16 @@
+sudo softwareupdate -i -a
+
+brew update
+brew upgrade --force
+brew cleanup
+
+if command -v mas >/dev/null; then
+    mas upgrade
+fi
+
+npm install npm -g
+npm update -g
+
+if command -v composer >/dev/null; then
+    composer global update
+fi
