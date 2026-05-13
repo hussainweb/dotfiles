@@ -1,0 +1,17 @@
+aliases:
+  g: git
+  gf: git fetch
+  gfa: git fetch --all
+  gfo: git fetch origin
+  gs: git status
+  gs.: git status .
+  gc: git commit -m
+  gm: git merge FETCH_HEAD --ff-only
+  gr: git rb FETCH_HEAD
+  ga: git add
+  ga.: git add .
+  gp: git push
+  gd: git diff
+  gd.: git diff .
+  gco: git checkout
+  bs: brew services

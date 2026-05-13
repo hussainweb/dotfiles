@@ -36,6 +36,12 @@ eval "$(atuin init zsh --disable-up-arrow)"
 # Basic Zsh settings
 autoload -Uz compinit
 compinit
+
+# Aliases
+{{ range $key, $val := .aliases -}}
+alias {{ $key }}='{{ $val }}'
+{{ end }}
+
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
