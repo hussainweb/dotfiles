@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+{{ if eq .chezmoi.os "linux" -}}
+# Increase inotify limits for Docker and other file-watching tools
+# This script runs whenever the limits are updated in the template.
+# Hash: {{ "fs.inotify.max_user_instances=512\nfs.inotify.max_user_watches=524288" | sha256sum }}
+
+echo "Configuring inotify limits..."
+sudo sysctl fs.inotify.max_user_instances=512
+sudo sysctl fs.inotify.max_user_watches=524288
+
+# Make it persistent across reboots
+echo -e "fs.inotify.max_user_instances=512\nfs.inotify.max_user_watches=524288" | sudo tee /etc/sysctl.d/99-inotify.conf > /dev/null
+{{ end -}}
