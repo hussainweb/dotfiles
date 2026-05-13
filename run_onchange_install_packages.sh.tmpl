@@ -109,10 +109,18 @@ EOF
 {{ if and (eq .chezmoi.os "linux") .development (not .transient) -}}
 if command -v npm &> /dev/null; then
     echo "Installing global NPM packages..."
-    {{ range .packages.npm -}}
-    sudo npm install -g {{ . | quote }}
+    {{ range .packages.linux.npm -}}
+    npm install -g {{ . | quote }}
     {{ end -}}
 fi
+
+# Manual installation scripts for Linux
+{{ range .packages.linux.scripts -}}
+if ! command -v {{ .name }} &> /dev/null; then
+    echo "Installing {{ .name }}..."
+    {{ .command }}
+fi
+{{ end -}}
 {{ end -}}
 
 # Generic tool initialization
