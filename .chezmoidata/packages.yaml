@@ -208,7 +208,7 @@ packages:
   linux:
     npm:
       - "@anthropic-ai/claude-code"
-      - "@google/generative-ai-cli"
+      - "@google/gemini-cli"
     scripts:
       - name: entire
         command: curl -fsSL https://entire.io/install.sh | bash
