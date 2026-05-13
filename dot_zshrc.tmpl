@@ -1,0 +1,45 @@
+# Path setup
+path+=("{{ .chezmoi.homeDir }}/.composer/vendor/bin")
+{{ if .personal -}}
+path+=("/opt/homebrew/bin" "/opt/homebrew/sbin")
+{{- end }}
+{{ if .personal -}}
+path+=("/Users/hw/.antigravity/antigravity/bin")
+{{- end }}
+export PATH
+
+# Environment variables
+export GPG_TTY=$(tty)
+
+# 1Password tokens
+export HOMEBREW_GITHUB_API_TOKEN={{ onepasswordRead "op://Personal/github.com/Tokens/Homebrew" "my.1password.com" }}
+
+{{ if .personal -}}
+export JIRA_API_TOKEN={{ onepasswordRead "op://Employee/n3enjt4hnmrdq7czug6nlkzpti/credential" "axelerant.1password.com" }}
+{{- end }}
+
+# Tool initializations
+[[ -f {{ .chezmoi.homeDir }}/.asdf/asdf.sh ]] && . {{ .chezmoi.homeDir }}/.asdf/asdf.sh
+[[ -f ${HOME}/.config/op/plugins.sh ]] && . ${HOME}/.config/op/plugins.sh
+
+# OrbStack initialization
+[[ -f {{ .chezmoi.homeDir }}/.orbstack/shell/init2.zsh ]] && . {{ .chezmoi.homeDir }}/.orbstack/shell/init2.zsh 2>/dev/null || :
+
+# Starship prompt
+eval "$(starship init zsh)"
+
+{{ if .personal -}}
+# Atuin history
+eval "$(atuin init zsh --disable-up-arrow)"
+{{- end }}
+
+# Basic Zsh settings
+autoload -Uz compinit
+compinit
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
