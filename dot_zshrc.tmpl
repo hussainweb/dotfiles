@@ -25,7 +25,6 @@ export JIRA_API_TOKEN={{ onepasswordRead "op://Employee/n3enjt4hnmrdq7czug6nlkzp
 {{- end }}
 
 # Tool initializations
-[[ -f {{ .chezmoi.homeDir }}/.asdf/asdf.sh ]] && . {{ .chezmoi.homeDir }}/.asdf/asdf.sh
 [[ -f ${HOME}/.config/op/plugins.sh ]] && . ${HOME}/.config/op/plugins.sh
 
 # OrbStack initialization

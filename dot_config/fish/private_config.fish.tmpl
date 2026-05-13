@@ -21,8 +21,6 @@ set -gx HOMEBREW_GITHUB_API_TOKEN {{ onepasswordRead "op://Personal/github.com/T
 set -gx JIRA_API_TOKEN {{ onepasswordRead "op://Employee/n3enjt4hnmrdq7czug6nlkzpti/credential" "axelerant.1password.com" }}
 {{- end }}
 
-test -e {{ .chezmoi.homeDir }}/.asdf/asdf.fish ; and source {{ .chezmoi.homeDir }}/.asdf/asdf.fish
-
 test -e {$HOME}/.config/op/plugins.sh ; and source {$HOME}/.config/op/plugins.sh
 
 # Added by OrbStack: command-line tools and integration
