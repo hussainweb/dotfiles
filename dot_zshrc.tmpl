@@ -1,8 +1,17 @@
 # Path setup
+typeset -U path
+path+=("{{ .chezmoi.homeDir }}/.local/bin")
 path+=("{{ .chezmoi.homeDir }}/.composer/vendor/bin")
-{{ if .personal -}}
-path+=("/opt/homebrew/bin" "/opt/homebrew/sbin")
-{{- end }}
+
+# Set up Homebrew
+if [[ -d /opt/homebrew/bin ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -d /home/linuxbrew/.linuxbrew/bin ]]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+elif [[ -d /usr/local/bin/brew ]]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+fi
+
 {{ if .personal -}}
 path+=("/Users/hw/.antigravity/antigravity/bin")
 {{- end }}
@@ -39,8 +48,10 @@ eval "$(atuin init zsh --disable-up-arrow)"
 {{- end }}
 
 # Basic Zsh settings
+fpath=($HOME/.config/zsh/functions $fpath)
 autoload -Uz compinit
-compinit
+compinit -i
+autoload -Uz lcommit
 
 # Aliases
 {{ range $key, $val := .aliases -}}
@@ -54,30 +65,3 @@ setopt APPEND_HISTORY
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
-
-# Functions
-function lcommit() {
-    local diff=$(git diff --cached)
-    if [[ -z "$diff" ]]; then
-        echo "No staged changes found."
-        return 1
-    fi
-
-    local context="$*"
-    local system_prompt='Write a concise, conventional commit-style message describing these changes. Use the proper type: feat, fix, chore, ci, docs, refactor, style, or test.
-
-For example:
-- use chore for dependency updates.
-- use ci for changes to GitHub Actions or other pipelines.
-- and so on.
-'
-
-    if [[ -n "$context" ]]; then
-        system_prompt="$system_prompt
-Additional context: $context"
-    fi
-
-    local msg=$(echo "$diff" | llm --system "$system_prompt")
-    printf "%s" "$msg" | tee /dev/tty | pbcopy
-    printf "\n"
-}
