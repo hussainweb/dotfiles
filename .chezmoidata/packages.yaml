@@ -4,6 +4,7 @@ packages:
     - ddev/ddev
     - entireio/tap
     - ksdme/tap
+    - olets/tap
 
   # Command-line tools (Homebrew formulas)
   brews:
@@ -17,6 +18,7 @@ packages:
       - fd
       - fish
       - zsh
+      - zsh-abbr
       - zsh-autosuggestions
       - zsh-syntax-highlighting
       - fzf
