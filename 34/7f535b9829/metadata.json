@@ -1,0 +1,19 @@
+{
+  "cli_version": "0.6.1",
+  "checkpoint_id": "347f535b9829",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "dot_config/fish/private_conf.d/aliases.fish.tmpl",
+    "dot_zshrc.tmpl"
+  ],
+  "sessions": [
+    {
+      "metadata": "/34/7f535b9829/0/metadata.json",
+      "transcript": "/34/7f535b9829/0/full.jsonl",
+      "content_hash": "/34/7f535b9829/0/content_hash.txt",
+      "prompt": "/34/7f535b9829/0/prompt.txt"
+    }
+  ]
+}

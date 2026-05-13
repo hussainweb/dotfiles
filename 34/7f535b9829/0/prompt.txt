@@ -1,0 +1,34 @@
+We added new abbreviations recently (last 2-3 commits). The problem is that whenever I ssh or open a new terminal, there is a whole block of messages like this:
+
+Redefined the regular user abbreviation `..`
+Redefined the regular user abbreviation `...`
+Redefined the regular user abbreviation `....`
+Redefined the regular user abbreviation `.....`
+Redefined the regular user abbreviation `......`
+Redefined the regular user abbreviation `bs`
+Redefined the regular user abbreviation `cw`
+Redefined the regular user abbreviation `g`
+Redefined the regular user abbreviation `ga`
+Redefined the regular user abbreviation `ga.`
+Redefined the regular user abbreviation `gc`
+Redefined the regular user abbreviation `gco`
+Redefined the regular user abbreviation `gd`
+Redefined the regular user abbreviation `gd.`
+Redefined the regular user abbreviation `gf`
+Redefined the regular user abbreviation `gfa`
+Redefined the regular user abbreviation `gfo`
+Redefined the regular user abbreviation `gm`
+Redefined the regular user abbreviation `gp`
+Redefined the regular user abbreviation `gpc`
+Redefined the regular user abbreviation `gpm`
+Redefined the regular user abbreviation `gps`
+Redefined the regular user abbreviation `gr`
+Redefined the regular user abbreviation `gs`
+Redefined the regular user abbreviation `gs.`
+Redefined the regular user abbreviation `l`
+Redefined the regular user abbreviation `ll`
+Redefined the regular user abbreviation `ls`
+
+---
+
+No, the problem happens with zsh, not fish
