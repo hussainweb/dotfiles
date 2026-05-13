@@ -33,30 +33,11 @@ export LLM_MODEL=openrouter/google/gemini-2.5-flash-lite
 export JIRA_API_TOKEN={{ onepasswordRead "op://Employee/n3enjt4hnmrdq7czug6nlkzpti/credential" "axelerant.1password.com" }}
 {{- end }}
 
-# Tool initializations
-[[ -f ${HOME}/.config/op/plugins.sh ]] && . ${HOME}/.config/op/plugins.sh
-
-# OrbStack initialization
-[[ -f {{ .chezmoi.homeDir }}/.orbstack/shell/init2.zsh ]] && . {{ .chezmoi.homeDir }}/.orbstack/shell/init2.zsh 2>/dev/null || :
-
-# Starship prompt
-eval "$(starship init zsh)"
-
-{{ if .personal -}}
-# Atuin history
-eval "$(atuin init zsh --disable-up-arrow)"
-{{- end }}
-
 # Basic Zsh settings
 fpath=($HOME/.config/zsh/functions $fpath)
 autoload -Uz compinit
 compinit -i
 autoload -Uz lcommit
-
-# Aliases
-{{ range $key, $val := .aliases -}}
-alias {{ $key }}='{{ $val }}'
-{{ end }}
 
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
@@ -65,3 +46,25 @@ setopt APPEND_HISTORY
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
+
+# Aliases
+{{ range $key, $val := .aliases -}}
+alias {{ $key }}='{{ $val }}'
+{{ end }}
+
+# Tool initializations
+[[ -f ${HOME}/.config/op/plugins.sh ]] && . ${HOME}/.config/op/plugins.sh
+
+# OrbStack initialization
+[[ -f {{ .chezmoi.homeDir }}/.orbstack/shell/init2.zsh ]] && . {{ .chezmoi.homeDir }}/.orbstack/shell/init2.zsh 2>/dev/null || :
+
+# Prompts and History Tools
+if command -v starship >/dev/null; then
+    eval "$(starship init zsh)"
+fi
+
+{{ if .personal -}}
+if command -v atuin >/dev/null; then
+    eval "$(atuin init zsh --disable-up-arrow)"
+fi
+{{- end }}
