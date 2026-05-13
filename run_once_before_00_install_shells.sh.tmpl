@@ -1,35 +1,15 @@
 #!/usr/bin/env bash
 
-install_fish=false
-install_zsh=false
+# Install Homebrew if missing
+type brew &> /dev/null || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-command -v fish &> /dev/null || install_fish=true
-command -v zsh &> /dev/null || install_zsh=true
-
-if [ "$install_fish" = true ] || [ "$install_zsh" = true ]; then
-{{- if (eq .chezmoi.os "darwin") }}
-  # Install Homebrew if missing
-  type brew &> /dev/null || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-  [ "$install_fish" = true ] && brew install fish
-  [ "$install_zsh" = true ] && brew install zsh
-{{- else if (eq .chezmoi.os "linux") }}
-  {{- if or (eq .chezmoi.osRelease.id "ubuntu") (eq .chezmoi.osRelease.id "debian") }}
-  export DEBIAN_FRONTEND=noninteractive
-  {{- if (eq .chezmoi.osRelease.id "ubuntu") }}
-  [ "$install_fish" = true ] && sudo apt-add-repository -y ppa:fish-shell/release-4
-  {{- else if (eq .chezmoi.osRelease.id "debian") }}
-  if [ "$install_fish" = true ]; then
-    echo "deb http://download.opensuse.org/repositories/shells:/fish:/release:/4/Debian_{{ .chezmoi.osRelease.versionID }}/ /" | sudo tee /etc/apt/sources.list.d/shells:fish:release:4.list
-    curl -fsSL https://download.opensuse.org/repositories/shells:fish:release:4/Debian_{{ .chezmoi.osRelease.versionID }}/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/shells_fish_release_4.gpg > /dev/null
-  fi
-  {{- end }}
-  sudo apt-get update
-  [ "$install_fish" = true ] && sudo apt-get -yq install fish
-  [ "$install_zsh" = true ] && sudo apt-get -yq install zsh
-  {{- else if (eq .chezmoi.osRelease.id "fedora") }}
-  [ "$install_fish" = true ] && dnf -yq install fish
-  [ "$install_zsh" = true ] && dnf -yq install zsh
-  {{- end }}
-{{- end }}
+# Ensure Homebrew is in PATH for the rest of this script
+if [[ -d /opt/homebrew/bin ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -d /home/linuxbrew/.linuxbrew/bin ]]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
+
+# Install shells via Homebrew if missing
+command -v fish &> /dev/null || brew install fish
+command -v zsh &> /dev/null || brew install zsh

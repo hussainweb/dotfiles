@@ -17,6 +17,8 @@ packages:
       - fd
       - fish
       - zsh
+      - zsh-autosuggestions
+      - zsh-syntax-highlighting
       - fzf
       - git
       - go-task
