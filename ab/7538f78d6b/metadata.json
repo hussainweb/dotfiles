@@ -1,0 +1,24 @@
+{
+  "cli_version": "0.6.1",
+  "checkpoint_id": "ab7538f78d6b",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".chezmoidata/aliases.yaml",
+    "dot_config/fish/private_functions/private_emptytrash.fish",
+    "dot_config/fish/private_functions/private_pubkey.fish",
+    "dot_config/zsh/private_functions/emptytrash",
+    "dot_config/zsh/private_functions/pubkey",
+    "dot_zshrc.tmpl",
+    "private_dot_ssh/private_config.tmpl"
+  ],
+  "sessions": [
+    {
+      "metadata": "/ab/7538f78d6b/0/metadata.json",
+      "transcript": "/ab/7538f78d6b/0/full.jsonl",
+      "content_hash": "/ab/7538f78d6b/0/content_hash.txt",
+      "prompt": "/ab/7538f78d6b/0/prompt.txt"
+    }
+  ]
+}

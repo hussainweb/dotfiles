@@ -1,0 +1,8 @@
+I got this error message when trying to push to github from one of my Ubuntu machines:
+
+/home/hw/.ssh/config: line 6: Bad configuration option: usekeychain
+/home/hw/.ssh/config: terminating, 1 bad configuration options
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
