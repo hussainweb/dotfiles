@@ -8,12 +8,11 @@ Host *
 {{- if eq .chezmoi.os "darwin" }}
     UseKeychain yes
 {{- end }}
-{{- range (glob (joinPath .chezmoi.homeDir ".ssh/id_*")) }}
-    {{- $file := base . }}
-    {{- if or (not (hasSuffix ".pub" $file)) (not (stat (trimSuffix ".pub" .))) }}
-    IdentityFile ~/.ssh/{{ $file }}
-    {{- end }}
-{{- end }}
+    # 1Password Agent handles key discovery.
+    # If you ever stop using 1Password, uncomment the default IdentityFile lines below:
+    # IdentityFile ~/.ssh/id_rsa
+    # IdentityFile ~/.ssh/id_ed25519
+
 {{- if eq .chezmoi.os "darwin" }}
     IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 {{- else if eq .chezmoi.os "linux" }}
