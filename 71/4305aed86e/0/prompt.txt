@@ -1,0 +1,5 @@
+Is there a more native approach to do this?
+
+---
+
+Okay, let's keep it 1Password agent only. I am only worried about reverting should I stop using 1Password some day.

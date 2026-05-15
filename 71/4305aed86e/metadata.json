@@ -1,0 +1,18 @@
+{
+  "cli_version": "0.6.1",
+  "checkpoint_id": "714305aed86e",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "private_dot_ssh/private_config.tmpl"
+  ],
+  "sessions": [
+    {
+      "metadata": "/71/4305aed86e/0/metadata.json",
+      "transcript": "/71/4305aed86e/0/full.jsonl",
+      "content_hash": "/71/4305aed86e/0/content_hash.txt",
+      "prompt": "/71/4305aed86e/0/prompt.txt"
+    }
+  ]
+}
