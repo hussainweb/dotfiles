@@ -3,6 +3,9 @@ Include ~/.ssh/conf.d/*
 Include ~/.orbstack/ssh/config
 {{- end }}
 
+Host 192.168.50.*
+	ForwardAgent yes
+
 Host *
     AddKeysToAgent yes
 {{- if eq .chezmoi.os "darwin" }}
@@ -14,11 +17,10 @@ Host *
     # IdentityFile ~/.ssh/id_ed25519
 
 {{- if eq .chezmoi.os "darwin" }}
+Match host * exec "test -S ~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock"
     IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 {{- else if eq .chezmoi.os "linux" }}
+Match host * exec "test -S ~/.1password/agent.sock"
     IdentityAgent "~/.1password/agent.sock"
 {{- end }}
-
-Host 192.168.50.*
-	ForwardAgent yes
 
