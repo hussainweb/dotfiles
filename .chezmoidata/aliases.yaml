@@ -36,4 +36,3 @@ aliases:
   # Other
   bs: brew services
   cw: cd ~/work
-  pubkey: cat ~/.ssh/id_rsa.pub | pbcopy && echo '=> Public key copied to pasteboard.'

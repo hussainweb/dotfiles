@@ -1,12 +1,20 @@
 Include ~/.ssh/conf.d/*
+{{- if eq .chezmoi.os "darwin" }}
 Include ~/.orbstack/ssh/config
+{{- end }}
 
 Host *
     AddKeysToAgent yes
+{{- if eq .chezmoi.os "darwin" }}
     UseKeychain yes
+{{- end }}
     IdentityFile ~/.ssh/id_rsa
     IdentityFile ~/.ssh/id_ed25519
+{{- if eq .chezmoi.os "darwin" }}
     IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+{{- else if eq .chezmoi.os "linux" }}
+    IdentityAgent "~/.1password/agent.sock"
+{{- end }}
 
 Host 192.168.50.*
 	ForwardAgent yes

@@ -1,0 +1,26 @@
+pubkey() {
+    local file="$HOME/.ssh/id_rsa.pub"
+    if [ ! -f "$file" ]; then
+        file="$HOME/.ssh/id_ed25519.pub"
+    fi
+
+    if [ -f "$file" ]; then
+        if command -v pbcopy >/dev/null 2>&1; then
+            cat "$file" | pbcopy
+        elif command -v xclip >/dev/null 2>&1; then
+            cat "$file" | xclip -selection clipboard
+        elif command -v xsel >/dev/null 2>&1; then
+            cat "$file" | xsel --clipboard --input
+        elif command -v wl-copy >/dev/null 2>&1; then
+            cat "$file" | wl-copy
+        else
+            cat "$file"
+            echo "\n=> Could not find a clipboard tool. Key printed above."
+            return 0
+        fi
+        echo "=> Public key ($file) copied to clipboard."
+    else
+        echo "Error: No public key found at ~/.ssh/id_rsa.pub or ~/.ssh/id_ed25519.pub"
+        return 1
+    fi
+}
