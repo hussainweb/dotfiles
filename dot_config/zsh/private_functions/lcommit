@@ -19,5 +19,9 @@ Additional context: $context"
 fi
 
 local msg=$(echo "$diff" | llm --system "$system_prompt")
-printf "%s" "$msg" | tee /dev/tty | pbcopy
+if command -v pbcopy > /dev/null 2>&1; then
+    printf "%s" "$msg" | tee /dev/tty | pbcopy
+else
+    printf "%s" "$msg" | tee /dev/tty
+fi
 printf "\n"

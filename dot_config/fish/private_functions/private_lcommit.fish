@@ -23,6 +23,10 @@ Additional context: $context"
     end
 
     set -l msg (echo $diff | llm --system "$system_prompt" | string collect)
-    printf "%s" "$msg" | tee /dev/tty | pbcopy
+    if command -sq pbcopy
+        printf "%s" "$msg" | tee /dev/tty | pbcopy
+    else
+        printf "%s" "$msg" | tee /dev/tty
+    end
     printf "\n"
 end
