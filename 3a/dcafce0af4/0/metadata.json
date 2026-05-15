@@ -1,0 +1,39 @@
+{
+  "cli_version": "0.6.1",
+  "checkpoint_id": "3adcafce0af4",
+  "session_id": "608a9732-9181-447c-b94f-b33d61e25889",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-15T21:54:43.288996Z",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "private_dot_gnupg/gpg-agent.conf.tmpl"
+  ],
+  "agent": "Gemini CLI",
+  "model": "gemini-3-flash-preview",
+  "turn_id": "3705ab8f45df",
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-15T21:54:43.28519Z",
+    "agent_lines": 3,
+    "agent_removed": 3,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 3,
+    "total_lines_changed": 6,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

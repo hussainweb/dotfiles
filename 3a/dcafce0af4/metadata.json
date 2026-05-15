@@ -1,0 +1,18 @@
+{
+  "cli_version": "0.6.1",
+  "checkpoint_id": "3adcafce0af4",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "private_dot_gnupg/gpg-agent.conf.tmpl"
+  ],
+  "sessions": [
+    {
+      "metadata": "/3a/dcafce0af4/0/metadata.json",
+      "transcript": "/3a/dcafce0af4/0/full.jsonl",
+      "content_hash": "/3a/dcafce0af4/0/content_hash.txt",
+      "prompt": "/3a/dcafce0af4/0/prompt.txt"
+    }
+  ]
+}
