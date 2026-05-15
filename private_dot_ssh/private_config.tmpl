@@ -1,0 +1,13 @@
+Include ~/.ssh/conf.d/*
+Include ~/.orbstack/ssh/config
+
+Host *
+    AddKeysToAgent yes
+    UseKeychain yes
+    IdentityFile ~/.ssh/id_rsa
+    IdentityFile ~/.ssh/id_ed25519
+    IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+
+Host 192.168.50.*
+	ForwardAgent yes
+

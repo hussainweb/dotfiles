@@ -2,3 +2,4 @@ README.md
 LICENSE
 .github
 install.sh
+.ssh/conf.d
