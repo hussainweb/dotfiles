@@ -1,0 +1,11 @@
+I now have this problem:
+
+no such identity: /home/hw/.ssh/id_rsa: No such file or directory
+no such identity: /home/hw/.ssh/id_ed25519: No such file or directory
+git@github.com: Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+
+While one option is to put this on personal machines only but not all my laptops have the exact same file names. In fact, 1Password agent handles the keys in most cases anyway. Is there a way to make this generic? Maybe load the files if they exist or automatically load it from the directory?
