@@ -1,0 +1,11 @@
+I am adding my SSH config in here but I am concerned that the IP addresses will end up in a public repository. I am thinking of splitting them in a separate file and include it here. Can you help?
+
+---
+
+I am not sure what you are doing with that. I don't understand the GPG tool very well, and how will it help me encrypt? This particular signing key was created for signing Git commits.
+
+---
+
+1Password is definitely more appealing, but this section has a chance of changing frequently. I was looking for a way to include the entire block rather than specific fields. It looks like GPG encryption can get me that, but I'm already being asked for passwords, for one password at the moment, and this will be an additional thing to worry about.
+
+Might there be another way to include it? For example, read a directory or set of files if available. I can just set up the file manually on whichever machine I want those hostnames. Something like `Include ssh_conf.d/*`?
