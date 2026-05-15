@@ -1,7 +1,7 @@
-{{ if eq .chezmoi.os "darwin" -}}
+{{- if eq .chezmoi.os "darwin" -}}
 {{- if stat "/opt/homebrew/bin/pinentry-mac" -}}
 pinentry-program /opt/homebrew/bin/pinentry-mac
-{{- else -}}
+{{- else if stat "/usr/local/bin/pinentry-mac" -}}
 pinentry-program /usr/local/bin/pinentry-mac
 {{- end }}
 {{- else if eq .chezmoi.os "linux" -}}
@@ -10,7 +10,7 @@ pinentry-program /home/linuxbrew/.linuxbrew/bin/pinentry
 {{- else if stat "/usr/bin/pinentry" -}}
 pinentry-program /usr/bin/pinentry
 {{- end }}
-{{ end -}}
+{{- end }}
 
 default-cache-ttl 86400
 max-cache-ttl 86400
