@@ -1,0 +1,47 @@
+{
+  "cli_version": "0.6.1",
+  "checkpoint_id": "8d8fed66734d",
+  "session_id": "92c34e75-c0ad-4e6a-8a43-eabd99895de0",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-15T21:36:02.290807Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "dot_config/fish/private_functions/private_lcommit.fish",
+    "dot_config/zsh/private_functions/lcommit"
+  ],
+  "agent": "Gemini CLI",
+  "model": "gemini-3-flash-preview",
+  "turn_id": "bdc8d1fd55ab",
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-15T21:36:02.28875Z",
+    "agent_lines": 10,
+    "agent_removed": 2,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 10,
+    "total_lines_changed": 12,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 10,
+      "agent_lines_removed": 2
+    }
+  ]
+}

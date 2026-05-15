@@ -1,0 +1,1 @@
+Look at the lcommit function. I'll run it on machines which will not have pbcopy. Can you modify it so that bbcopy is only used if present?
