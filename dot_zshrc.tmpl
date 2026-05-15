@@ -22,6 +22,7 @@ export GPG_TTY=$(tty)
 
 # 1Password tokens
 export HOMEBREW_GITHUB_API_TOKEN={{ onepasswordRead "op://Personal/github.com/Tokens/Homebrew" "my.1password.com" }}
+export OPENROUTER_KEY={{ onepasswordRead "op://Employee/a5ay62mcrckiuleljdydlg53su/credential" "axelerant.1password.com" }}
 
 # LLM Config
 {{ if .personal -}}
