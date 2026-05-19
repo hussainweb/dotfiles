@@ -1,0 +1,3 @@
+I get this error:
+
+chezmoi: template: chezmoi.toml:2:41: executing "chezmoi.toml" at <"Is this machine temporary (e.g. a cloud or VM instance)">: expected bool; found "Is this machine temporary (e.g. a cloud or VM instance)"
