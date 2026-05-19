@@ -3,7 +3,7 @@
 # DDEV global configuration for headless machines
 # This script runs when the IP address changes or the machine configuration changes.
 
-{{ if and .development (not .transient) -}}
+{{ if or (eq .stack "container") (eq .stack "full") -}}
 # Detected IP: {{ if eq .chezmoi.os "darwin" -}}
 {{ (output "sh" "-c" "ipconfig getifaddr en0 || ipconfig getifaddr en1" | trim) }}
 {{- else -}}

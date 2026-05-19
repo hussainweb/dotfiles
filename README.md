@@ -27,11 +27,15 @@ Run the following command:
 
 The first time you run the installation (or if you run `chezmoi init` manually), you will be prompted for several configuration attributes:
 
-* **transient**: Set to `true` if this is a temporary machine (e.g., a cloud instance).
-* **personal**: Set to `true` to enable personal tools and Proxmox configurations.
-* **development**: Set to `true` to install development-related packages.
-* **email**: Your primary email address (used for git configuration, etc.).
+* **stack**: Choice of software volume:
+    * `base`: Minimal shell + modern CLI utilities (`bat`, `eza`, etc.).
+    * `container`: Base + Docker, DDEV, OpenTofu, and infra tools.
+    * `full`: Container + Full dev stack (Node, Go, PHP, Python) and AI Agents (`claude-code`, etc.).
+* **personal**: Set to `true` to enable personal identity (1Password integration, git signing, private secrets).
+* **email**: Your primary email address.
 * **proxmox_endpoint**: (If `personal` is true) The API URL for your Proxmox instance.
+
+Other attributes like **macos** and **workstation** (for hardware-specific drivers) are automatically detected based on the OS and hostname.
 
 These values are saved in `~/.config/chezmoi/chezmoi.toml` and will be used automatically for future `chezmoi apply` or `chezmoi update` commands.
 

@@ -1,7 +1,6 @@
 {{/* boolean feature tags */}}
 {{- $macos := false -}}
 {{- $rpi := false -}}
-{{- $ssh_host := true -}}
 {{- $computerName := .chezmoi.hostname -}}
 
 {{- if eq .chezmoi.os "darwin" -}}
@@ -9,38 +8,41 @@
 {{-   $computerName = output "scutil" "--get" "ComputerName" | trim -}}
 {{- end -}}
 
+{{- $is_workstation := false -}}
+{{- if eq $computerName "the-good-machine" -}}
+{{-   $is_workstation = true -}}
+{{- end -}}
+
 {{- $is_personal := false -}}
 {{- if eq $computerName "the-good-machine" "tiny-tardis" "eressea" -}}
 {{-   $is_personal = true -}}
-{{-   $ssh_host = false -}}
 {{- end -}}
 
 {{- if eq .chezmoi.hostname "grey-havens" -}}
 {{-   $rpi = true -}}
-{{-   $ssh_host = true -}}
 {{- end -}}
-
-{{- $transient := promptBool "Is this machine temporary (e.g. a cloud or VM instance)" (default false .transient) -}}
-
-{{- $default_development := true -}}
-{{- if $transient -}}
-{{-   $default_development = false -}}
-{{- end -}}
-{{- $development := promptBool "Is this machine used for development" (default $default_development .development) -}}
 
 {{- $personal := promptBool "Is this machine personal use and has additional tools" (default $is_personal .personal) -}}
+
+{{- $default_stack := "base" -}}
+{{- if $is_workstation -}}
+{{-   $default_stack = "full" -}}
+{{- end -}}
+{{- $stack := promptString "Software stack (base, container, full)" (default $default_stack .stack) -}}
 
 {{- $email := promptString "Your email address" (default "hussainweb@gmail.com" .email) -}}
 {{- $proxmox_endpoint := "" -}}
 {{- if $personal -}}
 {{-   $proxmox_endpoint = promptString "Proxmox API endpoint URL" (default "https://erebor.husain.me:8006/api2/json" .proxmox_endpoint) -}}
 {{- end -}}
+
+{{- $ssh_host := not $macos -}}
 {{- "" -}}
 
 [data]
-  transient = {{ $transient }}
   personal = {{ $personal }}
-  development = {{ $development }}
+  stack = {{ $stack | quote }}
+  workstation = {{ $is_workstation }}
   macos = {{ $macos }}
   rpi = {{ $rpi }}
   ssh_host = {{ $ssh_host }}

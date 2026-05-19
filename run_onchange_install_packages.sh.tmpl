@@ -1,134 +1,130 @@
 #!/bin/bash
 
-# Ensure Homebrew is in PATH for Linux
-{{ if eq .chezmoi.os "linux" -}}
-if ! command -v brew &> /dev/null; then
-    if [[ -d /home/linuxbrew/.linuxbrew ]]; then
-        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    fi
-fi
+# .chezmoidata/packages.yaml hash: {{ include ".chezmoidata/packages.yaml" | sha256sum }}
 
-# Fallback APT installation for essential bootstrap tools
-sudo apt update
-sudo apt install -y {{ range .packages.apt }}{{ . | quote }} {{ end }}
-{{ end -}}
-
-# Stop if brew is not available
-if ! command -v brew &> /dev/null; then
-    echo "Homebrew not found. Skipping brew bundle."
-    exit 0
-fi
-
-# Use brew bundle to install all packages
-brew bundle --file=/dev/stdin <<EOF
-{{ range .packages.taps -}}
-tap {{ . | quote }}
-{{ end -}}
-
-# Essential CLI tools (Everywhere)
-{{ range .packages.brews.minimal -}}
-brew {{ . | quote }}
-{{ end -}}
-
-# Development CLI tools (if enabled and not transient)
-{{ if and .development (not .transient) -}}
-{{ range .packages.brews.development -}}
-brew {{ . | quote }}
-{{ end -}}
-{{ end -}}
-
-# Full/Standard CLI suite (if not transient)
-{{ if not .transient -}}
-{{ range .packages.brews.standard -}}
-brew {{ . | quote }}
-{{ end -}}
-{{ end -}}
-
-# Personal CLI tools (if personal machine)
-{{ if .personal -}}
-{{ range .packages.brews.personal -}}
-brew {{ . | quote }}
-{{ end -}}
-{{ end -}}
+# Exit on error
+set -e
 
 {{ if eq .chezmoi.os "darwin" -}}
-# macOS Specific Brews
-{{ range .packages.brews.macos -}}
-brew {{ . | quote }}
-{{ end -}}
+# Install Homebrew Taps
+{{ range .packages.taps -}}
+brew tap {{ . | quote }}
+{{ end }}
 
-# CLI Casks (only on macOS)
+# Install CLI Tools (Brews)
+
+# Base Stack (Always installed)
+echo "Installing Base CLI tools..."
+{{ range .packages.brews.base -}}
+brew install {{ . | quote }}
+{{ end }}
+
+# Container Stack (if enabled)
+{{ if or (eq .stack "container") (eq .stack "full") -}}
+echo "Installing Container/Ops CLI tools..."
+{{ range .packages.brews.container -}}
+brew install {{ . | quote }}
+{{ end }}
+{{- end }}
+
+# Full Stack (if enabled)
+{{ if eq .stack "full" -}}
+echo "Installing Full/Dev CLI tools..."
+{{ range .packages.brews.full -}}
+brew install {{ . | quote }}
+{{ end }}
+{{- end }}
+
+# Standard Power-User CLI suite (Always except minimal experiments - default to base not having this)
+# If stack is base, we might skip this. Let's say container/full get this.
+{{ if or (eq .stack "container") (eq .stack "full") -}}
+echo "Installing Standard Power-User CLI tools..."
+{{ range .packages.brews.standard_cli -}}
+brew install {{ . | quote }}
+{{ end }}
+{{- end }}
+
+# macOS specific formulas
+echo "Installing macOS-specific CLI tools..."
+{{ range .packages.brews.macos -}}
+brew install {{ . | quote }}
+{{ end }}
+
+# Install GUI Apps (Casks)
+
+# CLI-only Casks
+echo "Installing CLI Casks..."
 {{ range .packages.casks.cli -}}
-cask {{ . | quote }}
-{{ end -}}
+brew install --cask {{ . | quote }}
+{{ end }}
 
 # Fonts
+echo "Installing Fonts..."
 {{ range .packages.casks.fonts -}}
-cask {{ . | quote }}
-{{ end -}}
+brew install --cask {{ . | quote }}
+{{ end }}
 
-# Essential GUI Apps (Browsers, Editor, Terminal)
-{{ if not .transient -}}
-{{ range .packages.casks.gui_minimal -}}
-cask {{ . | quote }}
-{{ end -}}
+# Essential macOS GUI Apps
+echo "Installing Essential macOS GUI apps..."
+{{ range .packages.casks.macos -}}
+brew install --cask {{ . | quote }}
+{{ end }}
 
-# Standard Power-User GUI Apps
-{{ range .packages.casks.gui_standard -}}
-cask {{ . | quote }}
-{{ end -}}
-
-# Development-specific GUI Apps
-{{ if .development -}}
-{{ range .packages.casks.gui_development -}}
-cask {{ . | quote }}
-{{ end -}}
-{{ end -}}
-
-# Personal/Work GUI Apps
+# Personal/Identity GUI Apps
 {{ if .personal -}}
-{{ range .packages.casks.gui_personal -}}
-cask {{ . | quote }}
-{{ end -}}
-{{ range .packages.casks.large_apps -}}
-cask {{ . | quote }}
-{{ end -}}
-
-# Hardware-specific Casks
-{{- if (index .packages.casks.hardware .computerName) }}
-{{- range (index .packages.casks.hardware .computerName) }}
-cask {{ . | quote }}
+echo "Installing Personal/Identity GUI apps..."
+{{ range .packages.casks.personal -}}
+brew install --cask {{ . | quote }}
+{{ end }}
 {{- end }}
-{{- end }}
-{{ end -}}
-{{ end -}}
-{{ end -}}
-EOF
 
-# Install NPM tools on Linux development machines (Mac uses Casks)
-{{ if and (eq .chezmoi.os "linux") .development (not .transient) -}}
+# Developer-specific GUI Apps
+{{ if eq .stack "full" -}}
+echo "Installing Developer GUI apps..."
+{{ range .packages.casks.development -}}
+brew install --cask {{ . | quote }}
+{{ end }}
+{{- end }}
+
+# Workstation/Hardware GUI Apps
+{{ if .workstation -}}
+echo "Installing Workstation/Hardware GUI apps..."
+{{ range .packages.casks.workstation -}}
+brew install --cask {{ . | quote }}
+{{ end }}
+{{- end }}
+
+{{- else if eq .chezmoi.os "linux" -}}
+
+# Install APT packages (on Debian/Ubuntu systems)
+if command -v apt-get &> /dev/null; then
+    echo "Updating and installing APT packages..."
+    # sudo apt-get update # Removed for speed, assuming system is up to date
+    sudo apt-get install -y {{ range .packages.apt }}{{ . }} {{ end }}
+fi
+
+# Install NPM tools on Linux full stack
+{{ if eq .stack "full" -}}
 if command -v npm &> /dev/null; then
-    echo "Installing global NPM packages..."
+    echo "Installing NPM global packages..."
     {{ range .packages.linux.npm -}}
-    npm install -g {{ . | quote }}
-    {{ end -}}
+    sudo npm install -g {{ . | quote }}
+    {{ end }}
 fi
+{{- end }}
 
-# Manual installation scripts for Linux
+# Run custom Linux install scripts
 {{ range .packages.linux.scripts -}}
-if ! command -v {{ .name }} &> /dev/null; then
-    echo "Installing {{ .name }}..."
-    {{ .command }}
-fi
-{{ end -}}
-{{ end -}}
+echo "Running custom install script: {{ .name }}..."
+{{ .command }}
+{{ end }}
 
-# Generic tool initialization
-{{ range $tool, $cmds := .packages.init -}}
-if command -v {{ $tool }} &> /dev/null; then
-    {{ range $cmds -}}
-    echo "Initializing {{ $tool }}: {{ . }}"
-    {{ . }}
-    {{ end -}}
+{{- end }}
+
+# Custom Tool Initializations
+if command -v rtk &> /dev/null; then
+    echo "Initializing RTK..."
+    {{ range .packages.init.rtk -}}
+    {{ . }} || true
+    {{ end }}
 fi
-{{ end -}}

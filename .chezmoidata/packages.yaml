@@ -8,79 +8,88 @@ packages:
 
   # Command-line tools (Homebrew formulas)
   brews:
-    # Essential tools for any system (headless, transient, or laptop)
-    minimal:
+    # Essential tools for any system (base layer)
+    # Includes core shell utilities and modern CLI replacements
+    base:
       - atuin
       - bat
+      - bottom
       - btop
       - curl
+      - difftastic
+      - duf
+      - dust
       - eza
       - fd
       - fish
-      - zsh
-      - zsh-abbr
-      - zsh-autosuggestions
-      - zsh-syntax-highlighting
       - fzf
       - git
+      - git-delta
+      - git-lfs
       - go-task
       - helix
+      - htop
       - jq
+      - make
       - mise
       - ripgrep
       - starship
       - tree
       - wget
+      - xh
       - zellij
+      - zsh
+      - zsh-abbr
+      - zsh-autosuggestions
+      - zsh-syntax-highlighting
 
-    # Development-specific tools (languages, AI CLI, dev workflows)
-    development:
+    # Infrastructure and Container-oriented tools
+    container:
       - awscli
       - ddev
+      - helm
+      - kubernetes-cli
+      - opentofu
+
+    # Full development stack including languages and AI agents
+    full:
       - direnv
+      - ffmpeg
       - gh
       - go
       - hub
       - hyperfine
+      - jira-cli
       - lazygit
       - llm
       - node
       - opencode
-      - opentofu
       - php
       - python3
       - repomix
       - rtk
       - uv
+      - yt-dlp
 
-    # Full suite of modern CLI tools for long-lived machines
-    standard:
-      - bottom
+    # Extra CLI tools for non-transient machines (standard power-user suite)
+    standard_cli:
       - broot
       - cheat
       - coder
       - curlie
-      - difftastic
       - doggo
-      - duf
-      - dust
       - dyff
       - fx
-      - git-delta
       - git-extras
-      - git-lfs
       - git-quick-stats
       - glow
       - gnupg
       - gping
       - hexyl
-      - htop
       - httpie
-      - jira-cli
       - lla
       - lsd
       - lstr
-      - make
       - mkcert
       - mosh
       - pinentry
@@ -92,18 +101,8 @@ packages:
       - the_silver_searcher
       - ut
       - watch
-      - xh
       - xxh
       - xz
-
-    # Tools for personal/main machines only
-    personal:
-      - ffmpeg
-      - handbrake
-      - helm
-      - kubernetes-cli
-      - ollama
-      - yt-dlp
 
     # macOS specific formulas
     macos:
@@ -118,7 +117,7 @@ packages:
       - claude-code
       - entire
 
-    # Fonts
+    # Fonts (Installed if macos=true)
     fonts:
       - font-0xproto-nerd-font
       - font-cascadia-code
@@ -137,8 +136,8 @@ packages:
       - font-jetbrains-mono-nerd-font
       - font-monaspice-nerd-font
 
-    # Essential GUI (Browsers, Editor, Terminal, Passwords)
-    gui_minimal:
+    # Essential GUI (Installed if macos=true)
+    macos:
       - 1password
       - choosy
       - comet
@@ -146,24 +145,36 @@ packages:
       - google-chrome
       - sublime-text
 
-    # Power-user tools (Standard macOS setup)
-    gui_standard:
+    # Personal GUI apps (Installed if personal=true)
+    personal:
+      - claude
       - dayflow
+      - disk-inventory-x
+      - divvy
+      - handbrake-app
       - karabiner-elements
+      - logseq
       - loop
       - maccy
       - macshot
       - mounty
+      - notion
+      - notion-calendar
+      - obsidian
       - raycast
       - rectangle
       - shortcat
+      - slack
       - sloth
       - stats
       - tailscale-app
+      - the-unarchiver
+      - vlc
       - wispr-flow
+      - zoom
 
-    # Developer-specific GUI tools
-    gui_development:
+    # Developer-specific GUI tools (Installed if stack=full)
+    development:
       - gitup-app
       - imageoptim
       - orbstack
@@ -171,35 +182,16 @@ packages:
       - warp
       - zed
 
-    # Apps for personal/main machines (Multimedia, Social, Notes)
-    gui_personal:
-      - claude
-      - disk-inventory-x
-      - divvy
-      - handbrake-app
-      - logseq
-      - notion
-      - notion-calendar
-      - obsidian
-      - slack
-      - the-unarchiver
-      - vlc
-      - zoom
-
-    # Large applications
-    large_apps:
+    # Large applications and hardware drivers (Installed if workstation=true)
+    workstation:
       - antigravity
+      - elgato-control-center
+      - elgato-stream-deck
       - gnucash
+      - logi-options-plus
       - microsoft-office
       - microsoft-teams
       - whatsapp
-
-    # Hardware/Machine specific
-    hardware:
-      the-good-machine:
-        - elgato-control-center
-        - elgato-stream-deck
-        - logi-options-plus
 
   # APT packages (fallback or bootstrap for Linux)
   apt:

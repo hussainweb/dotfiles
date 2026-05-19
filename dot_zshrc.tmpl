@@ -20,9 +20,10 @@ export PATH
 # Environment variables
 export GPG_TTY=$(tty)
 
-# 1Password tokens
+{{ if .personal -}}
 export HOMEBREW_GITHUB_API_TOKEN={{ onepasswordRead "op://Personal/github.com/Tokens/Homebrew" "my.1password.com" }}
 export OPENROUTER_KEY={{ onepasswordRead "op://Employee/a5ay62mcrckiuleljdydlg53su/credential" "axelerant.1password.com" }}
+{{- end }}
 
 # LLM Config
 {{ if .personal -}}
@@ -35,8 +36,10 @@ export PROXMOX_VE_API_TOKEN=terraform@pve!coder-aule={{ onepasswordRead "op://Pr
 {{- end }}
 export LLM_MODEL=openrouter/google/gemini-2.5-flash-lite
 
-{{ if or .personal .development -}}
+{{ if or (eq .stack "full") (eq .stack "container") -}}
+{{   if .personal -}}
 export JIRA_API_TOKEN={{ onepasswordRead "op://Employee/n3enjt4hnmrdq7czug6nlkzpti/credential" "axelerant.1password.com" }}
+{{-   end }}
 {{- end }}
 
 # Basic Zsh settings

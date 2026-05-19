@@ -1,3 +1,4 @@
+{{ if .personal -}}
 [DEFAULT]
 default-user = mississaugajamaat
 
@@ -6,3 +7,4 @@ token = {{ onepasswordRead "op://Personal/Linode MississaugaJamaat/Access Token/
 region = ca-central
 type = g6-nanode-1
 image = linode/ubuntu24.04
+{{- end }}
