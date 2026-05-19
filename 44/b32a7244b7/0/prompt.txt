@@ -1,0 +1,13 @@
+Is the JIRA API token environment set for all machines?
+
+---
+
+Let's set it on development machines as well.
+
+---
+
+I use these dotfiles on more machines now. I want to establish a workflow, as straightforward as possible, to set the attributes I want to set before I run the first chezmoi apply as part of installation (I hope those steps are documented in the README.md; please check this folder and @~/work/personal/proxmox-utils).
+
+---
+
+Is promptBoolOnce something that's supported by chezmoi? Find the documentation.
