@@ -22,18 +22,18 @@
 {{-   $rpi = true -}}
 {{- end -}}
 
-{{- $personal := promptBool "Is this machine personal use and has additional tools" (default $is_personal .personal) -}}
+{{- $personal := promptBoolOnce . "personal" "Is this machine personal use and has additional tools" $is_personal -}}
 
 {{- $default_stack := "base" -}}
 {{- if $is_workstation -}}
 {{-   $default_stack = "full" -}}
 {{- end -}}
-{{- $stack := promptString "Software stack (base, container, full)" (default $default_stack .stack) -}}
+{{- $stack := promptStringOnce . "stack" "Software stack (base, container, full)" $default_stack -}}
 
-{{- $email := promptString "Your email address" (default "hussainweb@gmail.com" .email) -}}
+{{- $email := promptStringOnce . "email" "Your email address" "hussainweb@gmail.com" -}}
 {{- $proxmox_endpoint := "" -}}
 {{- if $personal -}}
-{{-   $proxmox_endpoint = promptString "Proxmox API endpoint URL" (default "https://erebor.husain.me:8006/api2/json" .proxmox_endpoint) -}}
+{{-   $proxmox_endpoint = promptStringOnce . "proxmox_endpoint" "Proxmox API endpoint URL" "https://erebor.husain.me:8006/api2/json" -}}
 {{- end -}}
 
 {{- $ssh_host := not $macos -}}
