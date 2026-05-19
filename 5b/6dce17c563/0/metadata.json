@@ -1,0 +1,49 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "5b6dce17c563",
+  "session_id": "dc89f02d-b718-4be9-b75d-dcb89a027725",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-19T12:53:05.291271Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".chezmoi.toml.tmpl",
+    "README.md",
+    "dot_config/fish/private_conf.d/proxmox.fish.tmpl",
+    "dot_zshrc.tmpl"
+  ],
+  "agent": "Gemini CLI",
+  "model": "gemini-3-flash-preview",
+  "turn_id": "6e9b8cbe602e",
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-19T12:53:05.286284Z",
+    "agent_lines": 30,
+    "agent_removed": 7,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 30,
+    "total_lines_changed": 37,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 30,
+      "agent_lines_removed": 7
+    }
+  ]
+}
