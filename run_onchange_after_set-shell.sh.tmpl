@@ -3,7 +3,7 @@
 # .zshrc hash: {{ include "dot_zshrc.tmpl" | sha256sum }}
 # config.fish hash: {{ include "dot_config/fish/private_config.fish.tmpl" | sha256sum }}
 
-{{ if .personal -}}
+{{ if and .personal (not .ssh_host) -}}
 WANTED_SHELL=$(command -v fish)
 {{- else -}}
 WANTED_SHELL=$(command -v zsh)

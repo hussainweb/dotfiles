@@ -3,9 +3,11 @@
 {{- $rpi := false -}}
 {{- $computerName := .chezmoi.hostname -}}
 
+{{- $ssh_host := true -}}
 {{- if eq .chezmoi.os "darwin" -}}
 {{-   $macos = true -}}
 {{-   $computerName = output "scutil" "--get" "ComputerName" | trim -}}
+{{-   $ssh_host = false -}}
 {{- end -}}
 
 {{- $is_workstation := false -}}
@@ -16,10 +18,12 @@
 {{- $is_personal := false -}}
 {{- if eq $computerName "the-good-machine" "tiny-tardis" "eressea" -}}
 {{-   $is_personal = true -}}
+{{-   $ssh_host = false -}}
 {{- end -}}
 
 {{- if eq .chezmoi.hostname "grey-havens" -}}
 {{-   $rpi = true -}}
+{{-   $ssh_host = true -}}
 {{- end -}}
 
 {{- $personal := promptBoolOnce . "personal" "Is this machine personal use and has additional tools" $is_personal -}}
@@ -35,8 +39,6 @@
 {{- if $personal -}}
 {{-   $proxmox_endpoint = promptStringOnce . "proxmox_endpoint" "Proxmox API endpoint URL" "https://erebor.husain.me:8006/api2/json" -}}
 {{- end -}}
-
-{{- $ssh_host := not $macos -}}
 {{- "" -}}
 
 [data]
