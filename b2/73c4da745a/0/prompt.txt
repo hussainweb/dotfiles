@@ -1,0 +1,47 @@
+No, let's simplify to remove all this confusing logic. I want to rethink all of these attributes to make sense.
+
+These are the actual scenarios I care about:
+- Running on a machine I interact with (personal kind of implies this right now). These are usually macOS devices and the hostname is set. I want these to get most of my tools.
+- I have servers in homelab that are long running and rarely used for development. These might run VMs that I use for development though. I do have hostnames for these as well but may not used in the profile right now.
+- I might create VMs or LXCs in my Proxmox server. They may be a quick experiment and I only need my minimal toolset by default but I might need more depending on what I am testing. Or they might be a long running machine I create for a longer project and I might install a lot more tools on it, even things like AI agents, etc.
+
+How would you suggest I go about creating a classification of all the attributes?
+
+---
+
+This is a good start. Here are a few changes or conditions:
+
+- Some of the modern CLI tooling is really a part of minimal for me. I will need that on all devices. These are small CLI utilities such as bat, eza, etc.
+- One of my MacOS devices, identified by host name, identifies my full workstation. This is connected to my desktop monitor and connects to a lot more hardware, and that is why it needs utilities such as Elgato and Logitech. Those are not needed in other Mac OS devices.
+- What if I want a machine for Qwiklab but also want to install more development tools, especially things like Docker or DDEV? Heavier development tools in general?
+- On the other hand, I may want a machine to run things, so I typically won't need a development stack, which might also include things like Gemini CLI and Claude Code. I might need things like Docker to be able to run containers on that.
+
+---
+
+In this, is macos a substitute for what used to be 'personal'?
+
+---
+
+What about my other laptops - eressea, for example? What would be the attributes there?
+
+---
+
+What gaps exist in the way packages are defined or even in the template logic that does not fit in any of the classifications above?
+
+---
+
+1. Ignore Raspberry Pi for now.
+2. Let the tools be installed but not configured.
+3. How is ssh_host used? Is it necessary?
+4. Simplify these categories as you describe
+5. Sounds good
+6. The scenario that a machine is macOS but personal=false simply doesn
+
+---
+
+1. Ignore Raspberry Pi for now.
+2. Let the tools be installed but not configured.\
+3. How is ssh_host used? Is it necessary?
+4. Simplify these categories as you describe
+5. Sounds good
+6. The scenario that a machine is macOS but personal=false simply doesn't exist for me. In any case, the install script installs the CLI, I believe.
