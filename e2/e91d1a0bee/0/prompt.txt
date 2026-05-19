@@ -1,0 +1,1 @@
+Did you break zsh shell selection for other servers? VMs I ssh into will use zsh

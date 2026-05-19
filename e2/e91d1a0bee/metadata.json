@@ -1,0 +1,19 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "e2e91d1a0bee",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".chezmoi.toml.tmpl",
+    "run_onchange_after_set-shell.sh.tmpl"
+  ],
+  "sessions": [
+    {
+      "metadata": "/e2/e91d1a0bee/0/metadata.json",
+      "transcript": "/e2/e91d1a0bee/0/full.jsonl",
+      "content_hash": "/e2/e91d1a0bee/0/content_hash.txt",
+      "prompt": "/e2/e91d1a0bee/0/prompt.txt"
+    }
+  ]
+}
