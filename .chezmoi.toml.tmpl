@@ -1,11 +1,16 @@
 {{/* boolean feature tags */}}
-{{- $transient := false -}}{{/* true if this machine is temporary, e.g. a cloud or VM instance */}}
-{{- $personal := false -}}{{/* true if this machine is personal use and has additional tools */}}
-{{- $development := true -}}{{/* true if this machine is used for development */}}
+{{- $transient := promptBoolOnce . "transient" "Is this machine temporary (e.g. a cloud or VM instance)" false -}}
+{{- $personal := promptBoolOnce . "personal" "Is this machine personal use and has additional tools" false -}}
+{{- $development := promptBoolOnce . "development" "Is this machine used for development" true -}}
 {{- $macos := false -}}
 {{- $rpi := false -}}
 {{- $ssh_host := true -}}
 {{- $computerName := .chezmoi.hostname -}}
+{{- $email := promptStringOnce . "email" "Your email address" "hussainweb@gmail.com" -}}
+{{- $proxmox_endpoint := "" -}}
+{{- if $personal -}}
+{{-   $proxmox_endpoint = promptStringOnce . "proxmox_endpoint" "Proxmox API endpoint URL" "https://erebor.husain.me:8006/api2/json" -}}
+{{- end -}}
 {{- "" -}}
 
 {{- if eq .chezmoi.os "darwin" -}}
@@ -34,8 +39,9 @@
   macos = {{ $macos }}
   rpi = {{ $rpi }}
   ssh_host = {{ $ssh_host }}
-  email = "hussainweb@gmail.com"
-  computerName = "{{ $computerName }}"
+  email = {{ $email | quote }}
+  computerName = {{ $computerName | quote }}
+  proxmox_endpoint = {{ $proxmox_endpoint | quote }}
 
 [hooks.read-source-state.pre]
     command = ".local/share/chezmoi/.install-1password.sh"

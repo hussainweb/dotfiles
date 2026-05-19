@@ -1,8 +1,8 @@
 {{- if .personal -}}
-set -Ux PM_API_URL https://erebor.husain.me:8006/api2/json
+set -Ux PM_API_URL {{ .proxmox_endpoint }}
 set -Ux PM_API_TOKEN_ID terraform@pve!coder-aule
 set -Ux PM_API_TOKEN_SECRET {{ onepasswordRead "op://Private/wqeyffrbuhswc3kfd7vjb6q2qa/Tokens/coder-aule" "my.1password.com" }}
 
-set -Ux PROXMOX_VE_ENDPOINT https://erebor.husain.me:8006/api2/json
+set -Ux PROXMOX_VE_ENDPOINT {{ .proxmox_endpoint }}
 set -Ux PROXMOX_VE_API_TOKEN terraform@pve!coder-aule={{ onepasswordRead "op://Private/wqeyffrbuhswc3kfd7vjb6q2qa/Tokens/coder-aule" "my.1password.com" }}
 {{- end }}

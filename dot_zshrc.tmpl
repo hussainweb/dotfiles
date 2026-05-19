@@ -27,6 +27,11 @@ export OPENROUTER_KEY={{ onepasswordRead "op://Employee/a5ay62mcrckiuleljdydlg53
 # LLM Config
 {{ if .personal -}}
 export OLLAMA_HOST=192.168.50.11
+export PM_API_URL={{ .proxmox_endpoint }}
+export PM_API_TOKEN_ID=terraform@pve!coder-aule
+export PM_API_TOKEN_SECRET={{ onepasswordRead "op://Private/wqeyffrbuhswc3kfd7vjb6q2qa/Tokens/coder-aule" "my.1password.com" }}
+export PROXMOX_VE_ENDPOINT={{ .proxmox_endpoint }}
+export PROXMOX_VE_API_TOKEN=terraform@pve!coder-aule={{ onepasswordRead "op://Private/wqeyffrbuhswc3kfd7vjb6q2qa/Tokens/coder-aule" "my.1password.com" }}
 {{- end }}
 export LLM_MODEL=openrouter/google/gemini-2.5-flash-lite
 

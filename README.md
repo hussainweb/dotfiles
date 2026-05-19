@@ -23,6 +23,18 @@ Run the following command:
 ./install.sh
 ```
 
+### Configuration Prompts
+
+The first time you run the installation (or if you run `chezmoi init` manually), you will be prompted for several configuration attributes:
+
+* **transient**: Set to `true` if this is a temporary machine (e.g., a cloud instance).
+* **personal**: Set to `true` to enable personal tools and Proxmox configurations.
+* **development**: Set to `true` to install development-related packages.
+* **email**: Your primary email address (used for git configuration, etc.).
+* **proxmox_endpoint**: (If `personal` is true) The API URL for your Proxmox instance.
+
+These values are saved in `~/.config/chezmoi/chezmoi.toml` and will be used automatically for future `chezmoi apply` or `chezmoi update` commands.
+
 Alternatively, if you are setting up a new machine and want to run it directly via curl using chezmoi's one-liner (assuming you push this to a repository):
 
 ```bash
