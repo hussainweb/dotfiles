@@ -1,0 +1,3 @@
+Why would you pick the shell selection based on personal attribute?
+
+Also, I'd like to have a selection between container and full. For example, on my development machines, I have no need for tools such as ffmpeg or yt-dlp.
