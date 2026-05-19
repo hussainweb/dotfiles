@@ -5,110 +5,133 @@
 # Exit on error
 set -e
 
-{{ if eq .chezmoi.os "darwin" -}}
-# Install Homebrew Taps
-{{ range .packages.taps -}}
-brew tap {{ . | quote }}
-{{ end }}
+# Ensure Homebrew is in PATH
+if ! command -v brew &> /dev/null; then
+    if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    elif [ -x /opt/homebrew/bin/brew ]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif [ -x /usr/local/bin/brew ]; then
+        eval "$(/usr/local/bin/brew shellenv)"
+    fi
+fi
 
-# Install CLI Tools (Brews)
-
-# Base Stack (Always installed)
-echo "Installing Base CLI tools..."
-{{ range .packages.brews.base -}}
-brew install {{ . | quote }}
-{{ end }}
-
-# Container Stack (if enabled)
-{{ if or (eq .stack "container") (eq .stack "full") -}}
-echo "Installing Container/Ops CLI tools..."
-{{ range .packages.brews.container -}}
-brew install {{ . | quote }}
-{{ end }}
-{{- end }}
-
-# Full Stack (if enabled)
-{{ if eq .stack "full" -}}
-echo "Installing Full/Dev CLI tools..."
-{{ range .packages.brews.full -}}
-brew install {{ . | quote }}
-{{ end }}
-{{- end }}
-
-# Standard Power-User CLI suite (Always except minimal experiments - default to base not having this)
-# If stack is base, we might skip this. Let's say container/full get this.
-{{ if or (eq .stack "container") (eq .stack "full") -}}
-echo "Installing Standard Power-User CLI tools..."
-{{ range .packages.brews.standard_cli -}}
-brew install {{ . | quote }}
-{{ end }}
-{{- end }}
-
-# macOS specific formulas
-echo "Installing macOS-specific CLI tools..."
-{{ range .packages.brews.macos -}}
-brew install {{ . | quote }}
-{{ end }}
-
-# Install GUI Apps (Casks)
-
-# CLI-only Casks
-echo "Installing CLI Casks..."
-{{ range .packages.casks.cli -}}
-brew install --cask {{ . | quote }}
-{{ end }}
-
-# Fonts
-echo "Installing Fonts..."
-{{ range .packages.casks.fonts -}}
-brew install --cask {{ . | quote }}
-{{ end }}
-
-# Essential macOS GUI Apps
-echo "Installing Essential macOS GUI apps..."
-{{ range .packages.casks.macos -}}
-brew install --cask {{ . | quote }}
-{{ end }}
-
-# Personal/Identity GUI Apps
-{{ if .personal -}}
-echo "Installing Personal/Identity GUI apps..."
-{{ range .packages.casks.personal -}}
-brew install --cask {{ . | quote }}
-{{ end }}
-{{- end }}
-
-# Developer-specific GUI Apps
-{{ if eq .stack "full" -}}
-echo "Installing Developer GUI apps..."
-{{ range .packages.casks.development -}}
-brew install --cask {{ . | quote }}
-{{ end }}
-{{- end }}
-
-# Workstation/Hardware GUI Apps
-{{ if .workstation -}}
-echo "Installing Workstation/Hardware GUI apps..."
-{{ range .packages.casks.workstation -}}
-brew install --cask {{ . | quote }}
-{{ end }}
-{{- end }}
-
-{{- else if eq .chezmoi.os "linux" -}}
-
-# Install APT packages (on Debian/Ubuntu systems)
+# --- Linux APT phase ---
+{{ if eq .chezmoi.os "linux" -}}
 if command -v apt-get &> /dev/null; then
     echo "Updating and installing APT packages..."
     # sudo apt-get update # Removed for speed, assuming system is up to date
     sudo apt-get install -y {{ range .packages.apt }}{{ . }} {{ end }}
 fi
+{{- end }}
+
+# --- Homebrew phase (Both macOS and Linux) ---
+if command -v brew &> /dev/null; then
+    # Install Homebrew Taps
+    echo "Updating Homebrew Taps..."
+    {{ range .packages.taps -}}
+    brew tap {{ . | quote }}
+    {{ end }}
+
+    # Install CLI Tools (Brews)
+
+    # Base Stack (Always installed)
+    echo "Installing Base CLI tools..."
+    {{ range .packages.brews.base -}}
+    brew install {{ . | quote }}
+    {{ end }}
+
+    # Container Stack (if enabled)
+    {{ if or (eq .stack "container") (eq .stack "full") -}}
+    echo "Installing Container/Ops CLI tools..."
+    {{ range .packages.brews.container -}}
+    brew install {{ . | quote }}
+    {{ end }}
+    {{- end }}
+
+    # Full Stack (if enabled)
+    {{ if eq .stack "full" -}}
+    echo "Installing Full/Dev CLI tools..."
+    {{ range .packages.brews.full -}}
+    brew install {{ . | quote }}
+    {{ end }}
+    {{- end }}
+
+    # Standard Power-User CLI suite
+    {{ if or (eq .stack "container") (eq .stack "full") -}}
+    echo "Installing Standard Power-User CLI tools..."
+    {{ range .packages.brews.standard_cli -}}
+    brew install {{ . | quote }}
+    {{ end }}
+    {{- end }}
+
+    # macOS specific formulas
+    {{ if eq .chezmoi.os "darwin" -}}
+    echo "Installing macOS-specific CLI tools..."
+    {{ range .packages.brews.macos -}}
+    brew install {{ . | quote }}
+    {{ end }}
+
+    # Install GUI Apps (Casks)
+
+    # CLI-only Casks
+    echo "Installing CLI Casks..."
+    {{ range .packages.casks.cli -}}
+    brew install --cask {{ . | quote }}
+    {{ end }}
+
+    # Fonts
+    echo "Installing Fonts..."
+    {{ range .packages.casks.fonts -}}
+    brew install --cask {{ . | quote }}
+    {{ end }}
+
+    # Essential macOS GUI Apps
+    echo "Installing Essential macOS GUI apps..."
+    {{ range .packages.casks.macos -}}
+    brew install --cask {{ . | quote }}
+    {{ end }}
+
+    # Personal/Identity GUI Apps
+    {{ if .personal -}}
+    echo "Installing Personal/Identity GUI apps..."
+    {{ range .packages.casks.personal -}}
+    brew install --cask {{ . | quote }}
+    {{ end }}
+    {{- end }}
+
+    # Developer-specific GUI Apps
+    {{ if eq .stack "full" -}}
+    echo "Installing Developer GUI apps..."
+    {{ range .packages.casks.development -}}
+    brew install --cask {{ . | quote }}
+    {{ end }}
+    {{- end }}
+
+    # Workstation/Hardware GUI Apps
+    {{ if .workstation -}}
+    echo "Installing Workstation/Hardware GUI apps..."
+    {{ range .packages.casks.workstation -}}
+    brew install --cask {{ . | quote }}
+    {{ end }}
+    {{- end }}
+    {{- end }}
+fi
+
+# --- Linux-specific non-brew phase ---
+{{ if eq .chezmoi.os "linux" -}}
 
 # Install NPM tools on Linux full stack
 {{ if eq .stack "full" -}}
 if command -v npm &> /dev/null; then
     echo "Installing NPM global packages..."
     {{ range .packages.linux.npm -}}
-    sudo npm install -g {{ . | quote }}
+    # Check if we need sudo for global npm install
+    if [ -w "$(npm config get prefix)/lib/node_modules" ] 2>/dev/null || [ -w "$(npm config get prefix)/bin" ] 2>/dev/null; then
+        npm install -g {{ . | quote }}
+    else
+        sudo npm install -g {{ . | quote }}
+    fi
     {{ end }}
 fi
 {{- end }}
