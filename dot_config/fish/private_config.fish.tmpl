@@ -18,7 +18,7 @@ set -x fish_emoji_width 2
 set -gx HOMEBREW_GITHUB_API_TOKEN {{ onepasswordRead "op://Personal/github.com/Tokens/Homebrew" "my.1password.com" }}
 set -gx OPENROUTER_KEY {{ onepasswordRead "op://Employee/a5ay62mcrckiuleljdydlg53su/credential" "axelerant.1password.com" }}
 
-{{ if .personal -}}
+{{ if or .personal .development -}}
 set -gx JIRA_API_TOKEN {{ onepasswordRead "op://Employee/n3enjt4hnmrdq7czug6nlkzpti/credential" "axelerant.1password.com" }}
 {{- end }}
 
