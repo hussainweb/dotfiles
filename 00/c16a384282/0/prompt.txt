@@ -1,0 +1,1 @@
+This gets complex. Let's just have full mean everything. And a new stack called "development" is focused on development tasks.

@@ -1,0 +1,41 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "00c16a384282",
+  "session_id": "ce3e06d1-690d-4fa5-98eb-228c2f1cf219",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-19T21:54:31.388625Z",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".chezmoi.toml.tmpl",
+    ".chezmoidata/packages.yaml",
+    "run_onchange_install_packages.sh.tmpl"
+  ],
+  "agent": "Gemini CLI",
+  "model": "gemini-3-flash-preview",
+  "turn_id": "4f825a315eed",
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-19T21:54:31.383448Z",
+    "agent_lines": 14,
+    "agent_removed": 14,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 14,
+    "total_lines_changed": 28,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
