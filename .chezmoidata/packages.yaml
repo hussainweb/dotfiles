@@ -54,7 +54,6 @@ packages:
     # Full development stack including languages and AI agents
     full:
       - direnv
-      - ffmpeg
       - gh
       - go
       - hub
@@ -69,6 +68,10 @@ packages:
       - repomix
       - rtk
       - uv
+
+    # Media and heavy processing tools
+    media:
+      - ffmpeg
       - yt-dlp
 
     # Extra CLI tools for non-transient machines (standard power-user suite)

@@ -57,6 +57,14 @@ if command -v brew &> /dev/null; then
     {{ end }}
     {{- end }}
 
+    # Media Stack (if enabled)
+    {{ if .media -}}
+    echo "Installing Media tools..."
+    {{ range .packages.brews.media -}}
+    brew install {{ . | quote }}
+    {{ end }}
+    {{- end }}
+
     # Standard Power-User CLI suite
     {{ if or (eq .stack "container") (eq .stack "full") -}}
     echo "Installing Standard Power-User CLI tools..."

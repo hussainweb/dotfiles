@@ -33,6 +33,10 @@
 {{-   $default_stack = "full" -}}
 {{- end -}}
 {{- $stack := promptStringOnce . "stack" "Software stack (base, container, full)" $default_stack -}}
+{{- $media := false -}}
+{{- if eq $stack "full" -}}
+{{-   $media = promptBoolOnce . "media" "Install heavy media tools (ffmpeg, yt-dlp)" false -}}
+{{- end -}}
 
 {{- $email := promptStringOnce . "email" "Your email address" "hussainweb@gmail.com" -}}
 {{- $proxmox_endpoint := "" -}}
@@ -44,6 +48,7 @@
 [data]
   personal = {{ $personal }}
   stack = {{ $stack | quote }}
+  media = {{ $media }}
   workstation = {{ $is_workstation }}
   macos = {{ $macos }}
   rpi = {{ $rpi }}
