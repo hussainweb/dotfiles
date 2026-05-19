@@ -1,0 +1,1 @@
+The values don't appear to persist after I run chezmoi init. Can you find out why? I press 't' or '1' for development but it continues to show false when I run `chezmoi data`.
