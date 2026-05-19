@@ -1,0 +1,9 @@
+I ran chezmoi update on one of my machines and it said I should run chezmoi init again as the template has changed. I did that but in none of the steps it asked me for these properties.
+
+---
+
+I ran this on another machine (ssh to hw@192.168.50.159 if you want to check).
+
+---
+
+I don't want for it to prompt every time I run chezmoi update. Getting the prompt for chezmoi init is fine.
