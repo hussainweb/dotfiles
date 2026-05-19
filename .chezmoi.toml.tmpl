@@ -32,10 +32,10 @@
 {{- if $is_workstation -}}
 {{-   $default_stack = "full" -}}
 {{- end -}}
-{{- $stack := promptStringOnce . "stack" "Software stack (base, container, full)" $default_stack -}}
+{{- $stack := promptStringOnce . "stack" "Software stack (base, container, development, full)" $default_stack -}}
 {{- $media := false -}}
 {{- if eq $stack "full" -}}
-{{-   $media = promptBoolOnce . "media" "Install heavy media tools (ffmpeg, yt-dlp)" false -}}
+{{-   $media = true -}}
 {{- end -}}
 
 {{- $email := promptStringOnce . "email" "Your email address" "hussainweb@gmail.com" -}}

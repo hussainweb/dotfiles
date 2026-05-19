@@ -51,8 +51,8 @@ packages:
       - kubernetes-cli
       - opentofu
 
-    # Full development stack including languages and AI agents
-    full:
+    # Development tools (languages, AI agents, etc.)
+    development:
       - direnv
       - gh
       - go

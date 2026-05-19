@@ -42,22 +42,22 @@ if command -v brew &> /dev/null; then
     {{ end }}
 
     # Container Stack (if enabled)
-    {{ if or (eq .stack "container") (eq .stack "full") -}}
+    {{ if or (eq .stack "container") (eq .stack "development") (eq .stack "full") -}}
     echo "Installing Container/Ops CLI tools..."
     {{ range .packages.brews.container -}}
     brew install {{ . | quote }}
     {{ end }}
     {{- end }}
 
-    # Full Stack (if enabled)
-    {{ if eq .stack "full" -}}
-    echo "Installing Full/Dev CLI tools..."
-    {{ range .packages.brews.full -}}
+    # Development Stack (if enabled)
+    {{ if or (eq .stack "development") (eq .stack "full") -}}
+    echo "Installing Development CLI tools..."
+    {{ range .packages.brews.development -}}
     brew install {{ . | quote }}
     {{ end }}
     {{- end }}
 
-    # Media Stack (if enabled)
+    # Media Stack (if enabled via 'full' stack)
     {{ if .media -}}
     echo "Installing Media tools..."
     {{ range .packages.brews.media -}}
@@ -66,7 +66,7 @@ if command -v brew &> /dev/null; then
     {{- end }}
 
     # Standard Power-User CLI suite
-    {{ if or (eq .stack "container") (eq .stack "full") -}}
+    {{ if or (eq .stack "container") (eq .stack "development") (eq .stack "full") -}}
     echo "Installing Standard Power-User CLI tools..."
     {{ range .packages.brews.standard_cli -}}
     brew install {{ . | quote }}
@@ -109,7 +109,7 @@ if command -v brew &> /dev/null; then
     {{- end }}
 
     # Developer-specific GUI Apps
-    {{ if eq .stack "full" -}}
+    {{ if or (eq .stack "development") (eq .stack "full") -}}
     echo "Installing Developer GUI apps..."
     {{ range .packages.casks.development -}}
     brew install --cask {{ . | quote }}
@@ -129,8 +129,8 @@ fi
 # --- Linux-specific non-brew phase ---
 {{ if eq .chezmoi.os "linux" -}}
 
-# Install NPM tools on Linux full stack
-{{ if eq .stack "full" -}}
+# Install NPM tools on Linux development/full stack
+{{ if or (eq .stack "development") (eq .stack "full") -}}
 if command -v npm &> /dev/null; then
     echo "Installing NPM global packages..."
     {{ range .packages.linux.npm -}}
