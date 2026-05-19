@@ -1,0 +1,5 @@
+Check the logic of chezmoi.toml template and suggest what can be improved and simplified.
+
+---
+
+Yes, go on. Make sure README.md is updated
