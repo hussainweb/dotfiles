@@ -1,15 +1,15 @@
 {{/* boolean feature tags */}}
-{{- $transient := promptBoolOnce . "transient" "Is this machine temporary (e.g. a cloud or VM instance)" false -}}
-{{- $personal := promptBoolOnce . "personal" "Is this machine personal use and has additional tools" false -}}
-{{- $development := promptBoolOnce . "development" "Is this machine used for development" true -}}
+{{- $transient := promptBool "transient" "Is this machine temporary (e.g. a cloud or VM instance)" (default false .transient) -}}
+{{- $personal := promptBool "personal" "Is this machine personal use and has additional tools" (default false .personal) -}}
+{{- $development := promptBool "development" "Is this machine used for development" (default true .development) -}}
 {{- $macos := false -}}
 {{- $rpi := false -}}
 {{- $ssh_host := true -}}
 {{- $computerName := .chezmoi.hostname -}}
-{{- $email := promptStringOnce . "email" "Your email address" "hussainweb@gmail.com" -}}
+{{- $email := promptString "email" "Your email address" (default "hussainweb@gmail.com" .email) -}}
 {{- $proxmox_endpoint := "" -}}
 {{- if $personal -}}
-{{-   $proxmox_endpoint = promptStringOnce . "proxmox_endpoint" "Proxmox API endpoint URL" "https://erebor.husain.me:8006/api2/json" -}}
+{{-   $proxmox_endpoint = promptString "proxmox_endpoint" "Proxmox API endpoint URL" (default "https://erebor.husain.me:8006/api2/json" .proxmox_endpoint) -}}
 {{- end -}}
 {{- "" -}}
 
