@@ -1,0 +1,18 @@
+on an existing Ubuntu VM, I ran chezmoi init again and set the stack to full and personal to true. This is the problem I got.
+
+Already up to date.
+Enter the password for hussainweb@gmail.com at my.1password.com: 
+Enter the password for hussain@axelerant.com at axelerant.1password.com: 
+Updating and installing APT packages...
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+curl is already the newest version (8.18.0-1ubuntu2.1).
+git is already the newest version (1:2.53.0-1ubuntu1).
+fish is already the newest version (4.2.1-3.2).
+zsh is already the newest version (5.9-8ubuntu3).
+Solving dependencies... Done
+0 upgraded, 0 newly installed, 0 to remove and 6 not upgraded.
+Installing NPM global packages...
+sudo: 'npm': command not found
+chezmoi: install_packages.sh: exit status 1
