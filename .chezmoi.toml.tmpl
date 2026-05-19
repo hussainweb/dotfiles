@@ -1,36 +1,41 @@
 {{/* boolean feature tags */}}
-{{- $transient := promptBool "Is this machine temporary (e.g. a cloud or VM instance)" (default false .transient) -}}
-{{- $personal := promptBool "Is this machine personal use and has additional tools" (default false .personal) -}}
-{{- $development := promptBool "Is this machine used for development" (default true .development) -}}
 {{- $macos := false -}}
 {{- $rpi := false -}}
 {{- $ssh_host := true -}}
 {{- $computerName := .chezmoi.hostname -}}
-{{- $email := promptString "Your email address" (default "hussainweb@gmail.com" .email) -}}
-{{- $proxmox_endpoint := "" -}}
-{{- if $personal -}}
-{{-   $proxmox_endpoint = promptString "Proxmox API endpoint URL" (default "https://erebor.husain.me:8006/api2/json" .proxmox_endpoint) -}}
-{{- end -}}
-{{- "" -}}
 
 {{- if eq .chezmoi.os "darwin" -}}
 {{-   $macos = true -}}
 {{-   $computerName = output "scutil" "--get" "ComputerName" | trim -}}
 {{- end -}}
 
+{{- $is_personal := false -}}
 {{- if eq $computerName "the-good-machine" "tiny-tardis" "eressea" -}}
-{{-   $personal = true -}}
+{{-   $is_personal = true -}}
 {{-   $ssh_host = false -}}
-{{- end -}}
-
-{{- if $transient -}}
-{{-   $development = false -}}
 {{- end -}}
 
 {{- if eq .chezmoi.hostname "grey-havens" -}}
 {{-   $rpi = true -}}
 {{-   $ssh_host = true -}}
 {{- end -}}
+
+{{- $transient := promptBool "Is this machine temporary (e.g. a cloud or VM instance)" (default false .transient) -}}
+
+{{- $default_development := true -}}
+{{- if $transient -}}
+{{-   $default_development = false -}}
+{{- end -}}
+{{- $development := promptBool "Is this machine used for development" (default $default_development .development) -}}
+
+{{- $personal := promptBool "Is this machine personal use and has additional tools" (default $is_personal .personal) -}}
+
+{{- $email := promptString "Your email address" (default "hussainweb@gmail.com" .email) -}}
+{{- $proxmox_endpoint := "" -}}
+{{- if $personal -}}
+{{-   $proxmox_endpoint = promptString "Proxmox API endpoint URL" (default "https://erebor.husain.me:8006/api2/json" .proxmox_endpoint) -}}
+{{- end -}}
+{{- "" -}}
 
 [data]
   transient = {{ $transient }}
