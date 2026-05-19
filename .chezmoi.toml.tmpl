@@ -1,44 +1,32 @@
-{{/* boolean feature tags */}}
-{{- $macos := false -}}
-{{- $rpi := false -}}
-{{- $computerName := .chezmoi.hostname -}}
+{{- /* boolean feature tags */ -}}
+{{- $os_id := .chezmoi.os -}}
+{{- $is_macos := eq $os_id "darwin" -}}
+{{- $hostname := .chezmoi.hostname -}}
 
-{{- $ssh_host := true -}}
-{{- if eq .chezmoi.os "darwin" -}}
-{{-   $macos = true -}}
-{{-   $computerName = output "scutil" "--get" "ComputerName" | trim -}}
-{{-   $ssh_host = false -}}
+{{- /* Identify computer name (Handle macOS ComputerName vs Hostname) */ -}}
+{{- $computer_name := $hostname -}}
+{{- if $is_macos -}}
+{{-   $computer_name = output "scutil" "--get" "ComputerName" | trim -}}
 {{- end -}}
 
-{{- $is_workstation := false -}}
-{{- if eq $computerName "the-good-machine" -}}
-{{-   $is_workstation = true -}}
-{{- end -}}
+{{- /* Machine Classification */ -}}
+{{- $is_workstation := eq $computer_name "the-good-machine" -}}
+{{- $is_personal_machine := eq $computer_name "the-good-machine" "tiny-tardis" "eressea" -}}
+{{- $is_rpi := eq $hostname "grey-havens" -}}
 
-{{- $is_personal := false -}}
-{{- if eq $computerName "the-good-machine" "tiny-tardis" "eressea" -}}
-{{-   $is_personal = true -}}
-{{-   $ssh_host = false -}}
-{{- end -}}
-
-{{- if eq .chezmoi.hostname "grey-havens" -}}
-{{-   $rpi = true -}}
-{{-   $ssh_host = true -}}
-{{- end -}}
-
-{{- $personal := promptBoolOnce . "personal" "Is this machine personal use and has additional tools" $is_personal -}}
-
-{{- $default_stack := "base" -}}
-{{- if $is_workstation -}}
-{{-   $default_stack = "full" -}}
-{{- end -}}
-{{- $stack := promptStringOnce . "stack" "Software stack (base, container, development, full)" $default_stack -}}
-{{- $media := false -}}
-{{- if eq $stack "full" -}}
-{{-   $media = true -}}
-{{- end -}}
-
+{{- /* Prompts for persistent settings */ -}}
+{{- $personal := promptBoolOnce . "personal" "Is this machine personal use and has additional tools?" $is_personal_machine -}}
 {{- $email := promptStringOnce . "email" "Your email address" "hussainweb@gmail.com" -}}
+
+{{- /* Software Stack Selection */ -}}
+{{- $default_stack := ternary "full" "base" $is_workstation -}}
+{{- $stack := promptStringOnce . "stack" "Software stack (base, container, development, full)" $default_stack -}}
+
+{{- /* Derived settings */ -}}
+{{- $media := eq $stack "full" -}}
+{{- /* ssh_host: true for servers/RPis, false for macOS and known personal workstations */ -}}
+{{- $ssh_host := or $is_rpi (not (or $is_macos $is_personal_machine)) -}}
+
 {{- $proxmox_endpoint := "" -}}
 {{- if $personal -}}
 {{-   $proxmox_endpoint = promptStringOnce . "proxmox_endpoint" "Proxmox API endpoint URL" "https://erebor.husain.me:8006/api2/json" -}}
@@ -50,12 +38,12 @@
   stack = {{ $stack | quote }}
   media = {{ $media }}
   workstation = {{ $is_workstation }}
-  macos = {{ $macos }}
-  rpi = {{ $rpi }}
+  macos = {{ $is_macos }}
+  rpi = {{ $is_rpi }}
   ssh_host = {{ $ssh_host }}
   email = {{ $email | quote }}
-  computerName = {{ $computerName | quote }}
+  computerName = {{ $computer_name | quote }}
   proxmox_endpoint = {{ $proxmox_endpoint | quote }}
 
 [hooks.read-source-state.pre]
-    command = ".local/share/chezmoi/.install-1password.sh"
+  command = {{ joinPath .chezmoi.sourceDir ".install-1password.sh" | quote }}

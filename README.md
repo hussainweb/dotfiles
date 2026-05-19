@@ -30,12 +30,13 @@ The first time you run the installation (or if you run `chezmoi init` manually),
 * **stack**: Choice of software volume:
     * `base`: Minimal shell + modern CLI utilities (`bat`, `eza`, etc.).
     * `container`: Base + Docker, DDEV, OpenTofu, and infra tools.
-    * `full`: Container + Full dev stack (Node, Go, PHP, Python) and AI Agents (`claude-code`, etc.).
+    * `development`: Base + Full dev stack (Node, Go, PHP, Python).
+    * `full`: Development + Container + Media tools and AI Agents (`claude-code`, etc.).
 * **personal**: Set to `true` to enable personal identity (1Password integration, git signing, private secrets).
 * **email**: Your primary email address.
 * **proxmox_endpoint**: (If `personal` is true) The API URL for your Proxmox instance.
 
-Other attributes like **macos** and **workstation** (for hardware-specific drivers) are automatically detected based on the OS and hostname.
+Other attributes like **macos**, **workstation**, **rpi**, and **ssh_host** are automatically detected or derived based on the OS and hostname. For example, macOS and personal workstations disable `ssh_host` by default, while servers and RPis enable it.
 
 These values are saved in `~/.config/chezmoi/chezmoi.toml` and will be used automatically for future `chezmoi apply` or `chezmoi update` commands.
 
