@@ -1,0 +1,42 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "4acc7c1da1b7",
+  "session_id": "5e7a8ae4-70e8-4ba7-b3f3-e825612370a3",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-20T23:20:15.705664Z",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "run_onchange_install_packages.sh.tmpl"
+  ],
+  "agent": "Gemini CLI",
+  "model": "gemini-3-flash-preview",
+  "turn_id": "0a222754a93c",
+  "session_metrics": {
+    "turn_count": 3
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-20T23:20:15.696005Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 0,
+    "total_lines_changed": 0,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 293,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "TestBrewfile": 293
+      }
+    }
+  ]
+}

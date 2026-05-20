@@ -1,0 +1,9 @@
+The brew bundle syntax is wrong. It shows the entire usage and this error
+
+Error: invalid option: --no-lock
+Did you mean?  no-go
+chezmoi: install_packages.sh: exit status 1
+
+---
+
+continue
