@@ -1,0 +1,12 @@
+Add atlassian CLI for developer profile. Also add a script to initialize auth login for two accounts:
+
+echo (read from 1Password for work axelerant.com) | acli jira auth login --site axelerant.atlassian.net --email hussain@axelerant.com --token
+echo (read from 1Password "op://Employee/Momentus Jira/credential") | acli jira auth login --site ungerboeck.atlassian.net --email hussain_abbas@gomomentus.com --token
+
+---
+
+The second op read command also needs --account axelerant.1password.com
+
+---
+
+Rather than writing a function, we need to initialize it once. Is a run_onchange hook suitable for this?

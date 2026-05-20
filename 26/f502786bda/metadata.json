@@ -1,0 +1,19 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "26f502786bda",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    ".chezmoidata/packages.yaml",
+    "run_onchange_after_configure_atlassian.sh.tmpl"
+  ],
+  "sessions": [
+    {
+      "metadata": "/26/f502786bda/0/metadata.json",
+      "transcript": "/26/f502786bda/0/full.jsonl",
+      "content_hash": "/26/f502786bda/0/content_hash.txt",
+      "prompt": "/26/f502786bda/0/prompt.txt"
+    }
+  ]
+}
