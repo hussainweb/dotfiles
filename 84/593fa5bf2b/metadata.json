@@ -1,0 +1,18 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "84593fa5bf2b",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "run_onchange_install_packages.sh.tmpl"
+  ],
+  "sessions": [
+    {
+      "metadata": "/84/593fa5bf2b/0/metadata.json",
+      "transcript": "/84/593fa5bf2b/0/full.jsonl",
+      "content_hash": "/84/593fa5bf2b/0/content_hash.txt",
+      "prompt": "/84/593fa5bf2b/0/prompt.txt"
+    }
+  ]
+}

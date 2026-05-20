@@ -1,0 +1,5 @@
+Whenever I run chezmoi update, all packages are force installed. Did the installation logic change recently? I believe we used to use `brew bundle` earlier and it wouldn't behave this way.
+
+---
+
+yes
