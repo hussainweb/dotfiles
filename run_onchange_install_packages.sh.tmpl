@@ -27,103 +27,84 @@ fi
 
 # --- Homebrew phase (Both macOS and Linux) ---
 if command -v brew &> /dev/null; then
-    # Install Homebrew Taps
-    echo "Updating Homebrew Taps..."
-    {{ range .packages.taps -}}
-    brew tap {{ . | quote }}
-    {{ end }}
+    echo "Applying Homebrew bundle..."
+    brew bundle --no-lock --file=/dev/stdin <<EOF
+{{ range .packages.taps -}}
+tap {{ . | quote }}
+{{ end }}
 
-    # Install CLI Tools (Brews)
+# CLI Tools (Brews)
+{{ range .packages.brews.base -}}
+brew {{ . | quote }}
+{{ end }}
 
-    # Base Stack (Always installed)
-    echo "Installing Base CLI tools..."
-    {{ range .packages.brews.base -}}
-    brew install {{ . | quote }}
-    {{ end }}
+{{ if or (eq .stack "container") (eq .stack "development") (eq .stack "full") -}}
+{{ range .packages.brews.container -}}
+brew {{ . | quote }}
+{{ end }}
+{{- end }}
 
-    # Container Stack (if enabled)
-    {{ if or (eq .stack "container") (eq .stack "development") (eq .stack "full") -}}
-    echo "Installing Container/Ops CLI tools..."
-    {{ range .packages.brews.container -}}
-    brew install {{ . | quote }}
-    {{ end }}
-    {{- end }}
+{{ if or (eq .stack "development") (eq .stack "full") -}}
+{{ range .packages.brews.development -}}
+brew {{ . | quote }}
+{{ end }}
+{{- end }}
 
-    # Development Stack (if enabled)
-    {{ if or (eq .stack "development") (eq .stack "full") -}}
-    echo "Installing Development CLI tools..."
-    {{ range .packages.brews.development -}}
-    brew install {{ . | quote }}
-    {{ end }}
-    {{- end }}
+{{ if .media -}}
+{{ range .packages.brews.media -}}
+brew {{ . | quote }}
+{{ end }}
+{{- end }}
 
-    # Media Stack (if enabled via 'full' stack)
-    {{ if .media -}}
-    echo "Installing Media tools..."
-    {{ range .packages.brews.media -}}
-    brew install {{ . | quote }}
-    {{ end }}
-    {{- end }}
+{{ if or (eq .stack "container") (eq .stack "development") (eq .stack "full") -}}
+{{ range .packages.brews.standard_cli -}}
+brew {{ . | quote }}
+{{ end }}
+{{- end }}
 
-    # Standard Power-User CLI suite
-    {{ if or (eq .stack "container") (eq .stack "development") (eq .stack "full") -}}
-    echo "Installing Standard Power-User CLI tools..."
-    {{ range .packages.brews.standard_cli -}}
-    brew install {{ . | quote }}
-    {{ end }}
-    {{- end }}
+{{ if eq .chezmoi.os "darwin" -}}
+# macOS-specific CLI tools
+{{ range .packages.brews.macos -}}
+brew {{ . | quote }}
+{{ end }}
 
-    # macOS specific formulas
-    {{ if eq .chezmoi.os "darwin" -}}
-    echo "Installing macOS-specific CLI tools..."
-    {{ range .packages.brews.macos -}}
-    brew install {{ . | quote }}
-    {{ end }}
+# CLI Casks
+{{ range .packages.casks.cli -}}
+cask {{ . | quote }}
+{{ end }}
 
-    # Install GUI Apps (Casks)
+# Fonts
+{{ range .packages.casks.fonts -}}
+cask {{ . | quote }}
+{{ end }}
 
-    # CLI-only Casks
-    echo "Installing CLI Casks..."
-    {{ range .packages.casks.cli -}}
-    brew install --cask {{ . | quote }}
-    {{ end }}
+# Essential macOS GUI apps
+{{ range .packages.casks.macos -}}
+cask {{ . | quote }}
+{{ end }}
 
-    # Fonts
-    echo "Installing Fonts..."
-    {{ range .packages.casks.fonts -}}
-    brew install --cask {{ . | quote }}
-    {{ end }}
+{{ if .personal -}}
+# Personal/Identity GUI apps
+{{ range .packages.casks.personal -}}
+cask {{ . | quote }}
+{{ end }}
+{{- end }}
 
-    # Essential macOS GUI Apps
-    echo "Installing Essential macOS GUI apps..."
-    {{ range .packages.casks.macos -}}
-    brew install --cask {{ . | quote }}
-    {{ end }}
+{{ if or (eq .stack "development") (eq .stack "full") -}}
+# Developer GUI apps
+{{ range .packages.casks.development -}}
+cask {{ . | quote }}
+{{ end }}
+{{- end }}
 
-    # Personal/Identity GUI Apps
-    {{ if .personal -}}
-    echo "Installing Personal/Identity GUI apps..."
-    {{ range .packages.casks.personal -}}
-    brew install --cask {{ . | quote }}
-    {{ end }}
-    {{- end }}
-
-    # Developer-specific GUI Apps
-    {{ if or (eq .stack "development") (eq .stack "full") -}}
-    echo "Installing Developer GUI apps..."
-    {{ range .packages.casks.development -}}
-    brew install --cask {{ . | quote }}
-    {{ end }}
-    {{- end }}
-
-    # Workstation/Hardware GUI Apps
-    {{ if .workstation -}}
-    echo "Installing Workstation/Hardware GUI apps..."
-    {{ range .packages.casks.workstation -}}
-    brew install --cask {{ . | quote }}
-    {{ end }}
-    {{- end }}
-    {{- end }}
+{{ if .workstation -}}
+# Workstation/Hardware GUI apps
+{{ range .packages.casks.workstation -}}
+cask {{ . | quote }}
+{{ end }}
+{{- end }}
+{{- end }}
+EOF
 fi
 
 # --- Linux-specific non-brew phase ---
