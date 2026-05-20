@@ -1,0 +1,1 @@
+I want to remove maccy in favour of using Raycast. Remove the package and any associated config and commit

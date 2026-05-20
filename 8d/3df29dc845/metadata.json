@@ -1,0 +1,18 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "8d3df29dc845",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".chezmoidata/packages.yaml"
+  ],
+  "sessions": [
+    {
+      "metadata": "/8d/3df29dc845/0/metadata.json",
+      "transcript": "/8d/3df29dc845/0/full.jsonl",
+      "content_hash": "/8d/3df29dc845/0/content_hash.txt",
+      "prompt": "/8d/3df29dc845/0/prompt.txt"
+    }
+  ]
+}
