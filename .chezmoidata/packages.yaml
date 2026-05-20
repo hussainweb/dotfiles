@@ -1,6 +1,7 @@
 packages:
   # Homebrew Taps
   taps:
+    - atlassian/acli
     - ddev/ddev
     - entireio/tap
     - ksdme/tap
@@ -53,6 +54,7 @@ packages:
 
     # Development tools (languages, AI agents, etc.)
     development:
+      - acli
       - direnv
       - gh
       - go
