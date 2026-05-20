@@ -1,0 +1,40 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "59f3d08cd62f",
+  "session_id": "f3b5ed8a-f837-468f-b571-e48f502891f1",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-20T22:55:41.492669Z",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "run_after_configure_atlassian.sh.tmpl",
+    "run_onchange_after_configure_atlassian.sh.tmpl"
+  ],
+  "agent": "Gemini CLI",
+  "model": "gemini-3-flash-preview",
+  "turn_id": "b77b9abf7fc0",
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-20T22:55:41.48534Z",
+    "agent_lines": 28,
+    "agent_removed": 28,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 28,
+    "total_lines_changed": 56,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
