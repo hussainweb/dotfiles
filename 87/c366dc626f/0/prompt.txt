@@ -1,0 +1,13 @@
+Add antigravity-cli brew package to the developer profile
+
+---
+
+Sorry, it is a cask. So for Linux, the associated command is `curl -fsSL https://antigravity.google/cli/install.sh | bash` Adapt this accordingly.
+
+---
+
+This change is fine, but I am thinking that even environment is related to this, so the installation for environment also should happen under development_scripts.
+
+---
+
+This change is fine, but I am thinking that even entire is related to this, so the installation for entire also should happen under development_scripts.

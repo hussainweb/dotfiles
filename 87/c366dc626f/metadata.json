@@ -1,0 +1,19 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "87c366dc626f",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".chezmoidata/packages.yaml",
+    "run_onchange_install_packages.sh.tmpl"
+  ],
+  "sessions": [
+    {
+      "metadata": "/87/c366dc626f/0/metadata.json",
+      "transcript": "/87/c366dc626f/0/full.jsonl",
+      "content_hash": "/87/c366dc626f/0/content_hash.txt",
+      "prompt": "/87/c366dc626f/0/prompt.txt"
+    }
+  ]
+}
