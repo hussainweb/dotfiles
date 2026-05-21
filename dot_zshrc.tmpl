@@ -78,6 +78,10 @@ export NVM_DIR="$HOME/.nvm"
 [[ -f {{ .chezmoi.homeDir }}/.orbstack/shell/init2.zsh ]] && . {{ .chezmoi.homeDir }}/.orbstack/shell/init2.zsh 2>/dev/null || :
 
 # Prompts and History Tools
+if command -v mise >/dev/null; then
+    eval "$(mise activate zsh)"
+fi
+
 if command -v starship >/dev/null; then
     eval "$(starship init zsh)"
 fi
