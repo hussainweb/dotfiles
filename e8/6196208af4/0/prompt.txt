@@ -7,3 +7,7 @@ Make sure this is something in line with what is done for fish.
 ---
 
 Wait, this already worked with fish. I don't think you should add it to the config. Find out why it is working for fish but not for zsh.
+
+---
+
+commit
