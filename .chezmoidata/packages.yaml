@@ -180,6 +180,7 @@ packages:
 
     # Developer-specific GUI tools (Installed if stack=full)
     development:
+      - antigravity-cli
       - gitup-app
       - imageoptim
       - orbstack
@@ -210,9 +211,12 @@ packages:
     npm:
       - "@anthropic-ai/claude-code"
       - "@google/gemini-cli"
-    scripts:
+    scripts: []
+    development_scripts:
       - name: entire
         command: curl -fsSL https://entire.io/install.sh | bash
+      - name: antigravity-cli
+        command: curl -fsSL https://antigravity.google/cli/install.sh | bash
 
   # Generic tool initialization
   init:

@@ -131,6 +131,14 @@ echo "Running custom install script: {{ .name }}..."
 {{ .command }}
 {{ end }}
 
+# Run custom Linux development scripts
+{{ if or (eq .stack "development") (eq .stack "full") -}}
+{{ range .packages.linux.development_scripts -}}
+echo "Running custom development script: {{ .name }}..."
+{{ .command }}
+{{ end }}
+{{- end }}
+
 {{- end }}
 
 # Custom Tool Initializations
