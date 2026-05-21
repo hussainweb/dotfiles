@@ -103,3 +103,6 @@ if [[ -n "$HOMEBREW_PREFIX" ]]; then
     {{ end }}
   fi
 fi
+
+# Entire CLI shell completion
+autoload -Uz compinit && compinit && source <(entire completion zsh)
