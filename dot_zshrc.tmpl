@@ -67,6 +67,13 @@ alias {{ $key }}='{{ $val }}'
 # Tool initializations
 [[ -f ${HOME}/.config/op/plugins.sh ]] && . ${HOME}/.config/op/plugins.sh
 
+{{ if or (eq .stack "development") (eq .stack "full") -}}
+# NVM initialization
+export NVM_DIR="$HOME/.nvm"
+[ -s "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" ] && \. "$HOMEBREW_PREFIX/opt/nvm/nvm.sh"
+[ -s "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm"
+{{- end }}
+
 # OrbStack initialization
 [[ -f {{ .chezmoi.homeDir }}/.orbstack/shell/init2.zsh ]] && . {{ .chezmoi.homeDir }}/.orbstack/shell/init2.zsh 2>/dev/null || :
 

@@ -64,6 +64,7 @@ packages:
       - lazygit
       - llm
       - node
+      - nvm
       - opencode
       - php
       - python3
