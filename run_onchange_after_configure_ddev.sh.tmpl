@@ -5,7 +5,7 @@
 
 {{ if or (eq .stack "container") (eq .stack "full") -}}
 # Detected IP: {{ if eq .chezmoi.os "darwin" -}}
-{{ (output "sh" "-c" "ipconfig getifaddr en0 || ipconfig getifaddr en1" | trim) }}
+{{ (output "sh" "-c" "ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}') 2>/dev/null || ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1 2>/dev/null || true" | trim) }}
 {{- else -}}
 {{ (output "sh" "-c" "hostname -I | awk '{print $1}'" | trim) }}
 {{- end }}
@@ -13,7 +13,7 @@
 {{ if .ssh_host -}}
 if command -v ddev &> /dev/null; then
     {{ if eq .chezmoi.os "darwin" -}}
-    IP=$(ipconfig getifaddr en0 || ipconfig getifaddr en1)
+    IP=$(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}') 2>/dev/null || ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1 2>/dev/null)
     {{- else -}}
     IP=$(hostname -I | awk '{print $1}')
     {{- end }}
