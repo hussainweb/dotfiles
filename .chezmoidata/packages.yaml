@@ -178,9 +178,11 @@ packages:
       - wispr-flow
       - zoom
 
-    # Developer-specific GUI tools (Installed if stack=full)
+    # Developer-specific GUI tools (Installed if stack=development or full)
     development:
+      - antigravity
       - antigravity-cli
+      - antigravity-ide
       - gitup-app
       - imageoptim
       - orbstack
@@ -190,7 +192,6 @@ packages:
 
     # Large applications and hardware drivers (Installed if workstation=true)
     workstation:
-      - antigravity
       - elgato-control-center
       - elgato-stream-deck
       - gnucash
