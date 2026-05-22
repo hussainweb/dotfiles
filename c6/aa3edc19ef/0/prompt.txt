@@ -1,0 +1,5 @@
+Add antigravity-ide cask for development profile
+
+---
+
+Move antigravity cask to development as well.
