@@ -5,6 +5,7 @@
 # This script initializes Atlassian CLI authentication.
 # It runs whenever the packages configuration changes, ensuring acli is likely installed.
 
+{{ if .work -}}
 if command -v acli &> /dev/null && command -v op &> /dev/null; then
     echo "Checking Atlassian CLI authentication status..."
 
@@ -26,3 +27,6 @@ if command -v acli &> /dev/null && command -v op &> /dev/null; then
 else
     echo "Skipping Atlassian CLI auth: acli or op not found."
 fi
+{{ else -}}
+echo "Skipping Atlassian CLI auth: work flag is disabled."
+{{ end -}}

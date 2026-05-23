@@ -33,6 +33,7 @@ The first time you run the installation (or if you run `chezmoi init` manually),
     * `development`: Base + Full dev stack (Node, Go, PHP, Python).
     * `full`: Development + Container + Media tools and AI Agents (`claude-code`, etc.).
 * **personal**: Set to `true` to enable personal identity (1Password integration, git signing, private secrets).
+* **work**: Set to `true` to enable work accounts and tools (Atlassian CLI, etc.).
 * **email**: Your primary email address.
 * **proxmox_endpoint**: (If `personal` is true) The API URL for your Proxmox instance.
 

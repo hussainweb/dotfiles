@@ -16,6 +16,7 @@
 
 {{- /* Prompts for persistent settings */ -}}
 {{- $personal := promptBoolOnce . "personal" "Is this machine personal use and has additional tools?" $is_personal_machine -}}
+{{- $work := promptBoolOnce . "work" "Set up work accounts and tools?" false -}}
 {{- $email := promptStringOnce . "email" "Your email address" "hussainweb@gmail.com" -}}
 
 {{- /* Software Stack Selection */ -}}
@@ -35,6 +36,7 @@
 
 [data]
   personal = {{ $personal }}
+  work = {{ $work }}
   stack = {{ $stack | quote }}
   media = {{ $media }}
   workstation = {{ $is_workstation }}

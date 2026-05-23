@@ -17,11 +17,16 @@ set -x fish_emoji_width 2
 
 {{ if .personal -}}
 set -gx HOMEBREW_GITHUB_API_TOKEN {{ onepasswordRead "op://Personal/github.com/Tokens/Homebrew" "my.1password.com" }}
+{{- end }}
+
+{{ if .work -}}
 set -gx OPENROUTER_KEY {{ onepasswordRead "op://Employee/a5ay62mcrckiuleljdydlg53su/credential" "axelerant.1password.com" }}
+{{- else if .personal -}}
+set -gx OPENROUTER_KEY {{ onepasswordRead "op://Private/OpenRouter/API Keys/llm cli" "my.1password.com" }}
 {{- end }}
 
 {{ if or (eq .stack "full") (eq .stack "container") -}}
-{{   if .personal -}}
+{{   if .work -}}
 set -gx JIRA_API_TOKEN {{ onepasswordRead "op://Employee/n3enjt4hnmrdq7czug6nlkzpti/credential" "axelerant.1password.com" }}
 {{-   end }}
 {{- end }}
