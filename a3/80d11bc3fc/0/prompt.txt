@@ -1,0 +1,9 @@
+I want to be able to control if I want my work accounts set up on a machine. What's a good flag or attribute to do that?
+
+---
+
+Where else am I using axelerant tools or config I can add here?
+
+---
+
+In case of personal, the OPENROUTER_KEY should be set to read from my.1password.com with secret ref "op://Private/OpenRouter/API Keys/llm cli"
