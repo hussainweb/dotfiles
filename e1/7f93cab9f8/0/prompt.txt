@@ -1,0 +1,9 @@
+Did something break in automatic fish and zsh switch on my VM machines? I noticed that the shell reverted to fish on my VMs.
+
+---
+
+What did you find?
+
+---
+
+I did answer yes to that prompt. My understanding is that personal machines get the 1Password integration secrets, and that is something I need on these machines.
