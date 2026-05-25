@@ -1,7 +1,13 @@
 [user]
 	name = {{ .chezmoi.username }}
 	email = {{ .email }}
-	signingkey = E1CE98447E2C7887
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKmYR+MsIXzdK7mpmE3iUdeFwtmXi9/3mn9ypMiCyW5B
+
+[gpg]
+	format = ssh
+
+[gpg "ssh"]
+	allowedSignersFile = ~/.ssh/allowed_signers
 
 [filter "lfs"]
 	clean = git-lfs clean -- %f

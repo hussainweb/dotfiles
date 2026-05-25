@@ -26,7 +26,10 @@
 {{- /* Derived settings */ -}}
 {{- $media := eq $stack "full" -}}
 {{- /* ssh_host: true for servers/RPis, false for macOS and known personal workstations */ -}}
-{{- $ssh_host := or $is_rpi (not (or $is_macos $is_personal_machine)) -}}
+{{- $ssh_host := false -}}
+{{- if not $is_macos -}}
+{{-   $ssh_host = or $is_rpi (not $is_personal_machine) -}}
+{{- end -}}
 
 {{- $proxmox_endpoint := "" -}}
 {{- if $personal -}}
