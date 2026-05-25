@@ -8,6 +8,9 @@
 
 [gpg "ssh"]
 	allowedSignersFile = ~/.ssh/allowed_signers
+{{- if eq .chezmoi.os "darwin" }}
+	program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+{{- end }}
 
 [filter "lfs"]
 	clean = git-lfs clean -- %f
@@ -19,10 +22,28 @@
 	default = simple
 	autoSetupRemote = true
 
+[fetch]
+	prune = true
+	pruneTags = true
+	all = true
+
 [alias]
 	unstage = reset HEAD --
 	uncommit = reset --soft HEAD~
 	pull = pull --ff-only
+	st = status -sb
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	amend = commit --amend --no-edit
+	last = log -1 HEAD
+
+[column]
+	ui = auto
+
+[branch]
+	sort = -committerdate
+
+[tag]
+	sort = version:refname
 
 [commit]
 	gpgsign = true
@@ -32,12 +53,19 @@
 
 [pull]
 	ff = only
+	rebase = true
 
 [init]
 	defaultBranch = main
 
+[help]
+	autocorrect = prompt
+
 [core]
-{{ if eq .chezmoi.os "darwin" }}	editor = subl --wait{{- end }}
+{{ if eq .chezmoi.os "darwin" }}	editor = subl --wait
+	fsmonitor = true
+	untrackedCache = true
+{{- end }}
 	pager = delta
 
 [interactive]
