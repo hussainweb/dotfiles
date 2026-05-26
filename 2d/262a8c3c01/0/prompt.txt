@@ -1,0 +1,53 @@
+It seems to me that zsh-abbr supports both alias and zsh-abbr. Using both commands results in a duplicate list of aliases, one persistent, other not. See this output:
+
+zsh ❯ abbr list-abbreviations
+".."
+"..."
+"...."
+"....."
+"......"
+"bs"
+"cw"
+"g"
+"ga"
+"ga."
+"gc"
+"gco"
+"gd"
+"gd."
+"gf"
+"gfa"
+"gfo"
+"gm"
+"gp"
+"gpc"
+"gpm"
+"gps"
+"gr"
+"gs"
+"gs."
+"bs"
+"g"
+"ga"
+"ga."
+"gc"
+"gco"
+"gd"
+"gd."
+"gf"
+"gfa"
+"gfo"
+"gm"
+"gp"
+"gpc"
+"gpm"
+"gps"
+"gr"
+"gs"
+"gs."
+
+Check zsh-abbr documentation and see which is the better syntax to use (more modern and having future support).
+
+---
+
+Yes, looks good.
