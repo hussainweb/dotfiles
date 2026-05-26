@@ -9,3 +9,7 @@ Let the git ones be aliases
 ---
 
 I don't like functions ending up in aliases.fish. Let's just create a new file.
+
+---
+
+commit
