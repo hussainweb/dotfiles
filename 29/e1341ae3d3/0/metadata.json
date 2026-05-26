@@ -1,0 +1,66 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "29e1341ae3d3",
+  "session_id": "3a82e384-2f97-4579-9c28-b039e7b3f910",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-26T19:03:00.370164Z",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "files_touched": [
+    ".chezmoidata/aliases.yaml",
+    "dot_config/fish/private_conf.d/functions.fish.tmpl",
+    "dot_config/fish/private_functions/private_cw.fish",
+    "dot_zshrc.tmpl"
+  ],
+  "agent": "Gemini CLI",
+  "model": "gemini-3-flash-preview",
+  "turn_id": "884f5eee2347",
+  "session_metrics": {
+    "turn_count": 3
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-26T19:03:00.363422Z",
+    "agent_lines": 27,
+    "agent_removed": 15,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 27,
+    "total_lines_changed": 42,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 15,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".antigravitycli/1a8c22ad-fe7d-4fe0-9521-ea10274e8764.json": 15
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 43,
+      "agent_lines_removed": 15
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 43,
+      "agent_lines_removed": 15
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 42,
+      "agent_lines_removed": 15
+    }
+  ]
+}

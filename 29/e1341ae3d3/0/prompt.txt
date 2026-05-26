@@ -1,0 +1,11 @@
+I don't like ls and ll turning into abbreviations along with a few others that were originally fish functions. Look at it a few commits back. It is quite noisy to have ls expand into the long command.
+
+Some of the abbreviations make sense. Can we keep the ones that were functions originally in fish as functions going forward (both in fish and zsh)?
+
+---
+
+Let the git ones be aliases
+
+---
+
+I don't like functions ending up in aliases.fish. Let's just create a new file.
