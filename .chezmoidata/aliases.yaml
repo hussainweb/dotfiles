@@ -1,16 +1,4 @@
 aliases:
-  # General
-  l: ll -a
-  ll: ls -l
-  ls: eza -gF --group-directories-first --git
-
-  # Directory Navigation
-  "..": cd ..
-  "...": cd ../..
-  "....": cd ../../..
-  ".....": cd ../../../..
-  "......": cd ../../../../..
-
   # Git
   g: git
   gf: git fetch
@@ -35,4 +23,19 @@ aliases:
 
   # Other
   bs: brew services
+
+functions:
+  # General
+  l: ll -a
+  ll: ls -l
+  ls: eza -gF --group-directories-first --git
+
+  # Directory Navigation
+  "..": cd ..
+  "...": cd ../..
+  "....": cd ../../..
+  ".....": cd ../../../..
+  "......": cd ../../../../..
+
+  # Other
   cw: cd ~/work

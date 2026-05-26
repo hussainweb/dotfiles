@@ -69,6 +69,13 @@ setopt HIST_IGNORE_SPACE
 alias {{ $key }}='{{ $val }}'
 {{ end }}
 
+# Functions from shared data
+{{ range $key, $val := .functions -}}
+{{ $key }}() {
+  {{ $val }} "$@"
+}
+{{ end }}
+
 # Tool initializations
 [[ -f ${HOME}/.config/op/plugins.sh ]] && . ${HOME}/.config/op/plugins.sh
 
