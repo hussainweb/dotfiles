@@ -64,11 +64,6 @@ setopt SHARE_HISTORY
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
 
-# Aliases
-{{ range $key, $val := .aliases -}}
-alias {{ $key }}='{{ $val }}'
-{{ end }}
-
 # Functions from shared data
 {{ range $key, $val := .functions -}}
 {{ $key }}() {
@@ -109,13 +104,16 @@ if [[ -n "$HOMEBREW_PREFIX" ]]; then
   [[ -f "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
   [[ -f "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && source "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
   
-  # zsh-abbr (fish-like abbreviations)
+  # Aliases and Abbreviations
   if [[ -f "$HOMEBREW_PREFIX/share/zsh-abbr/zsh-abbr.zsh" ]]; then
     export ABBR_QUIET=1
     source "$HOMEBREW_PREFIX/share/zsh-abbr/zsh-abbr.zsh"
-    # Set up abbreviations from shared data
     {{ range $key, $val := .aliases -}}
-    abbr add --session --force {{ $key | quote }}={{ $val | quote }}
+    abbr --session {{ $key }}={{ $val | quote }}
+    {{ end }}
+  else
+    {{ range $key, $val := .aliases -}}
+    alias {{ $key }}={{ $val | quote }}
     {{ end }}
   fi
 fi
