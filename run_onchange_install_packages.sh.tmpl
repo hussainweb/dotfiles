@@ -27,6 +27,14 @@ fi
 
 # --- Homebrew phase (Both macOS and Linux) ---
 if command -v brew &> /dev/null; then
+    # Pre-tap and trust configured taps to prevent interactive prompts or load failures
+    {{ range .packages.taps -}}
+    brew tap {{ . | quote }} &>/dev/null || true
+    if brew trust --help &>/dev/null; then
+        brew trust {{ . | quote }} || true
+    fi
+    {{ end }}
+
     echo "Applying Homebrew bundle..."
     brew bundle --file=/dev/stdin <<EOF
 {{ range .packages.taps -}}
