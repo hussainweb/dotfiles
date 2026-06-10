@@ -122,7 +122,7 @@ packages:
     # CLI-only tools distributed as casks (preferred on macOS)
     cli:
       - 1password-cli
-      - claude-code
+      - claude-code@latest
       - entire
 
     # Fonts (Installed if macos=true)
@@ -212,7 +212,7 @@ packages:
   # Linux-specific configurations (fallbacks for when Casks/Brews don't apply)
   linux:
     npm:
-      - "@anthropic-ai/claude-code"
+      - "@anthropic-ai/claude-code@latest"
       - "@google/gemini-cli"
     scripts: []
     development_scripts:
