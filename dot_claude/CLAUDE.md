@@ -1,4 +1,5 @@
 @RTK.md
+@/Users/hw/AGENTS.md
 
 # Git commits and PRs
 
