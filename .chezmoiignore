@@ -3,3 +3,5 @@ LICENSE
 .github
 install.sh
 .ssh/conf.d
+AGENTS.md
+
