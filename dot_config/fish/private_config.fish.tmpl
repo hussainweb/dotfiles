@@ -14,6 +14,8 @@ end
 
 set -x GPG_TTY (tty)
 set -x fish_emoji_width 2
+# Disable auto-upgrades for casks that handle their own updates (introduced in Homebrew PR #21882)
+set -gx HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS 1
 
 {{ if .personal -}}
 set -gx HOMEBREW_GITHUB_API_TOKEN {{ onepasswordRead "op://Personal/github.com/Tokens/Homebrew" "my.1password.com" }}

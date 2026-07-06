@@ -19,6 +19,8 @@ export PATH
 
 # Environment variables
 export GPG_TTY=$(tty)
+# Disable auto-upgrades for casks that handle their own updates (introduced in Homebrew PR #21882)
+export HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS=1
 
 {{ if .personal -}}
 export HOMEBREW_GITHUB_API_TOKEN={{ onepasswordRead "op://Personal/github.com/Tokens/Homebrew" "my.1password.com" }}
