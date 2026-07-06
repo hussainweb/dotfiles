@@ -213,7 +213,6 @@ packages:
   linux:
     npm:
       - "@anthropic-ai/claude-code@latest"
-      - "@google/gemini-cli"
     scripts: []
     development_scripts:
       - name: entire
@@ -225,5 +224,4 @@ packages:
   init:
     rtk:
       - rtk init -g
-      - rtk init -g --gemini
       - rtk init --agent antigravity
