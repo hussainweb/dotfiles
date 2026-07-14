@@ -197,7 +197,7 @@ packages:
       - elgato-control-center
       - elgato-stream-deck
       - gnucash
-      - logi-options-plus
+      - logi-options+
       - microsoft-office
       - microsoft-teams
       - whatsapp
