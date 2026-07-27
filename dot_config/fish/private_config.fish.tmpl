@@ -19,8 +19,8 @@ set -gx HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS 1
 
 {{ if .personal -}}
 set -gx HOMEBREW_GITHUB_API_TOKEN {{ onepasswordRead "op://Personal/github.com/Tokens/Homebrew" "my.1password.com" }}
-set -gx PROXMOX_TFSTATE_ACCESS_KEY {{ onepasswordRead "op://Personal/Homelab TF S3 on MinIO Lorien/username" "my.1password.com" }}
-set -gx PROXMOX_TFSTATE_SECRET_KEY {{ onepasswordRead "op://Personal/Homelab TF S3 on MinIO Lorien/credential" "my.1password.com" }}
+set -gx PROXMOX_TFSTATE_ACCESS_KEY {{ onepasswordRead "op://Private/homelab-tf on SeaweedFS/username" "my.1password.com" }}
+set -gx PROXMOX_TFSTATE_SECRET_KEY {{ onepasswordRead "op://Private/homelab-tf on SeaweedFS/credential" "my.1password.com" }}
 {{- end }}
 
 {{ if .work -}}

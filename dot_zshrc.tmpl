@@ -40,8 +40,8 @@ export PM_API_TOKEN_ID=terraform@pve!coder-aule
 export PM_API_TOKEN_SECRET={{ onepasswordRead "op://Private/wqeyffrbuhswc3kfd7vjb6q2qa/Tokens/coder-aule" "my.1password.com" }}
 export PROXMOX_VE_ENDPOINT={{ .proxmox_endpoint }}
 export PROXMOX_VE_API_TOKEN=terraform@pve!coder-aule={{ onepasswordRead "op://Private/wqeyffrbuhswc3kfd7vjb6q2qa/Tokens/coder-aule" "my.1password.com" }}
-export PROXMOX_TFSTATE_ACCESS_KEY={{ onepasswordRead "op://Personal/Homelab TF S3 on MinIO Lorien/username" "my.1password.com" }}
-export PROXMOX_TFSTATE_SECRET_KEY={{ onepasswordRead "op://Personal/Homelab TF S3 on MinIO Lorien/credential" "my.1password.com" }}
+export PROXMOX_TFSTATE_ACCESS_KEY={{ onepasswordRead "op://Private/homelab-tf on SeaweedFS/username" "my.1password.com" }}
+export PROXMOX_TFSTATE_SECRET_KEY={{ onepasswordRead "op://Private/homelab-tf on SeaweedFS/credential" "my.1password.com" }}
 {{- end }}
 export LLM_MODEL=openrouter/google/gemini-2.5-flash-lite
 
