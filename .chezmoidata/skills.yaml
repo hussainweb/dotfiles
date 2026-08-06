@@ -1,0 +1,16 @@
+global_skills:
+  - repo: hussainweb/skills
+    skills:
+      - capture-learning
+      - conventional-commits
+      - hussainweb-writing-style
+      - logseq-organization
+      - merge-dependabot-prs
+  - repo: pasky/chrome-cdp-skill
+  - repo: vercel-labs/skills
+    skills:
+      - find-skills
+  - repo: microsoft/playwright-cli
+  - repo: anthropics/skills
+    skills:
+      - skill-creator

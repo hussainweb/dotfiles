@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# .chezmoidata/skills.yaml hash: {{ include ".chezmoidata/skills.yaml" | sha256sum }}
+
+# Exit on error
+set -e
+
+{{ if .global_skills -}}
+if command -v npx &> /dev/null; then
+    echo "Installing global skills..."
+    
+    TARGET_AGENTS="antigravity antigravity-cli warp zed"
+    {{ if .work -}}
+    TARGET_AGENTS="$TARGET_AGENTS claude-code"
+    {{- end }}
+
+    {{ range .global_skills -}}
+    npx -y skills add {{ .repo }}{{ if hasKey . "skills" }} --skill {{ join " " .skills }}{{ end }} --agent $TARGET_AGENTS -y -g || true
+    {{ end }}
+fi
+{{- end }}
