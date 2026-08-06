@@ -1,6 +1,7 @@
 global_skills:
   - repo: hussainweb/skills
     skills:
+      - acli
       - capture-learning
       - conventional-commits
       - hussainweb-writing-style
