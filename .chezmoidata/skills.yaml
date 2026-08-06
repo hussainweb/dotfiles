@@ -15,3 +15,9 @@ global_skills:
   - repo: anthropics/skills
     skills:
       - skill-creator
+  - repo: getsentry/cli
+    skills:
+      - sentry-cli
+  - repo: EndeavorYen/chrome-cdp-ex
+    skills:
+      - chrome-cdp-ex
