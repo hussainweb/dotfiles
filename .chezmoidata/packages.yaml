@@ -5,6 +5,7 @@ packages:
     - coollabsio/coolify-cli
     - ddev/ddev
     - entireio/tap
+    - getsentry/tools
     - ksdme/tap
     - olets/tap
 
@@ -73,6 +74,7 @@ packages:
       - python3
       - repomix
       - rtk
+      - sentry
       - uv
 
     # Media and heavy processing tools
