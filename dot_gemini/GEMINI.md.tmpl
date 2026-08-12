@@ -1,6 +1,16 @@
 # Agent Rules
 
-- **Global Skills Location:** Always check `~/.agents/skills` for global skills and custom instructions. When searching for available skills or executing a skill, inspect `~/.agents/skills/<skill-name>/SKILL.md` for workflow rules, templates, and helper scripts.
+## Git & Commits
+- **Committing:** Whenever a commit is requested or implied, ensure the conventional commit skill is used.
+- **Amending and Pushing:** Only amend a commit or push commits if explicitly specified in the *current* relevant message. Do not carry over requests to amend or push into follow-up messages.
+
+## Command Execution Workflow
+- **Command Transparency:** Output explanation messages before running sequences of commands to avoid uncommunicative loops of execution.
+- **Iterative Updates:** During loops of repeated command execution (e.g., when debugging), stop and explain every two or three iterations what worked, what didn't work, and what is being attempted next in a concise manner.
+- **Permission for Long Sequences:** If the sequence of commands to run is particularly long, explain your plan first and ask for permission before proceeding.
+
+## Global Skills
+- **Location:** Always check `~/.agents/skills` for global skills and custom instructions. When searching for available skills or executing a skill, inspect `~/.agents/skills/<skill-name>/SKILL.md` for workflow rules, templates, and helper scripts.
 
 # RTK - Rust Token Killer
 
@@ -11,7 +21,7 @@
 ```bash
 rtk gain              # Show token savings analytics
 rtk gain --history    # Show command usage history with savings
-rtk discover          # Analyze Claude Code history for missed opportunities
+rtk discover          # Analyze agent history for missed opportunities
 rtk proxy <cmd>       # Execute raw command without filtering (for debugging)
 ```
 
@@ -27,7 +37,7 @@ which rtk             # Verify correct binary
 
 ## Hook-Based Usage
 
-All other commands are automatically rewritten by the Claude Code hook.
+All other commands are automatically rewritten by the shell hook.
 Example: `git status` → `rtk git status` (transparent, 0 tokens overhead)
 
-Refer to CLAUDE.md for full command reference.
+Refer to GEMINI.md for full command reference.
