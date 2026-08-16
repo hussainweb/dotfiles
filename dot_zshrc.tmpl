@@ -24,6 +24,7 @@ export HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS=1
 
 {{ if .personal -}}
 export HOMEBREW_GITHUB_API_TOKEN={{ onepasswordRead "op://Personal/github.com/Tokens/Homebrew" "my.1password.com" }}
+export MEALIE_API_KEY={{ onepasswordRead "op://Private/Mealie on Lorien/API Token" "my.1password.com" }}
 {{- end }}
 
 {{ if .work -}}
