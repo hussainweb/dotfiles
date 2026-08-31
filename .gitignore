@@ -1,2 +1,8 @@
 # Antigravity CLI workspace state
 .antigravitycli/
+
+# SSH private files & conf.d (managed dynamically via 1Password)
+*dot_ssh/conf.d*
+*dot_ssh/private_conf.d*
+*dot_ssh/id_*
+*dot_ssh/known_hosts*

@@ -1,0 +1,127 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# This script dynamically syncs SSH configurations from 1Password Secure Notes
+# tagged with 'ssh-config' for both personal and work accounts.
+
+if ! command -v op &> /dev/null; then
+    echo "1Password CLI (op) not found, skipping SSH config sync."
+    exit 0
+fi
+
+if ! command -v jq &> /dev/null; then
+    echo "jq not found, skipping SSH config sync."
+    exit 0
+fi
+
+CONF_DIR="$HOME/.ssh/conf.d"
+mkdir -p "$CONF_DIR"
+TAG="ssh-config"
+
+ACCOUNTS=()
+{{ if .personal -}}
+ACCOUNTS+=("my.1password.com")
+{{- end }}
+{{ if .work -}}
+ACCOUNTS+=("axelerant.1password.com")
+{{- end }}
+
+if [ ${#ACCOUNTS[@]} -eq 0 ]; then
+    echo "No 1Password accounts enabled for SSH config sync."
+    exit 0
+fi
+
+# Function to strip markdown code blocks (e.g., ```ssh ... ```) if present
+strip_markdown_code_fences() {
+    awk '
+        !started && /^[[:space:]]*$/ { next }
+        !started && /^[[:space:]]*```/ { started=1; in_fence=1; next }
+        { started=1; lines[count++] = $0 }
+        END {
+            if (in_fence) {
+                for (i = count - 1; i >= 0; i--) {
+                    if (lines[i] ~ /^[[:space:]]*```[[:space:]]*$/) {
+                        count = i
+                        break
+                    } else if (lines[i] !~ /^[[:space:]]*$/) {
+                        break
+                    }
+                }
+            }
+            for (i = 0; i < count; i++) {
+                print lines[i]
+            }
+        }
+    '
+}
+
+declare -A ACTIVE_FILES
+SUCCESSFULLY_SCANNED_ACCOUNTS=()
+
+for ACCOUNT in "${ACCOUNTS[@]}"; do
+    echo "Checking 1Password account '$ACCOUNT' for SSH configs (tag: $TAG)..."
+
+    if ! op account get --account "$ACCOUNT" &> /dev/null; then
+        echo "  ⚠️  Account '$ACCOUNT' is locked or not signed in. Skipping."
+        continue
+    fi
+
+    ITEMS=$(op item list --tags "$TAG" --format json --account "$ACCOUNT" 2>/dev/null || echo "[]")
+    SUCCESSFULLY_SCANNED_ACCOUNTS+=("$ACCOUNT")
+
+    if [ "$ITEMS" = "[]" ] || [ -z "$ITEMS" ]; then
+        echo "  No items found with tag '$TAG' in $ACCOUNT."
+        continue
+    fi
+
+    while read -r item; do
+        [ -z "$item" ] && continue
+
+        ITEM_ID=$(echo "$item" | jq -r '.id')
+        RAW_TITLE=$(echo "$item" | jq -r '.title')
+
+        # Generate a clean filename (lowercase, alphanumeric, dashes, dots, underscores)
+        SLUG=$(echo "$RAW_TITLE" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9._-]+/-/g')
+        TARGET_FILE="$CONF_DIR/$SLUG"
+
+        ACTIVE_FILES["$SLUG"]=1
+
+        # Fetch item JSON, extract notesPlain value cleanly via jq, and strip code fences
+        ITEM_JSON=$(op item get "$ITEM_ID" --format json --account "$ACCOUNT" 2>/dev/null || echo "{}")
+        RAW_CONTENT=$(echo "$ITEM_JSON" | jq -r '(.fields[]? | select(.id=="notesPlain").value) // ""')
+        CLEAN_CONTENT=$(echo "$RAW_CONTENT" | strip_markdown_code_fences)
+
+        HEADER="# @generated-by-1password (tag: $TAG, account: $ACCOUNT)"
+
+        # Write to temporary file and atomically replace with 0600 permissions
+        TMP_FILE=$(mktemp "$CONF_DIR/.tmp.XXXXXX")
+        chmod 600 "$TMP_FILE"
+        {
+            echo "$HEADER"
+            echo "# Item: $RAW_TITLE"
+            echo ""
+            echo "$CLEAN_CONTENT"
+        } > "$TMP_FILE"
+        mv "$TMP_FILE" "$TARGET_FILE"
+
+        echo "  ✓ Synced: $SLUG (from $ACCOUNT)"
+    done < <(echo "$ITEMS" | jq -c '.[]')
+done
+
+# Cleanup obsolete files only for accounts that were successfully scanned
+for file in "$CONF_DIR"/*; do
+    [ -f "$file" ] || continue
+    FILENAME=$(basename "$file")
+
+    FIRST_LINE=$(head -n 1 "$file" 2>/dev/null || true)
+
+    for SCANNED_ACC in "${SUCCESSFULLY_SCANNED_ACCOUNTS[@]}"; do
+        EXPECTED_HEADER="# @generated-by-1password (tag: $TAG, account: $SCANNED_ACC)"
+        if [[ "$FIRST_LINE" == *"$EXPECTED_HEADER"* ]]; then
+            if [[ -z "${ACTIVE_FILES[$FILENAME]:-}" ]]; then
+                echo "  ✗ Removing obsolete SSH config: $FILENAME (was from $SCANNED_ACC)"
+                rm -f "$file"
+            fi
+        fi
+    done
+done
