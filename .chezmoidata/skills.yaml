@@ -5,6 +5,7 @@ global_skills:
       - capture-learning
       - conventional-commits
       - hussainweb-writing-style
+      - interviewer
       - logseq-organization
       - merge-dependabot-prs
   - repo: pasky/chrome-cdp-skill
