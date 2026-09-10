@@ -13,9 +13,39 @@ function chezmoi --wraps chezmoi --description "Chezmoi with automatic 1Password
                     {{- end }}
 
                     for account in $accounts
-                        if not op account get --account "$account" >/dev/null 2>&1
+                        set -l uuid
+                        if command -sq jq
+                            set uuid (op account list --format json 2>/dev/null | jq -r ".[] | select(.url | contains(\"$account\")) | .account_uuid" 2>/dev/null)
+                        end
+                        if test -z "$uuid"
+                            set uuid (grep -A 2 -i "$account" ~/.config/op/config 2>/dev/null | grep -i "accountUUID" | head -n1 | string match -rg '"accountUUID":\s*"([^"]+)"')
+                        end
+
+                        set -l shorthand (string split -m 1 . $account)[1]
+                        set -l safe_account (string replace -a . _ $account)
+
+                        if op account get --account "$account" >/dev/null 2>&1
+                            # Account already signed in; ensure Chezmoi's UUID variable is also populated
+                            set -l uuid_var "OP_SESSION_$uuid"
+                            if test -n "$uuid" -a -z "$$uuid_var"
+                                for vname in "OP_SESSION_$safe_account" "OP_SESSION_$shorthand" "OP_SESSION_$account"
+                                    if test -n "$$vname"
+                                        set -gx "OP_SESSION_$uuid" "$$vname"
+                                        break
+                                    end
+                                end
+                            end
+                        else
                             echo "Signing in to 1Password ($account)..."
-                            eval (op signin --account "$account")
+                            set -l token (op signin --account "$account" --raw)
+                            if test -n "$token"
+                                set -gx "OP_SESSION_$account" $token
+                                set -gx "OP_SESSION_$shorthand" $token
+                                set -gx "OP_SESSION_$safe_account" $token
+                                if test -n "$uuid"
+                                    set -gx "OP_SESSION_$uuid" $token
+                                end
+                            end
                         end
                     end
                     break

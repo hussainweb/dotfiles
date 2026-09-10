@@ -14,9 +14,40 @@ if command -v op >/dev/null 2>&1; then
                 {{- end }}
 
                 for account in "${accounts[@]}"; do
-                    if ! op account get --account "$account" >/dev/null 2>&1; then
+                    local uuid=""
+                    if command -v jq >/dev/null 2>&1; then
+                        uuid=$(op account list --format json 2>/dev/null | jq -r ".[] | select(.url | contains(\"$account\")) | .account_uuid" 2>/dev/null || true)
+                    fi
+                    if [[ -z "$uuid" ]]; then
+                        uuid=$(grep -A 2 -i "$account" ~/.config/op/config 2>/dev/null | grep -i "accountUUID" | head -n1 | sed -E 's/.*"accountUUID":[[:space:]]*"([^"]+)".*/\1/' || true)
+                    fi
+
+                    local shorthand="${account%%.*}"
+                    local safe_account="${account//./_}"
+
+                    if op account get --account "$account" >/dev/null 2>&1; then
+                        # Account already signed in; ensure Chezmoi's UUID variable is also populated
+                        if [[ -n "$uuid" && -z "${(P):-OP_SESSION_${uuid}}" ]]; then
+                            for vname in "OP_SESSION_${safe_account}" "OP_SESSION_${shorthand}" "OP_SESSION_${account}"; do
+                                local val="${(P)vname}"
+                                if [[ -n "$val" ]]; then
+                                    export "OP_SESSION_${uuid}=$val"
+                                    break
+                                fi
+                            done
+                        fi
+                    else
                         echo "Signing in to 1Password ($account)..."
-                        eval "$(op signin --account "$account")" || true
+                        local token
+                        token=$(op signin --account "$account" --raw)
+                        if [[ -n "$token" ]]; then
+                            export "OP_SESSION_${account}=$token"
+                            export "OP_SESSION_${shorthand}=$token"
+                            export "OP_SESSION_${safe_account}=$token"
+                            if [[ -n "$uuid" ]]; then
+                                export "OP_SESSION_${uuid}=$token"
+                            fi
+                        fi
                     fi
                 done
                 break
