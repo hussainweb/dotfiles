@@ -13,6 +13,7 @@ if command -v op >/dev/null 2>&1; then
                 accounts+=("axelerant.1password.com")
                 {{- end }}
 
+                local -a env_args=()
                 for account in "${accounts[@]}"; do
                     local uuid=""
                     if command -v jq >/dev/null 2>&1; then
@@ -24,36 +25,40 @@ if command -v op >/dev/null 2>&1; then
 
                     local shorthand="${account%%.*}"
                     local safe_account="${account//./_}"
-
-                    if ! op account get --account "$account" >/dev/null 2>&1; then
-                        echo "Signing in to 1Password ($account)..."
-                        eval "$(op signin --account "$account")" || true
-                    fi
-
-                    # Ensure Chezmoi has OP_SESSION_<uuid> populated
                     local token=""
-                    for vname in "OP_SESSION_${safe_account}" "OP_SESSION_${shorthand}" "OP_SESSION_${uuid}" OP_SESSION; do
+
+                    # Check if an existing session token is already valid for this specific account
+                    for vname in "OP_SESSION_${uuid}" "OP_SESSION_${safe_account}" "OP_SESSION_${shorthand}" OP_SESSION; do
                         local val="${(P)vname}"
                         if [[ -n "$val" ]]; then
-                            token="$val"
-                            break
+                            if env "OP_SESSION_${account}=$val" "OP_SESSION_${safe_account}=$val" "OP_SESSION_${shorthand}=$val" op account get --account "$account" >/dev/null 2>&1; then
+                                token="$val"
+                                break
+                            fi
                         fi
                     done
+
+                    # If not signed in or session expired, prompt for raw token
                     if [[ -z "$token" ]]; then
-                        token=$(env | grep -i "^OP_SESSION.*${shorthand}" | head -n1 | cut -d= -f2-)
+                        echo "Signing in to 1Password ($account)..."
+                        token=$(op signin --account "$account" --raw)
                     fi
-                    if [[ -z "$token" ]]; then
-                        token=$(env | grep -i "^OP_SESSION" | head -n1 | cut -d= -f2-)
-                    fi
+
                     if [[ -n "$token" ]]; then
                         if [[ -n "$uuid" ]]; then
                             export "OP_SESSION_${uuid}=$token"
+                            env_args+=("OP_SESSION_${uuid}=$token")
                         fi
                         export "OP_SESSION_${shorthand}=$token"
                         export "OP_SESSION_${safe_account}=$token"
+                        env_args+=("OP_SESSION_${account}=$token")
+                        env_args+=("OP_SESSION_${safe_account}=$token")
+                        env_args+=("OP_SESSION_${shorthand}=$token")
                     fi
                 done
-                break
+
+                env "${env_args[@]}" command chezmoi "$@"
+                return $?
                 ;;
         esac
     done

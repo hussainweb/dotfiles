@@ -12,6 +12,7 @@ function chezmoi --wraps chezmoi --description "Chezmoi with automatic 1Password
                     set -a accounts "axelerant.1password.com"
                     {{- end }}
 
+                    set -l env_args
                     for account in $accounts
                         set -l uuid
                         if command -sq jq
@@ -23,35 +24,39 @@ function chezmoi --wraps chezmoi --description "Chezmoi with automatic 1Password
 
                         set -l shorthand (string split -m 1 . $account)[1]
                         set -l safe_account (string replace -a . _ $account)
-
-                        if not op account get --account "$account" >/dev/null 2>&1
-                            echo "Signing in to 1Password ($account)..."
-                            eval (op signin --account "$account")
-                        end
-
-                        # Ensure Chezmoi has OP_SESSION_<uuid> populated
                         set -l token
-                        for vname in "OP_SESSION_$safe_account" "OP_SESSION_$shorthand" "OP_SESSION_$uuid" OP_SESSION
+
+                        # Check if an existing session token is already valid for this specific account
+                        for vname in "OP_SESSION_$uuid" "OP_SESSION_$safe_account" "OP_SESSION_$shorthand" OP_SESSION
                             if test -n "$$vname"
-                                set token $$vname
-                                break
+                                if env "OP_SESSION_$account=$$vname" "OP_SESSION_$safe_account=$$vname" "OP_SESSION_$shorthand=$$vname" op account get --account "$account" >/dev/null 2>&1
+                                    set token $$vname
+                                    break
+                                end
                             end
                         end
+
+                        # If not signed in or session expired, prompt for raw token
                         if test -z "$token"
-                            set token (env | grep -i "^OP_SESSION.*$shorthand" | head -n1 | cut -d= -f2-)
+                            echo "Signing in to 1Password ($account)..."
+                            set token (op signin --account "$account" --raw)
                         end
-                        if test -z "$token"
-                            set token (env | grep -i "^OP_SESSION" | head -n1 | cut -d= -f2-)
-                        end
+
                         if test -n "$token"
                             if test -n "$uuid"
                                 set -gx "OP_SESSION_$uuid" $token
+                                set -a env_args "OP_SESSION_$uuid=$token"
                             end
                             set -gx "OP_SESSION_$shorthand" $token
                             set -gx "OP_SESSION_$safe_account" $token
+                            set -a env_args "OP_SESSION_$account=$token"
+                            set -a env_args "OP_SESSION_$safe_account=$token"
+                            set -a env_args "OP_SESSION_$shorthand=$token"
                         end
                     end
-                    break
+
+                    env $env_args command chezmoi $argv
+                    return $status
             end
         end
     end
