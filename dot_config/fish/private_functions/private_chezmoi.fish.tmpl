@@ -24,26 +24,31 @@ function chezmoi --wraps chezmoi --description "Chezmoi with automatic 1Password
                         set -l shorthand (string split -m 1 . $account)[1]
                         set -l safe_account (string replace -a . _ $account)
 
-                        if op account get --account "$account" >/dev/null 2>&1
-                            # Account already signed in; ensure Chezmoi's UUID variable is also populated
-                            set -l uuid_var "OP_SESSION_$uuid"
-                            if test -n "$uuid" -a -z "$$uuid_var"
-                                for vname in "OP_SESSION_$safe_account" "OP_SESSION_$shorthand"
-                                    if test -n "$$vname"
-                                        set -gx "OP_SESSION_$uuid" "$$vname"
-                                        break
-                                    end
+                        if not op account get --account "$account" >/dev/null 2>&1
+                            echo "Signing in to 1Password ($account)..."
+                            eval (op signin --account "$account")
+                        end
+
+                        # Ensure Chezmoi has OP_SESSION_<uuid> populated
+                        set -l uuid_var "OP_SESSION_$uuid"
+                        if test -n "$uuid" -a -z "$$uuid_var"
+                            set -l token
+                            for vname in "OP_SESSION_$safe_account" "OP_SESSION_$shorthand" OP_SESSION
+                                if test -n "$$vname"
+                                    set token $$vname
+                                    break
                                 end
                             end
-                        else
-                            echo "Signing in to 1Password ($account)..."
-                            set -l token (op signin --account "$account" --raw)
+                            if test -z "$token"
+                                set token (env | grep -i "^OP_SESSION.*$shorthand" | head -n1 | cut -d= -f2-)
+                            end
+                            if test -z "$token"
+                                set token (env | grep -i "^OP_SESSION" | head -n1 | cut -d= -f2-)
+                            end
                             if test -n "$token"
+                                set -gx "OP_SESSION_$uuid" $token
                                 set -gx "OP_SESSION_$shorthand" $token
                                 set -gx "OP_SESSION_$safe_account" $token
-                                if test -n "$uuid"
-                                    set -gx "OP_SESSION_$uuid" $token
-                                end
                             end
                         end
                     end
