@@ -9,6 +9,13 @@
 if command -v acli &> /dev/null && command -v op &> /dev/null; then
     echo "Checking Atlassian CLI authentication status..."
 
+    if ! op account get --account axelerant.1password.com &> /dev/null; then
+        if [ -t 0 ] || [ -c /dev/tty ]; then
+            echo "Signing in to 1Password (axelerant.1password.com) for Atlassian CLI auth..."
+            eval "$(op signin --account axelerant.1password.com)" || true
+        fi
+    fi
+
     # Axelerant Jira
     if ! acli jira auth switch --site axelerant.atlassian.net &> /dev/null; then
         echo "Authenticating with Axelerant Jira..."

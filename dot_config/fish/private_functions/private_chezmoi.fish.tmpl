@@ -1,0 +1,28 @@
+function chezmoi --wraps chezmoi --description "Chezmoi with automatic 1Password authentication"
+{{- if not .macos }}
+    if type -q op
+        for arg in $argv
+            switch $arg
+                case update apply diff init
+                    set -l accounts
+                    {{ if .personal -}}
+                    set -a accounts "my.1password.com"
+                    {{- end }}
+                    {{ if .work -}}
+                    set -a accounts "axelerant.1password.com"
+                    {{- end }}
+
+                    for account in $accounts
+                        if not op account get --account "$account" >/dev/null 2>&1
+                            echo "Signing in to 1Password ($account)..."
+                            eval (op signin --account "$account")
+                        end
+                    end
+                    break
+            end
+        end
+    end
+{{- end }}
+
+    command chezmoi $argv
+end

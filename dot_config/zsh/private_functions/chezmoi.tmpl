@@ -1,0 +1,29 @@
+{{- if not .macos }}
+# Ensure required 1Password accounts are signed in before running commands
+# that evaluate templates or lifecycle scripts on Linux/VMs.
+if command -v op >/dev/null 2>&1; then
+    for arg in "$@"; do
+        case "$arg" in
+            update|apply|diff|init)
+                local -a accounts=()
+                {{ if .personal -}}
+                accounts+=("my.1password.com")
+                {{- end }}
+                {{ if .work -}}
+                accounts+=("axelerant.1password.com")
+                {{- end }}
+
+                for account in "${accounts[@]}"; do
+                    if ! op account get --account "$account" >/dev/null 2>&1; then
+                        echo "Signing in to 1Password ($account)..."
+                        eval "$(op signin --account "$account")" || true
+                    fi
+                done
+                break
+                ;;
+        esac
+    done
+fi
+{{- end }}
+
+command chezmoi "$@"

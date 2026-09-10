@@ -62,6 +62,13 @@ for ACCOUNT in "${ACCOUNTS[@]}"; do
     echo "Checking 1Password account '$ACCOUNT' for SSH configs (tag: $TAG)..."
 
     if ! op account get --account "$ACCOUNT" &> /dev/null; then
+        if [ -t 0 ] || [ -c /dev/tty ]; then
+            echo "  Account '$ACCOUNT' is locked or not signed in. Signing in..."
+            eval "$(op signin --account "$ACCOUNT")" || true
+        fi
+    fi
+
+    if ! op account get --account "$ACCOUNT" &> /dev/null; then
         echo "  ⚠️  Account '$ACCOUNT' is locked or not signed in. Skipping."
         continue
     fi
