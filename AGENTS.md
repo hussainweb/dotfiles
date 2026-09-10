@@ -4,4 +4,9 @@
 - **Source Control & Configuration:** Never add configuration files or directories (e.g., `.rtk`, `.config`) directly to the repository. Always use `chezmoi add ~/.<path>` to ensure they are tracked according to chezmoi's conventions and properly templated if necessary.
 - **Shell Consistency:** Always keep Zsh and Fish configurations in sync. When adding or updating paths, environment variables, or tool initializations in one shell, apply the equivalent change to the other.
 - **Shell Functions:** Maintain shell functions as standalone scripts in their respective autoload directories (`dot_config/fish/private_functions/` and `dot_config/zsh/private_functions/`). Ensure the logic remains identical between both implementations.
+- **1Password Session Management (Linux / Headless):** On headless Linux environments, `op` CLI commands and Chezmoi templates require pre-authenticated session tokens:
+  - **Chezmoi Go Templates:** Chezmoi translates account domains to account UUIDs and checks `OP_SESSION_<account_uuid>`.
+  - **1Password CLI in Post-Run Scripts:** The CLI looks for `OP_SESSION_<shorthand>`. If the account shorthand is a domain (e.g. `my.1password.com`), the variable contains literal dots (`OP_SESSION_my.1password.com`).
+  - **Shell Identifier Restrictions:** Unix shells (Bash, Zsh, Fish) reject dots in variable names (`export: not valid in this context`). Therefore, tokens must be captured via `op signin --raw` (never shell `eval $(op signin)`), and dotted variables must be passed directly to the `chezmoi` process table via `/usr/bin/env`.
+  - **Autoloaded Wrappers:** The wrapper functions in `dot_config/zsh/private_functions/chezmoi.tmpl` and `dot_config/fish/private_functions/private_chezmoi.fish.tmpl` maintain this isolation and environment propagation. Keep them synchronized whenever modifying authentication or secret workflows.
 
