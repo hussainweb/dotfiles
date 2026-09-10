@@ -31,26 +31,26 @@ if command -v op >/dev/null 2>&1; then
                     fi
 
                     # Ensure Chezmoi has OP_SESSION_<uuid> populated
-                    if [[ -n "$uuid" && -z "${(P):-OP_SESSION_${uuid}}" ]]; then
-                        local token=""
-                        for vname in "OP_SESSION_${safe_account}" "OP_SESSION_${shorthand}" OP_SESSION; do
-                            local val="${(P)vname}"
-                            if [[ -n "$val" ]]; then
-                                token="$val"
-                                break
-                            fi
-                        done
-                        if [[ -z "$token" ]]; then
-                            token=$(env | grep -i "^OP_SESSION.*${shorthand}" | head -n1 | cut -d= -f2-)
+                    local token=""
+                    for vname in "OP_SESSION_${safe_account}" "OP_SESSION_${shorthand}" "OP_SESSION_${uuid}" OP_SESSION; do
+                        local val="${(P)vname}"
+                        if [[ -n "$val" ]]; then
+                            token="$val"
+                            break
                         fi
-                        if [[ -z "$token" ]]; then
-                            token=$(env | grep -i "^OP_SESSION" | head -n1 | cut -d= -f2-)
-                        fi
-                        if [[ -n "$token" ]]; then
+                    done
+                    if [[ -z "$token" ]]; then
+                        token=$(env | grep -i "^OP_SESSION.*${shorthand}" | head -n1 | cut -d= -f2-)
+                    fi
+                    if [[ -z "$token" ]]; then
+                        token=$(env | grep -i "^OP_SESSION" | head -n1 | cut -d= -f2-)
+                    fi
+                    if [[ -n "$token" ]]; then
+                        if [[ -n "$uuid" ]]; then
                             export "OP_SESSION_${uuid}=$token"
-                            export "OP_SESSION_${shorthand}=$token"
-                            export "OP_SESSION_${safe_account}=$token"
                         fi
+                        export "OP_SESSION_${shorthand}=$token"
+                        export "OP_SESSION_${safe_account}=$token"
                     fi
                 done
                 break
