@@ -28,7 +28,7 @@ function chezmoi --wraps chezmoi --description "Chezmoi with automatic 1Password
                             # Account already signed in; ensure Chezmoi's UUID variable is also populated
                             set -l uuid_var "OP_SESSION_$uuid"
                             if test -n "$uuid" -a -z "$$uuid_var"
-                                for vname in "OP_SESSION_$safe_account" "OP_SESSION_$shorthand" "OP_SESSION_$account"
+                                for vname in "OP_SESSION_$safe_account" "OP_SESSION_$shorthand"
                                     if test -n "$$vname"
                                         set -gx "OP_SESSION_$uuid" "$$vname"
                                         break
@@ -39,7 +39,6 @@ function chezmoi --wraps chezmoi --description "Chezmoi with automatic 1Password
                             echo "Signing in to 1Password ($account)..."
                             set -l token (op signin --account "$account" --raw)
                             if test -n "$token"
-                                set -gx "OP_SESSION_$account" $token
                                 set -gx "OP_SESSION_$shorthand" $token
                                 set -gx "OP_SESSION_$safe_account" $token
                                 if test -n "$uuid"

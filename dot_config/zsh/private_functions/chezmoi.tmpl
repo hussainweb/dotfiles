@@ -28,7 +28,7 @@ if command -v op >/dev/null 2>&1; then
                     if op account get --account "$account" >/dev/null 2>&1; then
                         # Account already signed in; ensure Chezmoi's UUID variable is also populated
                         if [[ -n "$uuid" && -z "${(P):-OP_SESSION_${uuid}}" ]]; then
-                            for vname in "OP_SESSION_${safe_account}" "OP_SESSION_${shorthand}" "OP_SESSION_${account}"; do
+                            for vname in "OP_SESSION_${safe_account}" "OP_SESSION_${shorthand}"; do
                                 local val="${(P)vname}"
                                 if [[ -n "$val" ]]; then
                                     export "OP_SESSION_${uuid}=$val"
@@ -41,7 +41,6 @@ if command -v op >/dev/null 2>&1; then
                         local token
                         token=$(op signin --account "$account" --raw)
                         if [[ -n "$token" ]]; then
-                            export "OP_SESSION_${account}=$token"
                             export "OP_SESSION_${shorthand}=$token"
                             export "OP_SESSION_${safe_account}=$token"
                             if [[ -n "$uuid" ]]; then
