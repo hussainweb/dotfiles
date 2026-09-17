@@ -15,6 +15,14 @@ Host *
     # If you ever stop using 1Password, uncomment the default IdentityFile lines below:
     # IdentityFile ~/.ssh/id_rsa
     # IdentityFile ~/.ssh/id_ed25519
+{{- if .ssh_host }}
+
+# Long-lived multiplexer sessions outlive the login whose SSH_AUTH_SOCK they
+# captured. ~/.ssh/rc keeps this symlink pointed at the current forwarded
+# agent, so ssh still reaches a live agent from a stale environment.
+Match host * exec "test -S ~/.ssh/agent.sock"
+    IdentityAgent ~/.ssh/agent.sock
+{{- end }}
 
 {{- if eq .chezmoi.os "darwin" }}
 Match host * exec "test -S ~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock"
