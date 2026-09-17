@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Dev SSH Key sync from 1Password
+{{ if and .ssh_host (or (eq .stack "development") (eq .stack "full")) -}}
+# Key fingerprint trigger: {{ onepasswordRead "op://Private/Homelab VM SSH Key/public key" "my.1password.com" | sha256sum }}
+
+if ! command -v op &> /dev/null; then
+    echo "1Password CLI (op) not found, skipping dev SSH key sync."
+    exit 0
+fi
+
+SSH_DIR="$HOME/.ssh"
+mkdir -p "$SSH_DIR"
+chmod 700 "$SSH_DIR"
+
+ACCOUNT="my.1password.com"
+VAULT="Private"
+ITEM="Homelab VM SSH Key"
+
+if ! op account get --account "$ACCOUNT" &> /dev/null; then
+    if [ -t 0 ] || [ -c /dev/tty ]; then
+        echo "Checking 1Password account '$ACCOUNT' for dev SSH key..."
+        eval "$(op signin --account "$ACCOUNT")" || true
+    fi
+fi
+
+if ! op account get --account "$ACCOUNT" &> /dev/null; then
+    echo "  ⚠️  Account '$ACCOUNT' is locked or not signed in. Skipping dev SSH key sync."
+    exit 0
+fi
+
+PRIVATE_KEY_TARGET="$SSH_DIR/id_ed25519"
+PUBLIC_KEY_TARGET="$SSH_DIR/id_ed25519.pub"
+
+echo "Syncing dev VM SSH key from 1Password..."
+
+PRIVATE_KEY=$(op read "op://${VAULT}/${ITEM}/private key" --account "$ACCOUNT" 2>/dev/null || true)
+PUBLIC_KEY=$(op read "op://${VAULT}/${ITEM}/public key" --account "$ACCOUNT" 2>/dev/null || true)
+
+if [ -n "$PRIVATE_KEY" ]; then
+    TMP_KEY=$(mktemp "$SSH_DIR/.tmp.key.XXXXXX")
+    chmod 600 "$TMP_KEY"
+    printf '%s\n' "$PRIVATE_KEY" > "$TMP_KEY"
+    mv -f "$TMP_KEY" "$PRIVATE_KEY_TARGET"
+    echo "  ✓ Synced: $PRIVATE_KEY_TARGET"
+else
+    echo "  ⚠️  Could not read private key from op://${VAULT}/${ITEM}/private key"
+fi
+
+if [ -n "$PUBLIC_KEY" ]; then
+    TMP_PUB=$(mktemp "$SSH_DIR/.tmp.pub.XXXXXX")
+    chmod 644 "$TMP_PUB"
+    printf '%s\n' "$PUBLIC_KEY" > "$TMP_PUB"
+    mv -f "$TMP_PUB" "$PUBLIC_KEY_TARGET"
+    echo "  ✓ Synced: $PUBLIC_KEY_TARGET"
+else
+    echo "  ⚠️  Could not read public key from op://${VAULT}/${ITEM}/public key"
+fi
+{{- end }}
