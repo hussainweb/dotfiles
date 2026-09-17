@@ -1,7 +1,11 @@
 [user]
 	name = {{ .chezmoi.username }}
 	email = {{ .email }}
+{{- if and .ssh_host (or (eq .stack "development") (eq .stack "full")) }}
+	signingkey = ~/.ssh/id_ed25519.pub
+{{- else }}
 	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKmYR+MsIXzdK7mpmE3iUdeFwtmXi9/3mn9ypMiCyW5B
+{{- end }}
 
 [gpg]
 	format = ssh
