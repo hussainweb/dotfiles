@@ -1,0 +1,32 @@
+# ~/.ssh/rc - managed by chezmoi
+#
+# sshd mints a fresh forwarded-agent socket for every login (OpenSSH 10 puts
+# them in ~/.ssh/agent/s.*.sshd.*) and unlinks it when that login ends. A plain
+# SSH shell is fine, because its socket outlives it. Anything longer-lived - a
+# multiplexer server, the panes it spawns, and the agents inside them - captures
+# SSH_AUTH_SOCK once and keeps pointing at that socket forever, so agent auth
+# breaks as soon as the login that created it goes away.
+#
+# Repointing a stable path at the current socket on every login fixes that: a
+# symlink is resolved at connect() time, so one unchanging SSH_AUTH_SOCK value
+# keeps reaching whichever agent is live now.
+#
+# sshd runs this with sh(1) before the user's shell. It must not write to
+# stdout - output here corrupts scp/sftp sessions.
+
+if [ -n "${SSH_AUTH_SOCK:-}" ] && [ -S "${SSH_AUTH_SOCK}" ]; then
+    case "${SSH_AUTH_SOCK}" in
+    "${HOME}/.ssh/agent.sock")
+        # Already the stable path; never link it to itself.
+        ;;
+    *)
+        # Build the link under a temporary name, then rename it into place so
+        # concurrent logins can never observe a missing agent.sock.
+        ln -sfn "${SSH_AUTH_SOCK}" "${HOME}/.ssh/agent.sock.new" 2>/dev/null &&
+            mv -f "${HOME}/.ssh/agent.sock.new" "${HOME}/.ssh/agent.sock" 2>/dev/null
+        ;;
+    esac
+fi
+
+# Never let a failure in here interfere with the login.
+exit 0

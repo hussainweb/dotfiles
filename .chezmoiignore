@@ -4,4 +4,4 @@ LICENSE
 install.sh
 .ssh/conf.d
 AGENTS.md
-
+{{ if not .ssh_host }}.ssh/rc{{ end }}
