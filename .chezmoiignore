@@ -4,4 +4,7 @@ LICENSE
 install.sh
 .ssh/conf.d
 AGENTS.md
+CLAUDE.md
+.beads
+.dolt
 {{ if not .ssh_host }}.ssh/rc{{ end }}
