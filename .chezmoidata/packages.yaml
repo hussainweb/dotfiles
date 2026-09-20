@@ -4,6 +4,7 @@ packages:
     - atlassian/acli
     - coollabsio/coolify-cli
     - ddev/ddev
+    - dicklesworthstone/tap
     - entireio/tap
     - getsentry/tools
     - ksdme/tap
@@ -58,6 +59,7 @@ packages:
     development:
       - acli
       - beads
+      - bv
       - coolify-cli
       - direnv
       - gh
