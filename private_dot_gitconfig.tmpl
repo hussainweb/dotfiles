@@ -14,6 +14,13 @@
 	allowedSignersFile = ~/.ssh/allowed_signers
 {{- if eq .chezmoi.os "darwin" }}
 	program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+{{- else if and .ssh_host (or (eq .stack "development") (eq .stack "full")) }}
+	# Pairs with the signingkey above. Pointing signingkey at the .pub is not
+	# enough on its own: ssh-keygen prefers an agent that holds the key over
+	# the key on disk, and that path has no timeout and no fallback, so a
+	# stalled forwarded agent hangs every commit. The helper drops the agent
+	# when the private key is on disk and is a no-op when it is not.
+	program = ~/.local/bin/git-ssh-sign
 {{- end }}
 
 [filter "lfs"]

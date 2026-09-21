@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# git's SSH signing helper, wrapping ssh-keygen.
+#
+# Why this exists: `ssh-keygen -Y sign` does not fall back from the agent to
+# the key on disk. It does the opposite. If it can reach an ssh-agent that
+# holds the signing key, it signs through the agent, and that path has no
+# timeout and no fallback. An agent that accepts the connection but never
+# answers — a forwarded agent whose SSH link has stalled, or a 1Password
+# agent waiting on an approval nobody is there to give — hangs `git commit`
+# indefinitely, holding .git/index.lock while it hangs.
+#
+# On a host where the private key is on disk, the agent buys nothing for
+# signing, so take it out of the environment and sign from the file: local,
+# instant, and unable to stall. Where the key is not on disk the agent is the
+# only thing that can sign, so change nothing and let it through untouched.
+#
+# That check is what makes this safe to deploy everywhere, including machines
+# whose signing key only ever lives in 1Password.
+
+if [ -r "${HOME}/.ssh/id_ed25519" ]; then
+	unset SSH_AUTH_SOCK
+fi
+
+exec ssh-keygen "$@"
