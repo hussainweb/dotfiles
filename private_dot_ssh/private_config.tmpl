@@ -3,6 +3,18 @@ Include ~/.ssh/conf.d/*
 Include ~/.orbstack/ssh/config
 {{- end }}
 
+# An unattended push must not wait on a human. The agent below is 1Password,
+# which asks for approval on every use, and a forwarded agent whose link has
+# stalled never answers at all; either way git push blocks. Where the signing
+# key is on disk the agent buys nothing for GitHub, so authenticate from the
+# file instead. This has to precede the Match host * blocks, since ssh keeps
+# the first value it obtains, and it goes inert wherever the key is absent —
+# macOS included, which keeps its keys in 1Password.
+Match host github.com exec "test -r ~/.ssh/id_ed25519"
+    IdentityAgent none
+    IdentityFile ~/.ssh/id_ed25519
+    IdentitiesOnly yes
+
 Host 192.168.50.*
 	ForwardAgent yes
 
