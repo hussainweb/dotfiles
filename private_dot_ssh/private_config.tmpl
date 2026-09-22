@@ -35,7 +35,16 @@ Host *
 # Long-lived multiplexer sessions outlive the login whose SSH_AUTH_SOCK they
 # captured. ~/.ssh/rc keeps this symlink pointed at the current forwarded
 # agent, so ssh still reaches a live agent from a stale environment.
-Match host * exec "test -S ~/.ssh/agent.sock"
+#
+# Match on a reply, not on the socket file. sshd unlinks a forwarded socket
+# when its login ends, but a link that stalls leaves the socket behind in the
+# damaging third state: it accepts the connection and never answers. test -S
+# cannot tell that apart from a healthy agent, so every host got IdentityAgent
+# pinned to a socket that never replies, and ssh blocked forever - it applies
+# no timeout to the agent and has nothing to fall back to. Asking the agent to
+# list identities is the cheapest request that proves something is answering,
+# and the bound caps a stalled agent at two seconds instead of the session.
+Match host * exec "SSH_AUTH_SOCK=$HOME/.ssh/agent.sock timeout 2 ssh-add -l >/dev/null 2>&1"
     IdentityAgent ~/.ssh/agent.sock
 {{- end }}
 
@@ -46,4 +55,15 @@ Match host * exec "test -S ~/Library/Group\ Containers/2BUA8C4S2C.com.1password/
 Match host * exec "test -S ~/.1password/agent.sock"
     IdentityAgent "~/.1password/agent.sock"
 {{- end }}
+{{- if .ssh_host }}
 
+# Reached only when no agent above answered, since ssh keeps the first value
+# it obtains. Pin IdentityAgent rather than leaving it unset: unset, ssh falls
+# back to SSH_AUTH_SOCK, which in a stale multiplexer pane names the very
+# socket that just failed the probe, and the hang returns by the back door.
+# Nothing is lost by this. If no agent answers then a host whose key lives
+# only in the agent could not have authenticated either way; the difference is
+# that it now fails in a second with a clear error instead of hanging.
+Match all
+    IdentityAgent none
+{{- end }}
