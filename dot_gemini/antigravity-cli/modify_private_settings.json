@@ -1,0 +1,70 @@
+#!/usr/bin/env python3
+import json
+import os
+import sys
+
+BASE_PERMISSIONS = [
+    "command(rtk)",
+    "command(find)",
+    "command(cat)",
+    "command(git status)",
+    "command(ls)",
+    "command(chezmoi)",
+    "command(git diff)",
+    "command(git add)",
+    "command(git commit)",
+    "command(git log)",
+    "mcp(readwise/readwise_search_highlights)",
+    "mcp(readwise/readwise_list_highlights)",
+    "command(npm run)",
+    "command(gh)",
+    "command(node -v)",
+    "command(mise)",
+    "command(grep)",
+    "command(tail)",
+    "command(echo)",
+    "command(git branch)",
+    "command(head)",
+    "command(cd)",
+    "command(git fetch)",
+    "command(git show)",
+    "command(dig)",
+    f"command(python3 {os.path.expanduser('~')}/.agents/skills/merge-dependabot-prs/scripts/dependabot_prs.py)",
+    "command(git checkout)",
+    "command(bd)",
+    "command(herdr)",
+    "command(git grep)",
+    "command(which)",
+    "command(scutil)",
+    "read_url(herdr.dev)",
+    "read_url(raw.githubusercontent.com)",
+    "command(base64)",
+]
+
+content = sys.stdin.read().strip()
+data = {}
+if content:
+    try:
+        data = json.loads(content)
+    except json.JSONDecodeError:
+        data = {}
+
+if "permissions" not in data or not isinstance(data["permissions"], dict):
+    data["permissions"] = {}
+
+current_allow = data["permissions"].get("allow", [])
+if not isinstance(current_allow, list):
+    current_allow = []
+
+# Merge permissions preserving order and adding missing
+merged_allow = list(current_allow)
+for perm in BASE_PERMISSIONS:
+    if perm not in merged_allow:
+        merged_allow.append(perm)
+
+data["permissions"]["allow"] = merged_allow
+
+if "allowNonWorkspaceAccess" not in data:
+    data["allowNonWorkspaceAccess"] = True
+
+print(json.dumps(data, indent=2))

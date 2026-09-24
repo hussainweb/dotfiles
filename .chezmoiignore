@@ -9,3 +9,4 @@ CLAUDE.md
 .dolt
 {{ if not .ssh_host }}.ssh/rc{{ end }}
 {{ if not .macos }}.local/state/herdr/client/endpoints.json{{ end }}
+{{ if not (or (eq .stack "development") (eq .stack "full")) }}.gemini/antigravity-cli/**{{ end }}
