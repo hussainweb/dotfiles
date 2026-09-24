@@ -228,9 +228,10 @@ packages:
         command: curl -fsSL https://entire.io/install.sh | bash
       - name: antigravity-cli
         command: curl -fsSL https://antigravity.google/cli/install.sh | bash
-      # No Linux brew package; the macOS cask is in casks.cli
+      # No Linux brew or mise package (the macOS cask is in casks.cli), and
+      # AWS ships no apt repository, so apt installs its .deb directly.
       - name: session-manager-plugin
-        command: mise use -g aqua:aws/session-manager-plugin@latest
+        command: 'command -v session-manager-plugin >/dev/null || { f="$(mktemp --suffix=.deb)" && curl -fsSLo "$f" "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_$(dpkg --print-architecture | sed s/amd64/64bit/)/session-manager-plugin.deb" && sudo apt-get install -y "$f"; rm -f "$f"; }'
 
   # Generic tool initialization
   init:
