@@ -50,6 +50,10 @@ test -e {$HOME}/.config/op/plugins.sh ; and source {$HOME}/.config/op/plugins.sh
 # This won't be added again if you remove it.
 test -e {{ .chezmoi.homeDir }}/.orbstack/shell/init2.fish ; and source ~/.orbstack/shell/init2.fish 2>/dev/null || :
 
+if type -q mise
+    mise activate fish | source
+end
+
 starship init fish | source
 
 {{ if .personal -}}
@@ -60,3 +64,8 @@ fish_add_path /Users/hw/.antigravity/antigravity/bin
 {{ if .personal -}}
 atuin init fish --disable-up-arrow | source
 {{- end }}
+
+# Entire CLI shell completion
+if type -q entire
+    entire completion fish | source
+end
