@@ -8,6 +8,7 @@ packages:
     - entireio/tap
     - getsentry/tools
     - ksdme/tap
+    - mutagen-io/mutagen
     - olets/tap
 
   # Command-line tools (Homebrew formulas)
@@ -70,6 +71,7 @@ packages:
       - jira-cli
       - lazygit
       - llm
+      - mutagen
       - node
       - nvm
       - opencode
@@ -130,6 +132,7 @@ packages:
       - 1password-cli
       - claude-code@latest
       - entire
+      - session-manager-plugin
 
     # Fonts (Installed if macos=true)
     fonts:
@@ -225,6 +228,9 @@ packages:
         command: curl -fsSL https://entire.io/install.sh | bash
       - name: antigravity-cli
         command: curl -fsSL https://antigravity.google/cli/install.sh | bash
+      # No Linux brew package; the macOS cask is in casks.cli
+      - name: session-manager-plugin
+        command: mise use -g aqua:aws/session-manager-plugin@latest
 
   # Generic tool initialization
   init:
