@@ -32,6 +32,7 @@ packages:
       - git-lfs
       - go-task
       - helix
+      - herdr
       - htop
       - jq
       - make
@@ -64,7 +65,6 @@ packages:
       - direnv
       - gh
       - go
-      - herdr
       - hub
       - hyperfine
       - jira-cli
