@@ -8,3 +8,4 @@ CLAUDE.md
 .beads
 .dolt
 {{ if not .ssh_host }}.ssh/rc{{ end }}
+{{ if not .macos }}.local/state/herdr/**{{ end }}

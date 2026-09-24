@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "ssh": [
+    {
+      "id": "1592363cce167feafa843a83f2b5d7f1",
+      "label": "Work",
+      "target": "work",
+      "session": "default",
+      "enabled": true
+    },
+    {
+      "id": "31f09da16e66646d62cd1d63e51d1d82",
+      "label": "Dar-es-Balat",
+      "target": "dar-es-balat",
+      "session": "default",
+      "enabled": true
+    },
+    {
+      "id": "724171500f9c351b708cbb8e867b7d0e",
+      "label": "The Shire",
+      "target": "the-shire",
+      "session": "default",
+      "enabled": true
+    }
+  ]
+}
