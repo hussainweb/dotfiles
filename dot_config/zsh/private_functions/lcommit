@@ -19,9 +19,30 @@ Additional context: $context"
 fi
 
 local msg=$(echo "$diff" | llm --system "$system_prompt")
-if command -v pbcopy > /dev/null 2>&1; then
-    printf "%s" "$msg" | tee /dev/tty | pbcopy
-else
-    printf "%s" "$msg" | tee /dev/tty
+printf "%s\n" "$msg"
+
+local copied=0
+if [[ -z "$SSH_TTY" && -z "$SSH_CLIENT" && -z "$SSH_CONNECTION" ]]; then
+    if command -v pbcopy > /dev/null 2>&1; then
+        printf "%s" "$msg" | pbcopy
+        copied=1
+    elif command -v wl-copy > /dev/null 2>&1; then
+        printf "%s" "$msg" | wl-copy
+        copied=1
+    elif command -v xclip > /dev/null 2>&1; then
+        printf "%s" "$msg" | xclip -selection clipboard
+        copied=1
+    elif command -v xsel > /dev/null 2>&1; then
+        printf "%s" "$msg" | xsel --clipboard --input
+        copied=1
+    fi
 fi
-printf "\n"
+
+if [[ $copied -eq 0 ]]; then
+    local b64=$(printf "%s" "$msg" | base64 | tr -d '\r\n')
+    if [[ -n "$TMUX" ]]; then
+        printf "\033Ptmux;\033\033]52;c;%s\a\033\\" "$b64" > /dev/tty 2>/dev/null || printf "\033Ptmux;\033\033]52;c;%s\a\033\\" "$b64"
+    else
+        printf "\033]52;c;%s\a" "$b64" > /dev/tty 2>/dev/null || printf "\033]52;c;%s\a" "$b64"
+    fi
+fi
