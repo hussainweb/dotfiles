@@ -2,7 +2,9 @@ global_skills:
   - repo: hussainweb/skills
     skills:
       - acli
+      - beads-init
       - beads-orchestrate
+      - beads-trim-memories
       - capture-learning
       - conventional-commits
       - hussainweb-writing-style
