@@ -14,6 +14,14 @@
 - **Global Skills:** Always check `~/.agents/skills` for global skills and custom instructions. When searching for available skills or executing a skill, inspect `~/.agents/skills/<skill-name>/SKILL.md` for workflow rules, templates, and helper scripts.
 - **Skill Installation:** Always install skills per project (locally within the project/workspace) unless explicitly instructed to install them globally.
 
+## Beads: What to Track
+In a project with `.beads/`, check on every turn whether the turn produced something worth tracking, and track it then rather than at session end. Most turns produce nothing; that is fine.
+- **Issues:** Use `bd create`, or `bd note` on an existing bead, for work to do, deferred work with its reason, open questions awaiting a decision, and the outcome of a decision on the bead it belongs to.
+- **Memories:** `bd remember` entries are injected into every session, so the bar is high. The test: would a fresh agent, starting on an arbitrary bead in this repo, do something wrong without it? Only these pass: norms and conventions for the project and why they hold; direction (architectural decisions, chosen trade-offs, things deliberately ruled out); contracts between parts of the system that the code doesn't make obvious; and how I want sessions run.
+- **Area Knowledge:** Knowledge that matters only for one area goes on that area's bead as a dated note, or in `.beads/KNOWLEDGE.md` when no bead owns it. Don't create a bead just to hold knowledge.
+- **Never a Memory:** One-off bugs, gotchas and tool quirks (if one can recur, the fix is a lint rule, test, CI check, type or script that catches it: propose that, and track it as work if I agree; if it can't recur, drop it); mistakes in a skill's or tool's own docs (fix them at the source); narrative learnings or investigation write-ups (those belong in my learning notes, not in beads); and anything already recorded in code, comments, repo docs, git history or a bead.
+- **Updating:** Before adding a memory, check whether an existing one should be updated instead. This overrides `bd prime`'s generic advice to `bd remember` insights.
+
 # RTK - Rust Token Killer
 
 **Usage**: Token-optimized CLI proxy (60-90% savings on dev operations)
