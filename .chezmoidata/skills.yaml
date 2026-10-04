@@ -16,6 +16,8 @@ global_skills:
     skills:
       - find-skills
   - repo: microsoft/playwright-cli
+    skills:
+      - playwright-cli
   - repo: anthropics/skills
     skills:
       - skill-creator
