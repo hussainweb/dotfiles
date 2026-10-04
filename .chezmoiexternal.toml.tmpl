@@ -1,0 +1,11 @@
+{{- if or (eq .stack "development") (eq .stack "full") }}
+# The skills repo, for the agent plugins in its plugins/ directory: Claude Code
+# loads them through CLAUDE_CODE_PLUGIN_DIRS (dot_claude/modify_private_settings.json)
+# and Antigravity installs them (run_after_install_antigravity_plugins.sh).
+[".local/share/hussainweb-skills"]
+    type = "git-repo"
+    url = "https://github.com/hussainweb/skills.git"
+    refreshPeriod = "24h"
+    [".local/share/hussainweb-skills".pull]
+        args = ["--ff-only"]
+{{- end }}

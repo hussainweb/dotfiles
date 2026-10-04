@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+# Points CLAUDE_CODE_PLUGIN_DIRS in the settings' env block at the agent plugins
+# in the skills repo checkout (.chezmoiexternal.toml.tmpl), so every Claude Code
+# session loads them. Keeps any other paths already listed there, and every
+# other setting as it is; drops the paths this script used to add.
+import json
+import os
+import sys
+
+PLUGIN_ROOT = os.path.expanduser("~/.local/share/hussainweb-skills/plugins")
+PLUGINS = [{{ if or (eq .stack "development") (eq .stack "full") }}"model-bar", "git", "beads"{{ end }}]
+
+# Paths earlier versions of this script added.
+RETIRED_PREFIXES = [os.path.expanduser("~/.claude/plugins-local/")]
+
+content = sys.stdin.read()
+
+if content.strip():
+    try:
+        data = json.loads(content)
+    except json.JSONDecodeError:
+        # Never rewrite a settings file that does not parse: emit it untouched.
+        sys.stdout.write(content)
+        sys.exit(0)
+else:
+    data = {}
+
+env = data.get("env") if isinstance(data.get("env"), dict) else {}
+current = env.get("CLAUDE_CODE_PLUGIN_DIRS", "")
+paths = [p for p in current.split(os.pathsep) if p] if isinstance(current, str) else []
+paths = [
+    p for p in paths
+    if not any(p.startswith(prefix) for prefix in RETIRED_PREFIXES)
+    and not p.startswith(PLUGIN_ROOT + os.sep)
+]
+paths += [os.path.join(PLUGIN_ROOT, name) for name in PLUGINS]
+
+if paths:
+    env["CLAUDE_CODE_PLUGIN_DIRS"] = os.pathsep.join(paths)
+else:
+    env.pop("CLAUDE_CODE_PLUGIN_DIRS", None)
+
+if env:
+    data["env"] = env
+else:
+    data.pop("env", None)
+
+print(json.dumps(data, indent=2))
