@@ -1,0 +1,29 @@
+{{- if or (eq .stack "development") (eq .stack "full") -}}
+#!/bin/bash
+# Installs the agent plugins from the skills repo checkout into Antigravity.
+# Antigravity installs a copy, so a plugin is reinstalled whenever its directory
+# changes in the checkout: its git tree hash is compared with the one recorded at
+# the last install. Runs on every apply; a plugin that has not changed costs one
+# `git rev-parse`.
+
+REPO="$HOME/.local/share/hussainweb-skills"
+STATE="$HOME/.local/state/chezmoi/antigravity-plugins"
+PLUGINS="beads git"
+
+command -v agy >/dev/null 2>&1 || exit 0
+[ -d "$REPO/.git" ] || exit 0
+mkdir -p "$STATE"
+
+for plugin in $PLUGINS; do
+    tree=$(git -C "$REPO" rev-parse "HEAD:plugins/$plugin" 2>/dev/null) || continue
+    [ "$(cat "$STATE/$plugin" 2>/dev/null)" = "$tree" ] && continue
+
+    echo "Installing Antigravity plugin $plugin..."
+    agy plugin uninstall "$plugin" >/dev/null 2>&1 || true
+    if agy plugin install "$REPO/plugins/$plugin"; then
+        echo "$tree" > "$STATE/$plugin"
+    else
+        echo "warning: could not install Antigravity plugin $plugin; will retry on the next apply" >&2
+    fi
+done
+{{- end }}
