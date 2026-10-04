@@ -1,10 +1,21 @@
 {{- if or (eq .stack "development") (eq .stack "full") }}
+{{- /* Clone over SSH wherever a GitHub identity exists (the dev key on disk,
+       or a 1Password agent socket), so pushes from the clone work without an
+       HTTPS credential helper. A fresh host that has neither yet gets the
+       public HTTPS URL, which git-repo externals clone fine; chezmoi only ever
+       runs git pull on an existing clone and never rewrites its remote, so
+       such a clone needs `git remote set-url origin` by hand later. */ -}}
+{{- $skillsURL := "https://github.com/hussainweb/skills.git" -}}
+{{- $sshKey := stat (joinPath .chezmoi.homeDir ".ssh" "id_ed25519") -}}
+{{- $opAgentMac := stat (joinPath .chezmoi.homeDir "Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock") -}}
+{{- $opAgentLinux := stat (joinPath .chezmoi.homeDir ".1password" "agent.sock") -}}
+{{- if or $sshKey $opAgentMac $opAgentLinux }}{{ $skillsURL = "git@github.com:hussainweb/skills.git" }}{{ end }}
 # The skills repo, for the agent plugins in its plugins/ directory: Claude Code
 # loads them through CLAUDE_CODE_PLUGIN_DIRS (dot_claude/modify_private_settings.json)
 # and Antigravity installs them (run_after_install_antigravity_plugins.sh).
 [".local/share/hussainweb-skills"]
     type = "git-repo"
-    url = "https://github.com/hussainweb/skills.git"
+    url = {{ $skillsURL | quote }}
     refreshPeriod = "24h"
     [".local/share/hussainweb-skills".pull]
         args = ["--ff-only"]
