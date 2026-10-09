@@ -44,6 +44,10 @@ set -gx JIRA_API_TOKEN {{ onepasswordRead "op://Employee/n3enjt4hnmrdq7czug6nlkz
 {{-   end }}
 {{- end }}
 
+{{ if and .personal (or (eq .stack "development") (eq .stack "full")) -}}
+set -gx DRUPALORG_GITLAB_TOKEN {{ onepasswordRead "op://Private/drupal.org/6nhikozmsyhfgzyeha34ax7p3m" "my.1password.com" }}
+{{- end }}
+
 test -e {$HOME}/.config/op/plugins.sh ; and source {$HOME}/.config/op/plugins.sh
 
 # Added by OrbStack: command-line tools and integration

@@ -58,6 +58,10 @@ export JIRA_API_TOKEN={{ onepasswordRead "op://Employee/n3enjt4hnmrdq7czug6nlkzp
 {{-   end }}
 {{- end }}
 
+{{ if and .personal (or (eq .stack "development") (eq .stack "full")) -}}
+export DRUPALORG_GITLAB_TOKEN={{ onepasswordRead "op://Private/drupal.org/6nhikozmsyhfgzyeha34ax7p3m" "my.1password.com" }}
+{{- end }}
+
 # Basic Zsh settings
 fpath=($HOME/.config/zsh/functions $fpath)
 autoload -Uz compinit
