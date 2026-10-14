@@ -15,6 +15,10 @@
 - **Global Skills:** Always check `~/.agents/skills` for global skills and custom instructions. When searching for available skills or executing a skill, inspect `~/.agents/skills/<skill-name>/SKILL.md` for workflow rules, templates, and helper scripts.
 - **Skill Installation:** Always install skills per project (locally within the project/workspace) unless explicitly instructed to install them globally.
 
+## Model Context Protocol (MCP)
+- **MCP Installation:** Prefer MCP installation in the `.agents` directory where Antigravity can read it (e.g., `.agents/mcp_config.json`). Avoid installing it in the root directory as a `.mcp.json` file, which is a Claude Code-specific path that Antigravity does not read. Do not suggest or configure plugins unless the use case is relevant for a plugin (a collection of skills and agents).
+- **MCP Scope:** Unless otherwise specified, always assume that MCP installation will be project-specific. Only install an MCP server globally if explicitly asked.
+
 ## Beads: What to Track
 In a project with `.beads/`, check on every turn whether the turn produced something worth tracking, and track it then rather than at session end. Most turns produce nothing; that is fine.
 - **Issues:** Use `bd create`, or `bd note` on an existing bead, for work to do, deferred work with its reason, open questions awaiting a decision, and the outcome of a decision on the bead it belongs to.
