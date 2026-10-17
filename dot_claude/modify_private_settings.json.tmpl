@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 # Points CLAUDE_CODE_PLUGIN_DIRS in the settings' env block at the agent plugins
-# in the skills repo checkout (.chezmoiexternal.toml.tmpl), so every Claude Code
-# session loads them. Keeps any other paths already listed there, and every
-# other setting as it is; drops the paths this script used to add.
+# in the skills repo checkout (.chezmoiexternal.toml.tmpl), listed in
+# .chezmoidata/skills.yaml, so every Claude Code session loads them. Keeps any
+# other paths already listed there, and every other setting as it is; drops the
+# paths this script used to add.
 import json
 import os
 import sys
 
 PLUGIN_ROOT = os.path.expanduser("~/.local/share/hussainweb-skills/plugins")
-PLUGINS = [{{ if or (eq .stack "development") (eq .stack "full") }}"model-bar", "git", "beads", "system-walkthrough"{{ end }}]
+PLUGINS = [{{ if or (eq .stack "development") (eq .stack "full") }}{{ range .agent_plugins }}{{ if or (not (hasKey . "agents")) (has "claude-code" .agents) }}"{{ .name }}", {{ end }}{{ end }}{{ end }}]
 
 # Paths earlier versions of this script added.
 RETIRED_PREFIXES = [os.path.expanduser("~/.claude/plugins-local/")]

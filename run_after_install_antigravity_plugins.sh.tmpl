@@ -1,6 +1,7 @@
 {{- if or (eq .stack "development") (eq .stack "full") -}}
 #!/bin/bash
-# Installs the agent plugins from the skills repo checkout into Antigravity.
+# Installs the agent plugins from the skills repo checkout (listed in
+# .chezmoidata/skills.yaml) into Antigravity.
 # Antigravity installs a copy, so a plugin is reinstalled whenever its directory
 # changes in the checkout: its git tree hash is compared with the one recorded at
 # the last install. Runs on every apply; a plugin that has not changed costs one
@@ -8,7 +9,7 @@
 
 REPO="$HOME/.local/share/hussainweb-skills"
 STATE="$HOME/.local/state/chezmoi/antigravity-plugins"
-PLUGINS="beads git"
+PLUGINS="{{ range .agent_plugins }}{{ if or (not (hasKey . "agents")) (has "antigravity" .agents) }}{{ .name }} {{ end }}{{ end }}"
 
 command -v agy >/dev/null 2>&1 || exit 0
 [ -d "$REPO/.git" ] || exit 0
