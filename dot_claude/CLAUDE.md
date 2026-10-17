@@ -7,7 +7,19 @@
 
 # Clipboard
 
-When copying text to the clipboard, prefer the OSC 52 terminal escape sequence (e.g., `printf "\033]52;c;%s\a" "$(printf "%s" "<text>" | base64 | tr -d '\r\n')"`) so it works across both local and remote/SSH sessions. Because unsupported terminals silently ignore OSC 52 without an error, briefly notify the user that text was copied via terminal escape codes and that they can ask to retry with a platform-specific tool (`pbcopy`, `wl-copy`, `xclip`) if the copy did not take effect.
+When copying text to the clipboard, emit an OSC 52 escape sequence and write it to the terminal's PTY, never to stdout. The agent's shell has no controlling terminal and its stdout is captured, so a plain `printf` to stdout never reaches the terminal (and `/dev/tty` fails). Walk up the process tree to the first process that holds a PTY and write there; this works locally, over SSH and inside Herdr:
+
+```sh
+p=$$; t=
+while [ "$p" -gt 1 ]; do
+  t=$(ps -o tty= -p "$p" | tr -d ' ')
+  [ -c "/dev/$t" ] && [ -w "/dev/$t" ] && break
+  t=; p=$(ps -o ppid= -p "$p" | tr -d ' ')
+done
+printf '\033]52;c;%s\a' "$(printf '%s' "<text>" | base64 | tr -d '\r\n')" > "/dev/${t:?no terminal found}"
+```
+
+Tell the user the text was copied via a terminal escape sequence. If the snippet reports no terminal, or the user says the copy did not take effect, fall back to a platform tool (`pbcopy`, `wl-copy`, `xclip`).
 
 # Beads: what to track
 
