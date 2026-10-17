@@ -9,3 +9,5 @@
 issue-prefix: "dotfiles"
 sync:
     remote: "git+ssh://git@github.com/hussainweb/dotfiles.git"
+export:
+    auto: false
