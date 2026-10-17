@@ -123,7 +123,6 @@ packages:
 
     # macOS specific formulas
     macos:
-      - herdr-gpui
       - mas
       - pinentry-mac
 
@@ -162,6 +161,7 @@ packages:
       - comet
       - ghostty
       - google-chrome
+      - herdr-gpui
       - sublime-text
 
     # Personal GUI apps (Installed if personal=true)
