@@ -10,6 +10,7 @@ packages:
     - ksdme/tap
     - mutagen-io/mutagen
     - olets/tap
+    - penso/tap
 
   # Command-line tools (Homebrew formulas)
   brews:
@@ -122,6 +123,7 @@ packages:
 
     # macOS specific formulas
     macos:
+      - herdr-gpui
       - mas
       - pinentry-mac
 
