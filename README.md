@@ -54,7 +54,7 @@ This repository uses a structured approach to manage packages via `.chezmoidata/
 
 * **Homebrew Brews**: Categorized into `minimal` (essential tools), `development` (languages and dev workflows), `standard` (modern CLI suite), and `macos` (OS-specific tools).
 * **Homebrew Casks**: Organized into `cli` (as casks), `fonts`, and various GUI categories (`minimal`, `standard`, `development`, `personal`, `large_apps`).
-* **Machine-Specific**: Supports targeted cask installations for specific machines (e.g., `the-good-machine`).
+* **Machine-Specific**: Supports targeted cask installations for specific machines (e.g., `mini-tirith`).
 * **Cross-Platform Support**: Includes `npm` and `apt` package lists for fallback or Linux environments.
 
 ## Configured Tools
