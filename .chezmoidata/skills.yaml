@@ -7,10 +7,12 @@ global_skills:
       - beads-trim-memories
       - capture-learning
       - conventional-commits
+      - dev-tooling
       - hussainweb-writing-style
       - interviewer
       - logseq-organization
       - merge-dependabot-prs
+      - wallace
   - repo: pasky/chrome-cdp-skill
   - repo: vercel-labs/skills
     skills:
