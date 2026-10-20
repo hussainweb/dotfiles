@@ -169,7 +169,6 @@ packages:
     personal:
       - claude
       - dayflow
-      - divvy
       - handbrake-app
       - karabiner-elements
       - logseq
@@ -180,7 +179,6 @@ packages:
       - notion-calendar
       - obsidian
       - raycast
-      - rectangle
       - shortcat
       - slack
       - sloth
