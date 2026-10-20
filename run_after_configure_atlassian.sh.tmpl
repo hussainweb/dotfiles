@@ -16,8 +16,13 @@ if command -v acli &> /dev/null && command -v op &> /dev/null; then
         fi
     fi
 
+    # `auth switch` only checks the account is configured; `auth status` checks the token works.
+    jira_authenticated() {
+        acli jira auth switch --site "$1" &> /dev/null && acli jira auth status &> /dev/null
+    }
+
     # Axelerant Jira
-    if ! acli jira auth switch --site axelerant.atlassian.net &> /dev/null; then
+    if ! jira_authenticated axelerant.atlassian.net; then
         echo "Authenticating with Axelerant Jira..."
         op read "op://Employee/n3enjt4hnmrdq7czug6nlkzpti/credential" --account axelerant.1password.com | acli jira auth login --site axelerant.atlassian.net --email hussain@axelerant.com --token || echo "Axelerant Jira login failed (maybe 1Password is locked?)"
     else
@@ -25,12 +30,15 @@ if command -v acli &> /dev/null && command -v op &> /dev/null; then
     fi
 
     # Momentus Jira
-    if ! acli jira auth switch --site ungerboeck.atlassian.net &> /dev/null; then
+    if ! jira_authenticated ungerboeck.atlassian.net; then
         echo "Authenticating with Momentus Jira..."
         op read "op://Employee/Momentus Jira/credential" --account axelerant.1password.com | acli jira auth login --site ungerboeck.atlassian.net --email hussain_abbas@gomomentus.com --token || echo "Momentus Jira login failed (maybe 1Password is locked?)"
     else
         echo "Momentus Jira already authenticated."
     fi
+
+    # Leave Axelerant as the active account.
+    acli jira auth switch --site axelerant.atlassian.net &> /dev/null || true
 else
     echo "Skipping Atlassian CLI auth: acli or op not found."
 fi
