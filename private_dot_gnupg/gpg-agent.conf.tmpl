@@ -1,8 +1,10 @@
 {{- if eq .chezmoi.os "darwin" -}}
-{{- if stat "/opt/homebrew/bin/pinentry-mac" -}}
-pinentry-program /opt/homebrew/bin/pinentry-mac
-{{- else if stat "/usr/local/bin/pinentry-mac" -}}
-pinentry-program /usr/local/bin/pinentry-mac
+{{- /* Probe only this arch's Homebrew prefix: on Apple Silicon /usr/local/bin
+       can exist without being traversable, and stat then errors instead of
+       returning false. */ -}}
+{{- $brew_bin := ternary "/opt/homebrew/bin" "/usr/local/bin" (eq .chezmoi.arch "arm64") -}}
+{{- if stat (joinPath $brew_bin "pinentry-mac") -}}
+pinentry-program {{ joinPath $brew_bin "pinentry-mac" }}
 {{- end }}
 {{- else if eq .chezmoi.os "linux" -}}
 {{- if stat "/home/linuxbrew/.linuxbrew/bin/pinentry" -}}
