@@ -169,7 +169,6 @@ packages:
     personal:
       - claude
       - dayflow
-      - disk-inventory-x
       - divvy
       - handbrake-app
       - karabiner-elements
