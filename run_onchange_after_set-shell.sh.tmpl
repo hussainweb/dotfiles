@@ -3,6 +3,17 @@
 # .zshrc hash: {{ include "dot_zshrc.tmpl" | sha256sum }}
 # config.fish hash: {{ include "dot_config/fish/private_config.fish.tmpl" | sha256sum }}
 
+# Ensure Homebrew is in PATH, or the Homebrew fish is not found and chsh is skipped
+if ! command -v brew &> /dev/null; then
+    if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    elif [ -x /opt/homebrew/bin/brew ]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif [ -x /usr/local/bin/brew ]; then
+        eval "$(/usr/local/bin/brew shellenv)"
+    fi
+fi
+
 {{ if .ssh_host -}}
 WANTED_SHELL=$(command -v zsh)
 {{- else -}}
