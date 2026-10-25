@@ -46,6 +46,14 @@ Host *
 # and the bound caps a stalled agent at two seconds instead of the session.
 Match host * exec "SSH_AUTH_SOCK=$HOME/.ssh/agent.sock timeout 2 ssh-add -l >/dev/null 2>&1"
     IdentityAgent ~/.ssh/agent.sock
+
+# agent.sock follows whichever login came last, and that is not always one
+# that is still alive. A client such as the Herdr UI opens bursts of short
+# sessions; each repoints the link and then takes its socket with it, leaving
+# agent.sock dangling while the long-lived session is still up. Herdr keeps
+# its panes' SSH_AUTH_SOCK pointed at that live session, so try it next.
+Match host * exec "timeout 2 ssh-add -l >/dev/null 2>&1"
+    IdentityAgent SSH_AUTH_SOCK
 {{- end }}
 
 {{- if eq .chezmoi.os "darwin" }}
