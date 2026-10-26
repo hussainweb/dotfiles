@@ -220,14 +220,17 @@ packages:
 
   # Linux-specific configurations (fallbacks for when Casks/Brews don't apply)
   linux:
-    npm:
-      - "@anthropic-ai/claude-code@latest"
+    npm: []
     scripts: []
     development_scripts:
       - name: entire
         command: curl -fsSL https://entire.io/install.sh | bash
       - name: antigravity-cli
         command: curl -fsSL https://antigravity.google/cli/install.sh | bash
+      # Native installer, not npm: npm installs land under whichever Node is
+      # first on PATH, so each Node setup ends up with its own copy.
+      - name: claude-code
+        command: curl -fsSL https://claude.ai/install.sh | bash
       # No Linux brew or mise package (the macOS cask is in casks.cli), and
       # AWS ships no apt repository, so apt installs its .deb directly.
       - name: session-manager-plugin
