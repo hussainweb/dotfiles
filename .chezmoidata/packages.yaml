@@ -167,6 +167,7 @@ packages:
 
     # Personal GUI apps (Installed if personal=true)
     personal:
+      - akiflow
       - claude
       - dayflow
       - handbrake-app
