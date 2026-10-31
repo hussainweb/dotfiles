@@ -22,6 +22,7 @@ aliases:
   gpm: gh pr merge
 
   # Other
+  agy: agy --dangerously-skip-permissions
   bs: brew services
 
 functions:
