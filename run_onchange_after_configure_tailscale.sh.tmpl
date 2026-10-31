@@ -1,0 +1,62 @@
+{{ if and (eq .chezmoi.os "linux") .ssh_host -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Tailscale client installation and registration
+{{ $is_dev := or (eq .stack "development") (eq .stack "full") -}}
+{{ $key_field := ternary "dev_auth_key" "infra_auth_key" $is_dev -}}
+# Key fingerprint trigger: {{ onepasswordRead (printf "op://Private/Tailscale/%s" $key_field) "my.1password.com" | sha256sum }}
+
+if ! command -v op &> /dev/null; then
+    echo "1Password CLI (op) not found, skipping Tailscale setup."
+    exit 0
+fi
+
+ACCOUNT="my.1password.com"
+VAULT="Private"
+ITEM="Tailscale"
+
+if ! op account get --account "$ACCOUNT" &> /dev/null; then
+    if [ -t 0 ] || [ -c /dev/tty ]; then
+        echo "Checking 1Password account '$ACCOUNT' for Tailscale auth key..."
+        eval "$(op signin --account "$ACCOUNT")" || true
+    fi
+fi
+
+if ! op account get --account "$ACCOUNT" &> /dev/null; then
+    echo "  ⚠️  Account '$ACCOUNT' is locked or not signed in. Skipping Tailscale setup."
+    exit 0
+fi
+
+# 1. Install Tailscale if not present
+if ! command -v tailscale &> /dev/null; then
+    echo "Installing Tailscale..."
+    curl -fsSL https://tailscale.com/install.sh | sudo sh
+fi
+
+# 2. Check Tailscale status and authenticate if needed
+if ! tailscale status &> /dev/null; then
+    echo "Authenticating Tailscale with {{ $key_field }}..."
+    TS_AUTH_KEY=$(op read "op://${VAULT}/${ITEM}/{{ $key_field }}" --account "$ACCOUNT" 2>/dev/null || true)
+
+    if [ -n "$TS_AUTH_KEY" ]; then
+        EXTRA_FLAGS=""
+        {{ if eq .chezmoi.hostname "sys-utils" -}}
+        EXTRA_FLAGS="--advertise-routes=192.168.50.0/24 --advertise-exit-node"
+        {{ end -}}
+
+        sudo tailscale up \
+            --authkey="$TS_AUTH_KEY" \
+            --ssh=true \
+            --accept-routes=false \
+            --reset \
+            $EXTRA_FLAGS
+
+        echo "  ✓ Tailscale joined successfully with {{ ternary "tag:dev" "tag:infra" $is_dev }}."
+    else
+        echo "  ⚠️  Could not read {{ $key_field }} from op://${VAULT}/${ITEM}/{{ $key_field }}"
+    fi
+else
+    echo "  ✓ Tailscale is already connected."
+fi
+{{ end -}}
