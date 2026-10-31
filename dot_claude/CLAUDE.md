@@ -2,6 +2,8 @@
 
 # Git commits and PRs
 
+- For a sequence of tasks or a complex multi-step task, commit by default, even if I didn't ask. When unsure, commit and tell me, or ask; don't assume I don't want a commit. An explicit "don't commit" always wins.
+- Keep commits atomic: one logical change each, committed as each step finishes. Stage only that change's files or hunks and list the commits in your report. Don't push or amend unless asked.
 - If commit signing fails or hangs, committing unsigned is fine rather than getting stuck. Say so in your report and name the commits affected, so it is a visible choice and not a silent one.
 - NEVER add attribution to commits or PRs. Do not add a `Co-Authored-By: Claude ...` trailer or a "Generated with Claude Code" footer, even when tooling defaults or instructions suggest it. This applies to every commit message and PR body.
 
