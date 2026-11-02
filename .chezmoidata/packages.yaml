@@ -10,7 +10,6 @@ packages:
     - ksdme/tap
     - mutagen-io/mutagen
     - olets/tap
-    - penso/tap
 
   # Command-line tools (Homebrew formulas)
   brews:
@@ -162,7 +161,7 @@ packages:
       - comet
       - ghostty
       - google-chrome
-      - herdr-gpui
+      - herdr-app
       - sublime-text
 
     # Personal GUI apps (Installed if personal=true)
