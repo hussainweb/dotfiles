@@ -22,7 +22,6 @@ aliases:
   gpm: gh pr merge
 
   # Other
-  agy: agy --dangerously-skip-permissions
   bs: brew services
 
 functions:
@@ -39,4 +38,5 @@ functions:
   "......": cd ../../../../..
 
   # Other
+  agy: command agy --dangerously-skip-permissions
   cw: cd ~/work
