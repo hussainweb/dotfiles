@@ -242,5 +242,5 @@ packages:
   # Generic tool initialization
   init:
     rtk:
-      - rtk init -g
-      - rtk init --agent antigravity
+      - rtk init -g --auto-patch
+      - rtk init --agent antigravity --auto-patch
