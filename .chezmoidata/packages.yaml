@@ -222,7 +222,9 @@ packages:
   # Linux-specific configurations (fallbacks for when Casks/Brews don't apply)
   linux:
     npm: []
-    scripts: []
+    scripts:
+      - name: rex
+        command: command -v rex &>/dev/null || curl -fsSL https://pkgs.superlogical.com/rex/install.sh | sh
     development_scripts:
       - name: entire
         command: curl -fsSL https://entire.io/install.sh | bash
