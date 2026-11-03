@@ -33,7 +33,6 @@ packages:
       - git-lfs
       - go-task
       - helix
-      - herdr
       - htop
       - jq
       - make
