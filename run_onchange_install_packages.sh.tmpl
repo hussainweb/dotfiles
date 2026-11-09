@@ -46,13 +46,13 @@ tap {{ . | quote }}
 brew {{ . | quote }}
 {{ end }}
 
-{{ if or (eq .stack "container") (eq .stack "development") (eq .stack "full") -}}
+{{ if .container -}}
 {{ range .packages.brews.container -}}
 brew {{ . | quote }}
 {{ end }}
 {{- end }}
 
-{{ if or (eq .stack "development") (eq .stack "full") -}}
+{{ if .development -}}
 {{ range .packages.brews.development -}}
 brew {{ . | quote }}
 {{ end }}
@@ -64,7 +64,7 @@ brew {{ . | quote }}
 {{ end }}
 {{- end }}
 
-{{ if or (eq .stack "container") (eq .stack "development") (eq .stack "full") -}}
+{{ if .container -}}
 {{ range .packages.brews.standard_cli -}}
 brew {{ . | quote }}
 {{ end }}
@@ -98,7 +98,7 @@ cask {{ . | quote }}
 {{ end }}
 {{- end }}
 
-{{ if or (eq .stack "development") (eq .stack "full") -}}
+{{ if .development -}}
 # Developer GUI apps
 {{ range .packages.casks.development -}}
 cask {{ . | quote }}
@@ -118,8 +118,8 @@ fi
 # --- Linux-specific non-brew phase ---
 {{ if eq .chezmoi.os "linux" -}}
 
-# Install NPM tools on Linux development/full stack
-{{ if or (eq .stack "development") (eq .stack "full") -}}
+# Install NPM tools on Linux development stack
+{{ if .development -}}
 if command -v npm &> /dev/null; then
     echo "Installing NPM global packages..."
     {{ range .packages.linux.npm -}}
@@ -140,7 +140,7 @@ echo "Running custom install script: {{ .name }}..."
 {{ end }}
 
 # Run custom Linux development scripts
-{{ if or (eq .stack "development") (eq .stack "full") -}}
+{{ if .development -}}
 {{ range .packages.linux.development_scripts -}}
 echo "Running custom development script: {{ .name }}..."
 {{ .command }}
