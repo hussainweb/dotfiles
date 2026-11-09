@@ -38,13 +38,11 @@ set -gx OPENROUTER_KEY {{ onepasswordRead "op://Employee/a5ay62mcrckiuleljdydlg5
 set -gx OPENROUTER_KEY {{ onepasswordRead "op://Private/OpenRouter/API Keys/llm cli" "my.1password.com" }}
 {{- end }}
 
-{{ if or (eq .stack "full") (eq .stack "container") -}}
-{{   if .work -}}
+{{ if and .work .container -}}
 set -gx JIRA_API_TOKEN {{ onepasswordRead "op://Employee/n3enjt4hnmrdq7czug6nlkzpti/credential" "axelerant.1password.com" }}
-{{-   end }}
 {{- end }}
 
-{{ if and .personal (or (eq .stack "development") (eq .stack "full")) -}}
+{{ if and .personal .development -}}
 set -gx DRUPALORG_GITLAB_TOKEN {{ onepasswordRead "op://Private/drupal.org/6nhikozmsyhfgzyeha34ax7p3m" "my.1password.com" }}
 {{- end }}
 
