@@ -74,6 +74,7 @@ packages:
       - mutagen
       - node
       - nvm
+      - ollama
       - opencode
       - php
       - python3
