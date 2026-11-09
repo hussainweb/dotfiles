@@ -51,7 +51,7 @@ if ! tailscale status &> /dev/null; then
             --reset \
             $EXTRA_FLAGS
 
-        echo "  ✓ Tailscale joined successfully with {{ ternary "tag:dev" "tag:infra" $is_dev }}."
+        echo "  ✓ Tailscale joined successfully with {{ ternary "tag:dev" "tag:infra" .development }}."
     else
         echo "  ⚠️  Could not read {{ $key_field }} from op://${VAULT}/${ITEM}/{{ $key_field }}"
     fi
