@@ -7,8 +7,10 @@ set -euo pipefail
 # Email: {{ .email }}
 # Config hash: {{ printf "%s:%s" .chezmoi.username .email | sha256sum }}
 
-# 1. Install Rex if not present
-if ! command -v rex &> /dev/null; then
+# 1. Install Rex unless the Superlogical package and its apt pin are in place.
+# Ubuntu's unrelated Perl "rex" can otherwise replace it via unattended-upgrades.
+if ! { dpkg-query -W -f '${Maintainer}' rex 2>/dev/null | grep -q Superlogical \
+        && [ -f /etc/apt/preferences.d/rex ]; }; then
     echo "Installing Rex..."
     curl -fsSL https://pkgs.superlogical.com/rex/install.sh | sh
 fi
