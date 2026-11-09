@@ -54,5 +54,15 @@
   computerName = {{ $computer_name | quote }}
   proxmox_endpoint = {{ $proxmox_endpoint | quote }}
 
+{{- /* 1Password accounts that templates and scripts read secrets from */ -}}
+{{- $op_accounts := list -}}
+{{- if or $personal $ssh_host -}}
+{{-   $op_accounts = append $op_accounts "my.1password.com" -}}
+{{- end -}}
+{{- if $work -}}
+{{-   $op_accounts = append $op_accounts "axelerant.1password.com" -}}
+{{- end }}
+
 [hooks.read-source-state.pre]
   command = {{ joinPath .chezmoi.sourceDir ".install-1password.sh" | quote }}
+  args = {{ $op_accounts | toToml }}

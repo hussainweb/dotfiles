@@ -4,9 +4,9 @@ My dotfiles and setup script managed with [chezmoi](https://chezmoi.io/).
 
 ## Prerequisites
 
-Before running the installation script, you must manually install and configure **1Password**. 
+Have your **1Password** sign-in details ready (email, Secret Key and password).
 
-There is a script that installs the 1Password CLI automatically, but the main application needs to be installed and available first to provide access to secrets during the chezmoi apply process.
+A chezmoi pre-hook (`.install-1password.sh`) installs the 1Password CLI if it is missing and, on first run, prompts you to add each account this machine needs (`my.1password.com` for personal machines and servers, `axelerant.1password.com` when `work` is enabled). chezmoi then prompts for the account password when a template first reads a secret. On macOS, the desktop app's CLI integration makes the accounts available without the extra prompt.
 
 ## Installation
 
