@@ -20,10 +20,12 @@
 {{- $email := promptStringOnce . "email" "Your email address" "hussainweb@gmail.com" -}}
 
 {{- /* Software Stack Selection */ -}}
-{{- $default_stack := ternary "full" "base" $is_workstation -}}
+{{- $default_stack := ternary "full" "base" $is_personal_machine -}}
 {{- $stack := promptStringOnce . "stack" "Software stack (base, container, development, full)" $default_stack -}}
 
 {{- /* Derived settings */ -}}
+{{- $has_container := or (eq $stack "container") (eq $stack "development") (eq $stack "full") -}}
+{{- $has_development := or (eq $stack "development") (eq $stack "full") -}}
 {{- $media := eq $stack "full" -}}
 {{- /* ssh_host: true for servers/RPis, false for macOS and known personal workstations */ -}}
 {{- $ssh_host := false -}}
@@ -41,6 +43,8 @@
   personal = {{ $personal }}
   work = {{ $work }}
   stack = {{ $stack | quote }}
+  container = {{ $has_container }}
+  development = {{ $has_development }}
   media = {{ $media }}
   workstation = {{ $is_workstation }}
   macos = {{ $is_macos }}
