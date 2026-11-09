@@ -23,7 +23,7 @@ Host *
 {{- if eq .chezmoi.os "darwin" }}
     UseKeychain yes
 {{- end }}
-{{- if and .ssh_host (or (eq .stack "development") (eq .stack "full")) }}
+{{- if and .ssh_host .development }}
     IdentityFile ~/.ssh/id_ed25519
 {{- end }}
     # 1Password Agent handles key discovery.

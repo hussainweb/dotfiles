@@ -1,4 +1,4 @@
-{{- if or (eq .stack "development") (eq .stack "full") }}
+{{- if .development }}
 {{- /* Clone over SSH wherever a GitHub identity exists (the dev key on disk,
        or a 1Password agent socket), so pushes from the clone work without an
        HTTPS credential helper. A fresh host that has neither yet gets the

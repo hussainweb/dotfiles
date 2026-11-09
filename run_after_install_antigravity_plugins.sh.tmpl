@@ -1,4 +1,4 @@
-{{- if or (eq .stack "development") (eq .stack "full") -}}
+{{- if .development -}}
 #!/bin/bash
 # Installs the agent plugins from the skills repo checkout (listed in
 # .chezmoidata/skills.yaml) into Antigravity.

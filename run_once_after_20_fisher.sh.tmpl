@@ -9,7 +9,7 @@ fisher install decors/fish-colored-man
 fisher install edc/bass
 fisher install franciscolourenco/done
 fisher install jethrokuan/z
-{{ if or (eq .stack "development") (eq .stack "full") -}}
+{{ if .development -}}
 fisher install jorgebucaran/nvm.fish
 {{- end }}
 fisher install oh-my-fish/plugin-bang-bang

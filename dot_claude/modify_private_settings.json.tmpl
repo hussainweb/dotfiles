@@ -9,7 +9,7 @@ import os
 import sys
 
 PLUGIN_ROOT = os.path.expanduser("~/.local/share/hussainweb-skills/plugins")
-PLUGINS = [{{ if or (eq .stack "development") (eq .stack "full") }}{{ range .agent_plugins }}{{ if or (not (hasKey . "agents")) (has "claude-code" .agents) }}"{{ .name }}", {{ end }}{{ end }}{{ end }}]
+PLUGINS = [{{ if .development }}{{ range .agent_plugins }}{{ if or (not (hasKey . "agents")) (has "claude-code" .agents) }}"{{ .name }}", {{ end }}{{ end }}{{ end }}]
 
 # Paths earlier versions of this script added.
 RETIRED_PREFIXES = [os.path.expanduser("~/.claude/plugins-local/")]

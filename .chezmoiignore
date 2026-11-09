@@ -9,4 +9,4 @@ CLAUDE.md
 .dolt
 {{ if not .ssh_host }}.ssh/rc{{ end }}
 {{ if not .macos }}.config/herdr-app/**{{ end }}
-{{ if not (or (eq .stack "development") (eq .stack "full")) }}.gemini/antigravity-cli/**{{ end }}
+{{ if not .development }}.gemini/antigravity-cli/**{{ end }}

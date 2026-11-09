@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Dev SSH Key sync from 1Password
-{{ if and .ssh_host (or (eq .stack "development") (eq .stack "full")) -}}
+{{ if and .ssh_host .development -}}
 # Key fingerprint trigger: {{ onepasswordRead "op://Private/Homelab VM SSH Key/public key" "my.1password.com" | sha256sum }}
 
 if ! command -v op &> /dev/null; then
