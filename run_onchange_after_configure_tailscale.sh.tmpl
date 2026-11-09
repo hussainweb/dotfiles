@@ -33,7 +33,23 @@ if ! command -v tailscale &> /dev/null; then
     curl -fsSL https://tailscale.com/install.sh | sudo sh
 fi
 
-# 2. Check Tailscale status and authenticate if needed
+# 2. Ensure tailscaled is running and wait until its socket answers.
+# A fresh install enables the service, but the daemon may not be ready yet.
+if command -v systemctl &> /dev/null; then
+    sudo systemctl enable --now tailscaled
+fi
+
+for _ in $(seq 1 30); do
+    tailscale status --json &> /dev/null && break
+    sleep 1
+done
+
+if ! tailscale status --json &> /dev/null; then
+    echo "  ⚠️  tailscaled is not responding after 30s. Check: sudo systemctl status tailscaled"
+    exit 1
+fi
+
+# 3. Check Tailscale status and authenticate if needed
 if ! tailscale status &> /dev/null; then
     echo "Authenticating Tailscale with {{ $key_field }}..."
     TS_AUTH_KEY=$(op read "op://${VAULT}/${ITEM}/{{ $key_field }}" --account "$ACCOUNT" 2>/dev/null || true)
