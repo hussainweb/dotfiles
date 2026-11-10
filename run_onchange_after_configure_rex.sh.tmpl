@@ -1,4 +1,4 @@
-{{ if and (eq .chezmoi.os "linux") .ssh_host -}}
+{{ if and (eq .chezmoi.os "linux") .ssh_host .development -}}
 #!/usr/bin/env bash
 set -euo pipefail
 
