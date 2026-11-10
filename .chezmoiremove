@@ -1,0 +1,3 @@
+# Former 1Password wrappers around chezmoi, replaced by .chezmoi-op
+.config/zsh/functions/chezmoi
+.config/fish/functions/chezmoi.fish

@@ -63,7 +63,8 @@ if [ "${1:-}" = session-env ]; then
     uid=$(user_uuid "$account")
     [ -n "$uid" ] || { echo "1Password account $account is not set up" >&2; exit 1; }
     token=$(session_token "$account")
-    printf 'export OP_SESSION_%s=%q\n' "$uid" "$token"
+    # Desktop-app integration (macOS) signs in without a token; export nothing.
+    [ -z "$token" ] || printf 'export OP_SESSION_%s=%q\n' "$uid" "$token"
     exit
 fi
 
