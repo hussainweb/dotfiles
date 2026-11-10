@@ -32,7 +32,25 @@ fi
 # 2. Ensure tailscaled is running and wait until its socket answers.
 # A fresh install enables the service, but the daemon may not be ready yet.
 if command -v systemctl &> /dev/null; then
-    sudo systemctl enable --now tailscaled
+    # Containers (e.g. Proxmox LXC) often have no /dev/net/tun, where tailscaled
+    # crashes on start. Userspace networking still serves Tailscale SSH and
+    # inbound connections; outbound tailnet traffic would need its SOCKS5 proxy.
+    DEFAULTS=/etc/default/tailscaled
+    if [ ! -c /dev/net/tun ] && ! grep -q -- '--tun=userspace-networking' "$DEFAULTS" 2>/dev/null; then
+        echo "No /dev/net/tun (container?): running tailscaled in userspace networking mode."
+        if grep -q '^FLAGS=' "$DEFAULTS" 2>/dev/null; then
+            sudo sed -i 's/^FLAGS="\(.*\)"/FLAGS="\1 --tun=userspace-networking"/' "$DEFAULTS"
+        else
+            echo 'FLAGS="--tun=userspace-networking"' | sudo tee -a "$DEFAULTS" > /dev/null
+        fi
+        sudo systemctl reset-failed tailscaled 2> /dev/null || true
+        sudo systemctl enable tailscaled
+        sudo systemctl restart tailscaled
+    else
+        # Clear a start-limit hit from earlier crashes so the start can proceed.
+        sudo systemctl reset-failed tailscaled 2> /dev/null || true
+        sudo systemctl enable --now tailscaled
+    fi
 fi
 
 for _ in $(seq 1 30); do
