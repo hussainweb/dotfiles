@@ -63,6 +63,10 @@
 {{-   $op_accounts = append $op_accounts "axelerant.1password.com" -}}
 {{- end }}
 
+# Shares one 1Password session per account between templates and run scripts.
+[onepassword]
+  command = {{ joinPath .chezmoi.sourceDir ".chezmoi-op" | quote }}
+
 [hooks.read-source-state.pre]
   command = {{ joinPath .chezmoi.sourceDir ".install-1password.sh" | quote }}
   args = {{ $op_accounts | toToml }}

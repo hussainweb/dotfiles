@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+# 1Password CLI wrapper shared by chezmoi templates and run scripts, so one
+# chezmoi run asks for each account's password at most once.
+#
+# chezmoi calls this as its onepassword.command (see .chezmoi.toml.tmpl). The
+# session token from `op signin --raw` is cached per user in
+# $XDG_RUNTIME_DIR/chezmoi-op (tmpfs, 0700, cleared at reboot) and reused until
+# 1Password expires the session. Without XDG_RUNTIME_DIR nothing is cached.
+#
+# Usage:
+#   .chezmoi-op <op arguments...>     run op, reusing a cached session for signin --raw
+#   .chezmoi-op session-env ACCOUNT   print `export OP_SESSION_<user_uuid>=...` for eval
+set -euo pipefail
+
+cache_dir="${XDG_RUNTIME_DIR:+$XDG_RUNTIME_DIR/chezmoi-op}"
+
+# Map any account identifier (shorthand, URL, email, account or user UUID) to
+# the user UUID; op reads the session token from OP_SESSION_<user_uuid>.
+user_uuid() {
+    op account list --format json 2>/dev/null |
+        sed -n -e 's/^[[:space:]]*[{}].*/-- -/p' \
+            -e 's/^[[:space:]]*"\([a-z_]*\)":[[:space:]]*"\([^"]*\)".*/\1 \2/p' |
+        awk -v want="$1" '
+            $1 == "--" { if (hit && uu != "") { print uu; exit } hit = 0; uu = ""; next }
+            $1 == "user_uuid" { uu = $2 }
+            $2 == want || $2 == "https://" want { hit = 1 }'
+}
+
+# Print a valid session token for an account, signing in only when the cached
+# one is missing or expired. Extra arguments are passed to `op signin`.
+session_token() {
+    local account=$1 uid token file
+    shift
+    uid=$(user_uuid "$account")
+
+    if [ -n "$cache_dir" ] && [ -n "$uid" ]; then
+        file="$cache_dir/$uid"
+        if [ -s "$file" ]; then
+            token=$(<"$file")
+            if op account get --account "$account" --session "$token" >/dev/null 2>&1; then
+                printf '%s\n' "$token"
+                return
+            fi
+        fi
+    fi
+
+    token=$(op signin --account "$account" --raw "$@")
+
+    if [ -n "$cache_dir" ] && [ -n "$uid" ]; then
+        (
+            umask 077
+            mkdir -p "$cache_dir"
+            tmp=$(mktemp "$cache_dir/.tmp.XXXXXX")
+            printf '%s' "$token" >"$tmp"
+            mv -f "$tmp" "$file"
+        )
+    fi
+    printf '%s\n' "$token"
+}
+
+if [ "${1:-}" = session-env ]; then
+    account=${2:?usage: .chezmoi-op session-env ACCOUNT}
+    uid=$(user_uuid "$account")
+    [ -n "$uid" ] || { echo "1Password account $account is not set up" >&2; exit 1; }
+    token=$(session_token "$account")
+    printf 'export OP_SESSION_%s=%q\n' "$uid" "$token"
+    exit
+fi
+
+# chezmoi signs in with: op signin --account <account> --raw [--session <token>]
+if [ "${1:-}" = signin ] && [[ " $* " == *" --raw "* ]]; then
+    account=""
+    rest=()
+    shift
+    while [ $# -gt 0 ]; do
+        case "$1" in
+        --account) account=$2; shift 2 ;;
+        --raw) shift ;;
+        *) rest+=("$1"); shift ;;
+        esac
+    done
+    if [ -n "$account" ]; then
+        session_token "$account" "${rest[@]}"
+        exit
+    fi
+    exec op signin --raw "${rest[@]}"
+fi
+
+exec op "$@"

@@ -18,6 +18,7 @@
   - **Chezmoi Go Templates:** Chezmoi translates account domains to account UUIDs and checks `OP_SESSION_<account_uuid>`.
   - **1Password CLI in Post-Run Scripts:** The CLI looks for `OP_SESSION_<shorthand>`. If the account shorthand is a domain (e.g. `my.1password.com`), the variable contains literal dots (`OP_SESSION_my.1password.com`).
   - **Shell Identifier Restrictions:** Unix shells (Bash, Zsh, Fish) reject dots in variable names (`export: not valid in this context`). Therefore, tokens must be captured via `op signin --raw` (never shell `eval $(op signin)`), and dotted variables must be passed directly to the `chezmoi` process table via `/usr/bin/env`.
+  - **Shared Session (`.chezmoi-op`):** chezmoi's `onepassword.command` points at `.chezmoi-op`, which caches each account's session token in `$XDG_RUNTIME_DIR/chezmoi-op` until it expires. Run scripts must get their session with `eval "$({{ joinPath .chezmoi.sourceDir ".chezmoi-op" | quote }} session-env <account>)"` and never call `op signin` themselves, or they prompt for the password a second time.
   - **Autoloaded Wrappers:** The wrapper functions in `dot_config/zsh/private_functions/chezmoi.tmpl` and `dot_config/fish/private_functions/private_chezmoi.fish.tmpl` maintain this isolation and environment propagation. Keep them synchronized whenever modifying authentication or secret workflows.
 
 ## Beads

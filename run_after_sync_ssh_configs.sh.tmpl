@@ -61,12 +61,8 @@ SUCCESSFULLY_SCANNED_ACCOUNTS=()
 for ACCOUNT in "${ACCOUNTS[@]}"; do
     echo "Checking 1Password account '$ACCOUNT' for SSH configs (tag: $TAG)..."
 
-    if ! op account get --account "$ACCOUNT" &> /dev/null; then
-        if [ -t 0 ] || [ -c /dev/tty ]; then
-            echo "  Account '$ACCOUNT' is locked or not signed in. Signing in..."
-            eval "$(op signin --account "$ACCOUNT")" || true
-        fi
-    fi
+    # Reuse the 1Password session chezmoi already opened (see .chezmoi-op).
+    eval "$({{ joinPath .chezmoi.sourceDir ".chezmoi-op" | quote }} session-env "$ACCOUNT")" || true
 
     if ! op account get --account "$ACCOUNT" &> /dev/null; then
         echo "  ⚠️  Account '$ACCOUNT' is locked or not signed in. Skipping."
