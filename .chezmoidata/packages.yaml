@@ -176,7 +176,6 @@ packages:
       - macshot
       - mounty
       - notion
-      - notion-calendar
       - obsidian
       - raycast
       - shortcat
