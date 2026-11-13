@@ -11,8 +11,9 @@
 {{- $opAgentLinux := stat (joinPath .chezmoi.homeDir ".1password" "agent.sock") -}}
 {{- if or $sshKey $opAgentMac $opAgentLinux }}{{ $skillsURL = "git@github.com:hussainweb/skills.git" }}{{ end }}
 # The skills repo, for the agent plugins in its plugins/ directory: Claude Code
-# loads them through CLAUDE_CODE_PLUGIN_DIRS (dot_claude/modify_private_settings.json)
-# and Antigravity installs them (run_after_install_antigravity_plugins.sh).
+# loads them through CLAUDE_CODE_PLUGIN_DIRS (dot_claude/modify_private_settings.json),
+# Antigravity installs them (run_after_install_antigravity_plugins.sh) and
+# Hermes gets copies of their skills (run_after_install_hermes_plugin_skills.sh).
 [".local/share/hussainweb-skills"]
     type = "git-repo"
     url = {{ $skillsURL | quote }}

@@ -1,0 +1,33 @@
+{{- if and .agents (lookPath "hermes") -}}
+#!/bin/bash
+# Copies the skills of the agent plugins in the skills repo checkout (listed in
+# .chezmoidata/skills.yaml) into Hermes, which cannot load these plugins.
+# --copy keeps them in ~/.hermes/skills only: the default install would also put
+# them in ~/.agents/skills, where agents that already load the plugins (and Pi)
+# would list them a second time.
+# A plugin is recopied whenever its directory changes in the checkout: its git
+# tree hash is compared with the one recorded at the last copy. Runs on every
+# apply; a plugin that has not changed costs one `git rev-parse`. Skills dropped
+# from a plugin are not removed.
+
+REPO="$HOME/.local/share/hussainweb-skills"
+STATE="$HOME/.local/state/chezmoi/hermes-plugin-skills"
+PLUGINS="{{ range .agent_plugins }}{{ if or (not (hasKey . "agents")) (has "hermes-agent" .agents) }}{{ .name }} {{ end }}{{ end }}"
+
+command -v npx >/dev/null 2>&1 || exit 0
+[ -d "$REPO/.git" ] || exit 0
+mkdir -p "$STATE"
+
+for plugin in $PLUGINS; do
+    [ -d "$REPO/plugins/$plugin/skills" ] || continue
+    tree=$(git -C "$REPO" rev-parse "HEAD:plugins/$plugin" 2>/dev/null) || continue
+    [ "$(cat "$STATE/$plugin" 2>/dev/null)" = "$tree" ] && continue
+
+    echo "Copying skills of plugin $plugin into Hermes..."
+    if npx -y skills add "$REPO/plugins/$plugin" --agent hermes-agent --copy -g -y >/dev/null; then
+        echo "$tree" > "$STATE/$plugin"
+    else
+        echo "warning: could not copy the skills of plugin $plugin into Hermes; will retry on the next apply" >&2
+    fi
+done
+{{- end }}

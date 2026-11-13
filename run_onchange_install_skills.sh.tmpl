@@ -9,9 +9,14 @@ set -e
 if command -v npx &> /dev/null; then
     echo "Installing global skills..."
     
-    # Pi and other universal agents read ~/.agents/skills, where every install
-    # lands, so they need no entry here.
-    TARGET_AGENTS="hermes-agent"
+    # "universal" is ~/.agents/skills, which Pi and other universal agents read
+    # and where every install lands anyway. Hermes is a target only where it is
+    # installed; lookPath puts that in the rendered script, so installing
+    # Hermes later reruns it.
+    TARGET_AGENTS="universal"
+    {{ if lookPath "hermes" -}}
+    TARGET_AGENTS="$TARGET_AGENTS hermes-agent"
+    {{- end }}
     {{ if .development -}}
     TARGET_AGENTS="$TARGET_AGENTS antigravity antigravity-cli warp zed"
     {{- end }}
