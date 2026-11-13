@@ -5,7 +5,7 @@
 # Exit on error
 set -e
 
-{{ if .global_skills -}}
+{{ if and .development .global_skills -}}
 if command -v npx &> /dev/null; then
     echo "Installing global skills..."
     
