@@ -5,12 +5,17 @@
 # Exit on error
 set -e
 
-{{ if and .development .global_skills -}}
+{{ if and .agents .global_skills -}}
 if command -v npx &> /dev/null; then
     echo "Installing global skills..."
     
-    TARGET_AGENTS="antigravity antigravity-cli warp zed"
-    {{ if .work -}}
+    # Pi and other universal agents read ~/.agents/skills, where every install
+    # lands, so they need no entry here.
+    TARGET_AGENTS="hermes-agent"
+    {{ if .development -}}
+    TARGET_AGENTS="$TARGET_AGENTS antigravity antigravity-cli warp zed"
+    {{- end }}
+    {{ if and .development .work -}}
     TARGET_AGENTS="$TARGET_AGENTS claude-code"
     {{- end }}
 
