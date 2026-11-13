@@ -5,27 +5,57 @@
 # --copy keeps them in ~/.hermes/skills only: the default install would also put
 # them in ~/.agents/skills, where agents that already load the plugins (and Pi)
 # would list them a second time.
-# A plugin is recopied whenever its directory changes in the checkout: its git
-# tree hash is compared with the one recorded at the last copy. Runs on every
-# apply; a plugin that has not changed costs one `git rev-parse`. Skills dropped
-# from a plugin are not removed.
+# A plugin is recopied whenever its directory changes in the checkout (its git
+# tree hash is compared with the one recorded at the last copy) or one of its
+# skills is missing from Hermes. Skills this script copied that are no longer in
+# a listed plugin are removed. Runs on every apply; a plugin that has not
+# changed costs one `git rev-parse`.
 
 REPO="$HOME/.local/share/hussainweb-skills"
-STATE="$HOME/.local/state/chezmoi/hermes-plugin-skills"
+SKILLS="$HOME/.hermes/skills"
+STATE="${XDG_STATE_HOME:-$HOME/.local/state}/chezmoi/hermes-plugin-skills"
 PLUGINS="{{ range .agent_plugins }}{{ if or (not (hasKey . "agents")) (has "hermes-agent" .agents) }}{{ .name }} {{ end }}{{ end }}"
 
 command -v npx >/dev/null 2>&1 || exit 0
 [ -d "$REPO/.git" ] || exit 0
 mkdir -p "$STATE"
 
-for plugin in $PLUGINS; do
-    [ -d "$REPO/plugins/$plugin/skills" ] || continue
-    tree=$(git -C "$REPO" rev-parse "HEAD:plugins/$plugin" 2>/dev/null) || continue
-    [ "$(cat "$STATE/$plugin" 2>/dev/null)" = "$tree" ] && continue
+# Removes the copied skills named in a record file that are not in $2.
+remove_dropped() {
+    [ -f "$1" ] || return 0
+    comm -23 "$1" <(printf '%s\n' "$2") | while read -r skill; do
+        [ -n "$skill" ] || continue
+        echo "Removing Hermes skill $skill, which is no longer in a listed plugin..."
+        rm -rf "${SKILLS:?}/$skill"
+    done
+}
 
+# Plugins dropped from the list.
+for record in "$STATE"/*.skills; do
+    [ -e "$record" ] || continue
+    plugin=$(basename "$record" .skills)
+    case " $PLUGINS " in *" $plugin "*) continue ;; esac
+    remove_dropped "$record" ""
+    rm -f "$record" "$STATE/$plugin"
+done
+
+for plugin in $PLUGINS; do
+    dir="$REPO/plugins/$plugin/skills"
+    [ -d "$dir" ] || continue
+    tree=$(git -C "$REPO" rev-parse "HEAD:plugins/$plugin" 2>/dev/null) || continue
+    names=$(for d in "$dir"/*/; do [ -f "$d/SKILL.md" ] && basename "$d"; done | sort -u)
+
+    missing=
+    for skill in $names; do
+        [ -f "$SKILLS/$skill/SKILL.md" ] || missing=1
+    done
+    [ -z "$missing" ] && [ "$(cat "$STATE/$plugin" 2>/dev/null)" = "$tree" ] && continue
+
+    remove_dropped "$STATE/$plugin.skills" "$names"
     echo "Copying skills of plugin $plugin into Hermes..."
     if npx -y skills add "$REPO/plugins/$plugin" --agent hermes-agent --copy -g -y >/dev/null; then
         echo "$tree" > "$STATE/$plugin"
+        printf '%s\n' "$names" > "$STATE/$plugin.skills"
     else
         echo "warning: could not copy the skills of plugin $plugin into Hermes; will retry on the next apply" >&2
     fi
