@@ -35,8 +35,7 @@ if command -v brew &> /dev/null; then
     fi
     {{ end }}
 
-    echo "Applying Homebrew bundle..."
-    brew bundle --file=/dev/stdin <<EOF
+    BREWFILE=$(cat <<EOF
 {{ range .packages.taps -}}
 tap {{ . | quote }}
 {{ end }}
@@ -119,6 +118,33 @@ cask {{ . | quote }}
 {{- end }}
 {{- end }}
 EOF
+)
+
+    echo "Applying Homebrew bundle..."
+    brew bundle --file=/dev/stdin <<<"$BREWFILE"
+
+    # Uninstall what an earlier run of this script installed and the config no
+    # longer lists. Only this script's own installs are recorded, so packages
+    # added by hand on a machine are never touched. Nothing is recorded until
+    # the bundle succeeds, and removals made before this record existed are not
+    # picked up.
+    STATE="${XDG_STATE_HOME:-$HOME/.local/state}/chezmoi"
+    mkdir -p "$STATE"
+    for kind in brew cask; do
+        record="$STATE/managed-${kind}s"
+        flag=--formula
+        [ "$kind" = cask ] && flag=--cask
+        current=$(printf '%s\n' "$BREWFILE" | sed -n "s/^$kind \"\(.*\)\"$/\1/p" | sort -u)
+        if [ -f "$record" ]; then
+            comm -23 "$record" <(printf '%s\n' "$current") | while read -r name; do
+                [ -n "$name" ] || continue
+                brew list "$flag" "$name" &>/dev/null || continue
+                echo "Uninstalling $name, which was removed from the chezmoi config..."
+                brew uninstall "$flag" "$name" || echo "warning: could not uninstall $name; remove it by hand" >&2
+            done
+        fi
+        printf '%s\n' "$current" > "$record"
+    done
 fi
 
 # --- Linux-specific non-brew phase ---
