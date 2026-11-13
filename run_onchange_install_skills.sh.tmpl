@@ -27,5 +27,39 @@ if command -v npx &> /dev/null; then
     {{ range .global_skills -}}
     npx -y skills add {{ .repo }}{{ if hasKey . "skills" }} --skill {{ join " " .skills }}{{ end }} --agent $TARGET_AGENTS -y -g || true
     {{ end }}
+
+    # Remove the skills an earlier run of this script installed and the config
+    # no longer lists. Only this script's own installs are recorded, so skills
+    # added by hand on a machine are never touched; a repo listed without
+    # `skills` records whatever it installed from that repo. Removals made
+    # before this record existed are not picked up.
+    STATE="${XDG_STATE_HOME:-$HOME/.local/state}/chezmoi"
+    RECORD="$STATE/managed-skills"
+    mkdir -p "$STATE"
+    # Without the installed list, a repo listed without `skills` would look
+    # empty and its skills would be removed, so skip this run's cleanup instead.
+    if INSTALLED=$(npx -y skills ls -g --json 2>/dev/null); then
+        CURRENT=$(
+            {
+            {{- range .global_skills }}
+            {{- if hasKey . "skills" }}
+            printf '%s\n' {{ range .skills }}{{ . | quote }} {{ end }}
+            {{- else }}
+            jq -r --arg repo {{ .repo | quote }} '.[] | select(.source == $repo) | .name' <<<"$INSTALLED"
+            {{- end }}
+            {{- end }}
+            } | sort -u
+        )
+        if [ -f "$RECORD" ]; then
+            REMOVED=$(comm -23 "$RECORD" <(printf '%s\n' "$CURRENT") | grep -v '^$' || true)
+            if [ -n "$REMOVED" ]; then
+                echo "Removing skills that were removed from the chezmoi config:" $REMOVED
+                npx -y skills remove -g -y $REMOVED || echo "warning: could not remove some skills; remove them by hand" >&2
+            fi
+        fi
+        printf '%s\n' "$CURRENT" > "$RECORD"
+    else
+        echo "warning: could not list installed skills; skipping removal of skills dropped from the config" >&2
+    fi
 fi
 {{- end }}
