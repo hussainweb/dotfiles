@@ -61,6 +61,7 @@ packages:
       - beads
       - bv
       - gh
+      - hermes-agent
       - node
       - python3
       - rtk
