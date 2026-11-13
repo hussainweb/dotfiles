@@ -7,6 +7,7 @@
     - "all machines" / base → `brews.base`
     - "development machines" → `brews.development` (or `casks.development` for GUI)
     - "container machines" → `brews.container`
+    - "agent machines" (run coding agents; between container and development) → `brews.agents`
     - "workstations" → `casks.workstation`
     - "personal machines" → `casks.personal`
   - **Ask, Don't Research:** If `brew info` fails, requires an unknown tap, or is ambiguous, ask the user directly for clarification or the exact install command. Do not perform external web searches, inspect formula source code, check background services, or explore shell completions/integrations.

@@ -56,15 +56,22 @@ packages:
       - kubernetes-cli
       - opentofu
 
+    # Tools for machines that run coding agents (Installed if stack=agents or above)
+    agents:
+      - beads
+      - bv
+      - gh
+      - node
+      - python3
+      - rtk
+      - uv
+
     # Development tools (languages, AI agents, etc.)
     development:
       - acli
       - ast-grep
-      - beads
-      - bv
       - coolify-cli
       - direnv
-      - gh
       - go
       - hub
       - hyperfine
@@ -72,16 +79,12 @@ packages:
       - lazygit
       - llm
       - mutagen
-      - node
       - nvm
       - ollama
       - opencode
       - php
-      - python3
       - repomix
-      - rtk
       - sentry
-      - uv
 
     # Media and heavy processing tools
     media:

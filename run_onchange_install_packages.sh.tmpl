@@ -52,6 +52,12 @@ brew {{ . | quote }}
 {{ end }}
 {{- end }}
 
+{{ if .agents -}}
+{{ range .packages.brews.agents -}}
+brew {{ . | quote }}
+{{ end }}
+{{- end }}
+
 {{ if .development -}}
 {{ range .packages.brews.development -}}
 brew {{ . | quote }}
