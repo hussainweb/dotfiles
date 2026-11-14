@@ -1,3 +1,17 @@
+{{- define "run_linux_script" -}}
+{{- $root := index . 0 -}}
+{{- $script := index . 1 -}}
+{{- if or (not (index $script "ssh_host")) $root.ssh_host -}}
+echo "Running custom install script: {{ $script.name }}..."
+{{ $script.command }}
+{{ if index $script "post_script" -}}
+echo "Running post-install script for {{ $script.name }}..."
+bash -euo pipefail <<'CHEZMOI_POST_SCRIPT_EOF'
+{{ includeTemplate $script.post_script $root }}
+CHEZMOI_POST_SCRIPT_EOF
+{{ end -}}
+{{- end -}}
+{{- end -}}
 #!/bin/bash
 
 # .chezmoidata/packages.yaml hash: {{ include ".chezmoidata/packages.yaml" | sha256sum }}
@@ -167,15 +181,20 @@ fi
 
 # Run custom Linux install scripts
 {{ range .packages.linux.scripts -}}
-echo "Running custom install script: {{ .name }}..."
-{{ .command }}
+{{ template "run_linux_script" (list $ .) }}
 {{ end }}
+
+# Run custom Linux container scripts
+{{ if .container -}}
+{{ range .packages.linux.container_scripts -}}
+{{ template "run_linux_script" (list $ .) }}
+{{ end }}
+{{- end }}
 
 # Run custom Linux development scripts
 {{ if .development -}}
 {{ range .packages.linux.development_scripts -}}
-echo "Running custom development script: {{ .name }}..."
-{{ .command }}
+{{ template "run_linux_script" (list $ .) }}
 {{ end }}
 {{- end }}
 

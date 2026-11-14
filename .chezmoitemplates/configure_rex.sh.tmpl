@@ -1,19 +1,6 @@
-{{ if and (eq .chezmoi.os "linux") .ssh_host .container -}}
-#!/usr/bin/env bash
-set -euo pipefail
-
 # Configure Rex server and login-server service for remote access over Tailscale
 # User: {{ .chezmoi.username }}
 # Email: {{ .email }}
-# Config hash: {{ printf "%s:%s" .chezmoi.username .email | sha256sum }}
-
-# 1. Install Rex unless the Superlogical package and its apt pin are in place.
-# Ubuntu's unrelated Perl "rex" can otherwise replace it via unattended-upgrades.
-if ! { dpkg-query -W -f '${Maintainer}' rex 2>/dev/null | grep -q Superlogical \
-        && [ -f /etc/apt/preferences.d/rex ]; }; then
-    echo "Installing Rex..."
-    curl -fsSL https://pkgs.superlogical.com/rex/install.sh | sh
-fi
 
 # Block Ubuntu's unrelated Perl "rex" package so unattended-upgrades never
 # falls back to it when it temporarily pins pkgs.superlogical.com to -32768.
@@ -25,13 +12,13 @@ Pin-Priority: -1
 EOF
 fi
 
-# 2. Check Tailscale availability
+# Check Tailscale availability
 if ! command -v tailscale &> /dev/null; then
     echo "Tailscale not found, skipping Rex login-server configuration."
     exit 0
 fi
 
-# 3. Configure /etc/rex/accounts.jsonc
+# Configure /etc/rex/accounts.jsonc
 echo "Configuring /etc/rex/accounts.jsonc..."
 sudo mkdir -p /etc/rex
 sudo tee /etc/rex/accounts.jsonc > /dev/null << 'EOF'
@@ -55,7 +42,7 @@ sudo tee /etc/rex/accounts.jsonc > /dev/null << 'EOF'
 EOF
 sudo chmod 0644 /etc/rex/accounts.jsonc
 
-# 4. Configure systemd drop-in for rex-login-server.service
+# Configure systemd drop-in for rex-login-server.service
 echo "Configuring rex-login-server systemd drop-in..."
 sudo mkdir -p /etc/systemd/system/rex-login-server.service.d
 sudo tee /etc/systemd/system/rex-login-server.service.d/tailnet.conf > /dev/null << 'EOF'
@@ -68,13 +55,12 @@ ExecStart=
 ExecStart=/usr/bin/rex login-server --listen unix:///run/rex/login-server.sock --accounts /etc/rex/accounts.jsonc --runtime-root /run/rex --log-format text --pam-service rex-login-server --extra-listen tailnet://:7297
 EOF
 
-# 5. Disable conflicting shared units and stop any lingering standalone server
+# Disable conflicting shared units and stop any lingering standalone server
 sudo systemctl disable --now rex.service rex.socket 2>/dev/null || true
 rex server stop 2>/dev/null || true
 
-# 6. Reload systemd and enable/start rex-login-server
+# Reload systemd and enable/start rex-login-server
 sudo systemctl daemon-reload
 sudo systemctl enable --now rex-login-server.service
 
 echo "  ✓ Rex login-server configured and running on tailnet://:7297."
-{{ end -}}

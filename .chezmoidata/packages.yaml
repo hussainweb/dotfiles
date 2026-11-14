@@ -226,6 +226,14 @@ packages:
   linux:
     npm: []
     scripts: []
+    container_scripts:
+      # Ubuntu ships an unrelated Perl tool also named rex. The installer pins
+      # apt to the Superlogical repo, so rerun it unless that package and pin
+      # are both in place (unattended-upgrades swapped it before the pin existed).
+      - name: rex
+        ssh_host: true
+        command: '{ dpkg-query -W -f "\${Maintainer}" rex 2>/dev/null | grep -q Superlogical && [ -f /etc/apt/preferences.d/rex ]; } || curl -fsSL https://pkgs.superlogical.com/rex/install.sh | sh'
+        post_script: configure_rex.sh.tmpl
     development_scripts:
       - name: entire
         command: curl -fsSL https://entire.io/install.sh | bash
