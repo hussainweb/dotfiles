@@ -1,4 +1,4 @@
-{{ if and (eq .chezmoi.os "linux") .ssh_host .development -}}
+{{ if and (eq .chezmoi.os "linux") .ssh_host .container -}}
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -13,6 +13,16 @@ if ! { dpkg-query -W -f '${Maintainer}' rex 2>/dev/null | grep -q Superlogical \
         && [ -f /etc/apt/preferences.d/rex ]; }; then
     echo "Installing Rex..."
     curl -fsSL https://pkgs.superlogical.com/rex/install.sh | sh
+fi
+
+# Block Ubuntu's unrelated Perl "rex" package so unattended-upgrades never
+# falls back to it when it temporarily pins pkgs.superlogical.com to -32768.
+if [ -d /etc/apt/preferences.d ]; then
+    sudo tee /etc/apt/preferences.d/rex-ubuntu > /dev/null << 'EOF'
+Package: rex
+Pin: release o=Ubuntu
+Pin-Priority: -1
+EOF
 fi
 
 # 2. Check Tailscale availability

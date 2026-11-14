@@ -225,12 +225,7 @@ packages:
   # Linux-specific configurations (fallbacks for when Casks/Brews don't apply)
   linux:
     npm: []
-    scripts:
-      # Ubuntu ships an unrelated Perl tool also named rex. The installer pins
-      # apt to the Superlogical repo, so rerun it unless that package and pin
-      # are both in place (unattended-upgrades swapped it before the pin existed).
-      - name: rex
-        command: '{ dpkg-query -W -f "\${Maintainer}" rex 2>/dev/null | grep -q Superlogical && [ -f /etc/apt/preferences.d/rex ]; } || curl -fsSL https://pkgs.superlogical.com/rex/install.sh | sh'
+    scripts: []
     development_scripts:
       - name: entire
         command: curl -fsSL https://entire.io/install.sh | bash
