@@ -1,8 +1,4 @@
-{{ if and (eq .chezmoi.os "linux") .ssh_host -}}
-#!/usr/bin/env bash
-set -euo pipefail
-
-# Tailscale client installation and registration
+# Tailscale daemon configuration and registration
 {{ $key_field := ternary "dev_auth_key" "infra_auth_key" .development -}}
 # Key fingerprint trigger: {{ onepasswordRead (printf "op://Private/Tailscale/%s" $key_field) "my.1password.com" | sha256sum }}
 
@@ -23,13 +19,7 @@ if ! op account get --account "$ACCOUNT" &> /dev/null; then
     exit 0
 fi
 
-# 1. Install Tailscale if not present
-if ! command -v tailscale &> /dev/null; then
-    echo "Installing Tailscale..."
-    curl -fsSL https://tailscale.com/install.sh | sudo sh
-fi
-
-# 2. Ensure tailscaled is running and wait until its socket answers.
+# 1. Ensure tailscaled is running and wait until its socket answers.
 # A fresh install enables the service, but the daemon may not be ready yet.
 if command -v systemctl &> /dev/null; then
     # Containers (e.g. Proxmox LXC) often have no /dev/net/tun, where tailscaled
@@ -63,7 +53,7 @@ if ! tailscale status --json &> /dev/null; then
     exit 1
 fi
 
-# 3. Check Tailscale status and authenticate if needed
+# 2. Check Tailscale status and authenticate if needed
 if ! tailscale status &> /dev/null; then
     echo "Authenticating Tailscale with {{ $key_field }}..."
     TS_AUTH_KEY=$(op read "op://${VAULT}/${ITEM}/{{ $key_field }}" --account "$ACCOUNT" 2>/dev/null || true)
@@ -88,4 +78,3 @@ if ! tailscale status &> /dev/null; then
 else
     echo "  ✓ Tailscale is already connected."
 fi
-{{ end -}}

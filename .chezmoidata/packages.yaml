@@ -225,7 +225,11 @@ packages:
   # Linux-specific configurations (fallbacks for when Casks/Brews don't apply)
   linux:
     npm: []
-    scripts: []
+    scripts:
+      - name: tailscale
+        ssh_host: true
+        command: 'command -v tailscale >/dev/null || curl -fsSL https://tailscale.com/install.sh | sudo sh'
+        post_script: configure_tailscale.sh.tmpl
     container_scripts:
       # Ubuntu ships an unrelated Perl tool also named rex. The installer pins
       # apt to the Superlogical repo, so rerun it unless that package and pin
