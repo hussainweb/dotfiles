@@ -20,6 +20,7 @@ packages:
       - bat
       - bottom
       - btop
+      - chezmoi
       - curl
       - difftastic
       - duf
