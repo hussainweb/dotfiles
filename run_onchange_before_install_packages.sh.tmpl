@@ -12,6 +12,10 @@ CHEZMOI_POST_SCRIPT_EOF
 {{ end -}}
 {{- end -}}
 {{- end -}}
+{{- $valid_stacks := list "base" "container" "agents" "development" "full" -}}
+{{- if not (has .stack $valid_stacks) -}}
+{{-   fail (printf "invalid stack %q: must be one of %s" .stack (join ", " $valid_stacks)) -}}
+{{- end -}}
 #!/bin/bash
 
 # .chezmoidata/packages.yaml hash: {{ include ".chezmoidata/packages.yaml" | sha256sum }}

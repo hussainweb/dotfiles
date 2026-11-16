@@ -20,8 +20,12 @@
 {{- $email := promptStringOnce . "email" "Your email address" "hussainweb@gmail.com" -}}
 
 {{- /* Software Stack Selection */ -}}
+{{- $valid_stacks := list "base" "container" "agents" "development" "full" -}}
 {{- $default_stack := ternary "full" "base" $is_personal_machine -}}
 {{- $stack := promptStringOnce . "stack" "Software stack (base, container, agents, development, full)" $default_stack -}}
+{{- if not (has $stack $valid_stacks) -}}
+{{-   fail (printf "invalid stack %q: must be one of %s" $stack (join ", " $valid_stacks)) -}}
+{{- end -}}
 
 {{- /* Derived settings */ -}}
 {{- $has_container := or (eq $stack "container") (eq $stack "agents") (eq $stack "development") (eq $stack "full") -}}
