@@ -36,10 +36,10 @@ for account in "$@"; do
 
     if ! { true </dev/tty; } 2>/dev/null; then
         echo "1Password account $account is not set up and no terminal is available." >&2
-        echo "Run: op account add --address $account" >&2
+        echo "Run: op account add --address $account --shorthand $account" >&2
         exit 1
     fi
 
     echo "Adding 1Password account $account (email, Secret Key and password)..." >&2
-    op account add --address "$account" </dev/tty >/dev/tty 2>&1
+    op account add --address "$account" --shorthand "$account" </dev/tty >/dev/tty 2>&1
 done
