@@ -5,4 +5,10 @@ set -Ux PM_API_TOKEN_SECRET {{ onepasswordRead "op://Private/wqeyffrbuhswc3kfd7v
 
 set -Ux PROXMOX_VE_ENDPOINT {{ .proxmox_endpoint }}
 set -Ux PROXMOX_VE_API_TOKEN terraform@pve!coder-aule={{ onepasswordRead "op://Private/wqeyffrbuhswc3kfd7vjb6q2qa/Tokens/coder-aule" "my.1password.com" }}
+
+set -Ux PROXMOX_EREBOR_ENDPOINT {{ .proxmox_endpoint }}
+set -Ux PROXMOX_EREBOR_API_TOKEN $PROXMOX_VE_API_TOKEN
+
+set -Ux PROXMOX_GREY_HAVENS_ENDPOINT https://grey-havens.husain.me:8006/
+set -Ux PROXMOX_GREY_HAVENS_API_TOKEN terraform@pve!terraform={{ onepasswordRead "op://Private/yjidd2f2fcfkjtzjodkupu52pi/Tokens/terraform" "my.1password.com" }}
 {{- end }}
