@@ -45,10 +45,8 @@ export OLLAMA_HOST=192.168.50.47
 export PM_API_URL={{ .proxmox_endpoint }}
 export PM_API_TOKEN_ID=terraform@pve!coder-aule
 export PM_API_TOKEN_SECRET={{ onepasswordRead "op://Private/wqeyffrbuhswc3kfd7vjb6q2qa/Tokens/coder-aule" "my.1password.com" }}
-export PROXMOX_VE_ENDPOINT={{ .proxmox_endpoint }}
-export PROXMOX_VE_API_TOKEN=terraform@pve!coder-aule={{ onepasswordRead "op://Private/wqeyffrbuhswc3kfd7vjb6q2qa/Tokens/coder-aule" "my.1password.com" }}
 export PROXMOX_EREBOR_ENDPOINT={{ .proxmox_endpoint }}
-export PROXMOX_EREBOR_API_TOKEN=$PROXMOX_VE_API_TOKEN
+export PROXMOX_EREBOR_API_TOKEN=terraform@pve!coder-aule={{ onepasswordRead "op://Private/wqeyffrbuhswc3kfd7vjb6q2qa/Tokens/coder-aule" "my.1password.com" }}
 export PROXMOX_GREY_HAVENS_ENDPOINT=https://grey-havens.husain.me:8006/
 export PROXMOX_GREY_HAVENS_API_TOKEN=terraform@pve!terraform={{ onepasswordRead "op://Private/yjidd2f2fcfkjtzjodkupu52pi/Tokens/terraform" "my.1password.com" }}
 export PROXMOX_TFSTATE_ACCESS_KEY={{ onepasswordRead "op://Private/homelab-tf on SeaweedFS/username" "my.1password.com" }}
