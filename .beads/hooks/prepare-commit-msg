@@ -1,7 +1,4 @@
-#!/bin/sh
-# Entire CLI hooks
-entire hooks git prepare-commit-msg "$1" "$2" 2>/dev/null || true
-
+#!/usr/bin/env sh
 # --- BEGIN BEADS INTEGRATION v1.3.0 ---
 # This section is managed by beads. Do not remove these markers.
 if command -v bd >/dev/null 2>&1; then
