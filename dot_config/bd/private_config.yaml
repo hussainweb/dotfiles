@@ -1,0 +1,14 @@
+# Managed by chezmoi. Global beads (bd) config; projects override it.
+#
+# bd only writes to this file to add the metrics keys below when they are
+# missing, so keeping all of them here means bd leaves it alone. If
+# `chezmoi diff` shows a change here, something else wrote to it.
+#
+# no-git-ops is pinned off: when true, `bd prime` tells every agent session
+# not to run git. On 2026-11-18 something on this machine set it here
+# (likely `bd init --stealth` run outside a project).
+metrics:
+    disabled: false
+    endpoint: https://gastownhall-eventsapi.com/mp/collect
+    notice_shown: true
+no-git-ops: false
