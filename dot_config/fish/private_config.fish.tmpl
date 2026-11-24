@@ -71,8 +71,3 @@ fish_add_path /Users/hw/.antigravity/antigravity/bin
 {{ if .personal -}}
 atuin init fish --disable-up-arrow | source
 {{- end }}
-
-# Entire CLI shell completion
-if type -q entire
-    entire completion fish | source
-end

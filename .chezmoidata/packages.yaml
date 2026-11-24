@@ -5,7 +5,6 @@ packages:
     - coollabsio/coolify-cli
     - ddev/ddev
     - dicklesworthstone/tap
-    - entireio/tap
     - getsentry/tools
     - ksdme/tap
     - mutagen-io/mutagen
@@ -137,7 +136,6 @@ packages:
     cli:
       - 1password-cli
       - claude-code@latest
-      - entire
       - session-manager-plugin
 
     # Fonts (Installed if macos=true)
@@ -240,8 +238,6 @@ packages:
         command: '{ dpkg-query -W -f "\${Maintainer}" rex 2>/dev/null | grep -q Superlogical && [ -f /etc/apt/preferences.d/rex ]; } || curl -fsSL https://pkgs.superlogical.com/rex/install.sh | sh'
         post_script: configure_rex.sh.tmpl
     development_scripts:
-      - name: entire
-        command: curl -fsSL https://entire.io/install.sh | bash
       - name: antigravity-cli
         command: curl -fsSL https://antigravity.google/cli/install.sh | bash
       # Native installer, not npm: npm installs land under whichever Node is

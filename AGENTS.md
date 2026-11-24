@@ -2,7 +2,7 @@
 
 - **Declarative Configuration (Chezmoi):** This system is managed by Chezmoi. Unless explicitly asked to make a one-off system-level change directly, always modify the Chezmoi configuration rather than the host directly. Never run manual installation, setup, or configuration commands (such as `agy install` or manual profile updates) directly on the host. All packages, environment variables, paths, and initializations must be configured declaratively in the Chezmoi source repository (e.g., `.chezmoidata/packages.yaml` and the `.tmpl` files). Only run `chezmoi apply` if explicitly requested or needed to verify the change.
 - **Adding Packages & Tools:**
-  - **Default to Homebrew & Verify Type:** Assume tools are distributed via Homebrew. Run a quick `brew info <name>` to verify availability and whether it is a formula (`brews.<target>`) or a cask (`casks.<target>` or `casks.cli`). Note that certain CLI tools (e.g. `claude-code`, `entire`) are packaged as casks. Maintain alphabetical order in lists.
+  - **Default to Homebrew & Verify Type:** Assume tools are distributed via Homebrew. Run a quick `brew info <name>` to verify availability and whether it is a formula (`brews.<target>`) or a cask (`casks.<target>` or `casks.cli`). Note that certain CLI tools (e.g. `claude-code`) are packaged as casks. Maintain alphabetical order in lists.
   - **Target Profile Mapping:**
     - "all machines" / base → `brews.base`
     - "development machines" → `brews.development` (or `casks.development` for GUI)
