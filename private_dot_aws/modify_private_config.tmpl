@@ -1,0 +1,28 @@
+#!/bin/bash
+# On work machines, writes [profile work-us] (Axelerant US account
+# 558147955244) into ~/.aws/config; its keys come from the matching section in
+# ~/.aws/credentials. Every other profile in the file is hand-managed and passes
+# through as it is; only an existing [profile work-us] section is replaced.
+# Other machines get the file back unchanged.
+set -euo pipefail
+
+{{ if .work -}}
+# Drop any existing [profile work-us] section and trailing blank lines.
+existing=$(awk '
+    /^[[:space:]]*\[/ { skip = ($0 ~ /^[[:space:]]*\[profile[[:space:]]+work-us\][[:space:]]*$/) }
+    !skip { lines[++n] = $0 }
+    END {
+        while (n > 0 && lines[n] ~ /^[[:space:]]*$/) n--
+        for (i = 1; i <= n; i++) print lines[i]
+    }')
+
+if [ -n "$existing" ]; then
+    printf '%s\n\n' "$existing"
+fi
+cat <<'EOF'
+[profile work-us]
+region = us-east-1
+EOF
+{{- else }}
+cat
+{{- end }}
