@@ -1,0 +1,123 @@
+{{- if and .agents (lookPath "hermes") -}}
+#!/bin/bash
+# Links the agent plugins from the skills repo checkout (listed in
+# .chezmoidata/skills.yaml) into ~/.hermes/plugins/ as portable Agent Plugins
+# v1 packages and enables them in Hermes.
+# Plugins removed from the list are disabled and unlinked. Any legacy skill
+# copies and lockfile entries left behind by the former hermes-plugin-skills
+# script are cleaned up.
+
+REPO="$HOME/.local/share/hussainweb-skills"
+PLUGINS_DIR="$HOME/.hermes/plugins"
+STATE="${XDG_STATE_HOME:-$HOME/.local/state}/chezmoi"
+RECORD="$STATE/hermes-plugins"
+OLD_SKILLS_STATE="$STATE/hermes-plugin-skills"
+LOCK="$HOME/.agents/.skill-lock.json"
+PLUGINS="{{ range .agent_plugins }}{{ if or (not (hasKey . "agents")) (has "hermes-agent" .agents) }}{{ .name }} {{ end }}{{ end }}"
+
+command -v hermes >/dev/null 2>&1 || exit 0
+[ -d "$REPO/.git" ] || exit 0
+mkdir -p "$PLUGINS_DIR" "$STATE"
+
+# Locate Hermes's bundled Python so we can update plugins.enabled in
+# ~/.hermes/config.yaml directly (portable plugins have no Python deps, and
+# `hermes plugins enable` fails on Homebrew bottles that omit uv.lock).
+hermes_bin=$(command -v hermes)
+HERMES_PY=$(sed -n 's/.*HERMES_PYTHON="\([^"]*\)".*/\1/p' "$hermes_bin" 2>/dev/null | head -n 1)
+if [ -z "$HERMES_PY" ] || [ ! -x "$HERMES_PY" ]; then
+    HERMES_PY=""
+fi
+
+set_hermes_plugin_enabled() {
+    local name="$1" enable="$2"
+    if [ -n "$HERMES_PY" ]; then
+        "$HERMES_PY" - "$name" "$enable" <<'PY'
+import sys
+from hermes_cli.config import load_config, save_config
+
+name, enable = sys.argv[1], sys.argv[2] == "1"
+cfg = load_config()
+plugins = cfg.setdefault("plugins", {})
+enabled = list(plugins.get("enabled") or [])
+changed = False
+if enable and name not in enabled:
+    enabled.append(name)
+    changed = True
+elif not enable and name in enabled:
+    enabled.remove(name)
+    changed = True
+if changed:
+    plugins["enabled"] = enabled
+    save_config(cfg)
+PY
+    elif [ "$enable" = "1" ]; then
+        hermes plugins enable "$name" >/dev/null
+    else
+        hermes plugins disable "$name" >/dev/null 2>&1 || true
+    fi
+}
+
+# Clean up skills copied by the former hermes-plugin-skills script.
+if [ -d "$OLD_SKILLS_STATE" ]; then
+    for old_record in "$OLD_SKILLS_STATE"/*.skills; do
+        [ -e "$old_record" ] || continue
+        while read -r skill; do
+            [ -n "$skill" ] || continue
+            if [ -d "$HOME/.hermes/skills/$skill" ] && [ ! -L "$HOME/.hermes/skills/$skill" ]; then
+                echo "Removing legacy Hermes skill copy $skill..."
+                rm -rf "${HOME:?}/.hermes/skills/$skill"
+            fi
+        done < "$old_record"
+    done
+    rm -rf "$OLD_SKILLS_STATE"
+fi
+
+# Clean up stale lockfile entries left by the former `npx skills add --copy -g` script.
+if [ -f "$LOCK" ] && command -v jq >/dev/null 2>&1; then
+    tmp=$(mktemp)
+    if jq --arg prefix "$REPO/plugins/" '
+        if .skills then
+            .skills |= with_entries(select((.value.source // "") | startswith($prefix) | not))
+        else . end
+    ' "$LOCK" > "$tmp" && ! cmp -s "$LOCK" "$tmp"; then
+        mv "$tmp" "$LOCK"
+    else
+        rm -f "$tmp"
+    fi
+fi
+
+# Plugins dropped from the list.
+if [ -f "$RECORD" ]; then
+    while read -r plugin; do
+        [ -n "$plugin" ] || continue
+        case " $PLUGINS " in *" $plugin "*) continue ;; esac
+        echo "Removing Hermes plugin $plugin, which is no longer listed..."
+        set_hermes_plugin_enabled "$plugin" 0 || true
+        if [ -L "$PLUGINS_DIR/$plugin" ]; then
+            rm -f "$PLUGINS_DIR/$plugin"
+        fi
+    done < "$RECORD"
+fi
+
+installed=""
+for plugin in $PLUGINS; do
+    src="$REPO/plugins/$plugin"
+    [ -f "$src/plugin.json" ] || continue
+    dest="$PLUGINS_DIR/$plugin"
+    if [ ! -L "$dest" ] || [ "$(readlink "$dest")" != "$src" ]; then
+        echo "Linking Hermes plugin $plugin..."
+        rm -rf "$dest"
+        ln -s "$src" "$dest"
+    fi
+    if [ ! -f "$RECORD" ] || ! grep -qx "$plugin" "$RECORD"; then
+        echo "Enabling Hermes plugin $plugin..."
+        if ! set_hermes_plugin_enabled "$plugin" 1; then
+            echo "warning: could not enable Hermes plugin $plugin; will retry on the next apply" >&2
+            continue
+        fi
+    fi
+    installed="${installed}${plugin}"$'\n'
+done
+
+printf '%s' "$installed" | sort -u > "$RECORD"
+{{- end }}
