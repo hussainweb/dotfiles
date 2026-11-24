@@ -38,6 +38,11 @@ set -gx OPENROUTER_KEY {{ onepasswordRead "op://Employee/a5ay62mcrckiuleljdydlg5
 set -gx OPENROUTER_KEY {{ onepasswordRead "op://Private/OpenRouter/API Keys/llm cli" "my.1password.com" }}
 {{- end }}
 
+{{ if .work -}}
+# Profiles come from .chezmoidata/aws.yaml.
+set -gx AWS_PROFILE work
+{{- end }}
+
 {{ if and .work .container -}}
 set -gx JIRA_API_TOKEN {{ onepasswordRead "op://Employee/n3enjt4hnmrdq7czug6nlkzpti/credential" "axelerant.1password.com" }}
 {{- end }}

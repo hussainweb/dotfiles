@@ -54,6 +54,11 @@ export PROXMOX_TFSTATE_SECRET_KEY={{ onepasswordRead "op://Private/homelab-tf on
 {{- end }}
 export LLM_MODEL=openrouter/google/gemini-2.5-flash-lite
 
+{{ if .work -}}
+# Profiles come from .chezmoidata/aws.yaml.
+export AWS_PROFILE=work
+{{- end }}
+
 {{ if and .work .container -}}
 export JIRA_API_TOKEN={{ onepasswordRead "op://Employee/n3enjt4hnmrdq7czug6nlkzpti/credential" "axelerant.1password.com" }}
 {{- end }}
