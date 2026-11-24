@@ -1,28 +1,26 @@
 #!/bin/bash
-# On work machines, writes [profile work-us] (Axelerant US account
-# 558147955244) into ~/.aws/config; its keys come from the matching section in
-# ~/.aws/credentials. Every other profile in the file is hand-managed and passes
-# through as it is; only an existing [profile work-us] section is replaced.
-# Other machines get the file back unchanged.
+# Writes the AWS profiles in .chezmoidata/aws.yaml into ~/.aws/config on work
+# machines; their keys go into ~/.aws/credentials. Hand-written sections pass
+# through as they are; see the data file for which sections are replaced.
+# Non-work machines get only the managed sections removed.
 set -euo pipefail
 
-{{ if .work -}}
-# Drop any existing [profile work-us] section and trailing blank lines.
-existing=$(awk '
-    /^[[:space:]]*\[/ { skip = ($0 ~ /^[[:space:]]*\[profile[[:space:]]+work-us\][[:space:]]*$/) }
-    !skip { lines[++n] = $0 }
-    END {
-        while (n > 0 && lines[n] ~ /^[[:space:]]*$/) n--
-        for (i = 1; i <= n; i++) print lines[i]
-    }')
+{{ $names := "" -}}
+{{ if .work }}{{ $names = keys .aws.profiles | sortAlpha | join " " }}{{ end -}}
+out=$({{ template "aws-strip-managed.sh" $names }})
+{{- if .work }}
+{{-   range $name, $p := .aws.profiles }}
 
-if [ -n "$existing" ]; then
-    printf '%s\n\n' "$existing"
-fi
-cat <<'EOF'
-[profile work-us]
-region = us-east-1
-EOF
-{{- else }}
-cat
+section=$(cat <<'EOF_SECTION'
+{{ if eq $name "default" }}[default]{{ else }}[profile {{ $name }}]{{ end }}
+# managed by chezmoi (.chezmoidata/aws.yaml)
+region = {{ $p.region }}
+EOF_SECTION
+)
+out=${out:+$out$'\n\n'}$section
+{{-   end }}
 {{- end }}
+
+if [ -n "$out" ]; then
+    printf '%s\n' "$out"
+fi

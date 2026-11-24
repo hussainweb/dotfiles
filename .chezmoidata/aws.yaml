@@ -1,0 +1,23 @@
+# AWS CLI profiles written into ~/.aws/config and ~/.aws/credentials on work
+# machines (data.work). Keys are read from 1Password in op_account. Every
+# account here is a work account; non-work machines get no profiles.
+#
+# Sections chezmoi writes carry a "# managed by chezmoi" line, so a profile
+# removed from this list is removed from the files too. A hand-written section
+# with the same name as a listed profile is replaced. Anything else in the
+# files is left alone.
+aws:
+  op_account: axelerant.1password.com
+  profiles:
+    work:
+      region: us-east-2
+      access_key_id: op://Employee/AWS Axelerant/access key/access key
+      secret_access_key: op://Employee/AWS Axelerant/access key/access secret
+    work-us:
+      region: us-east-1
+      access_key_id: op://Employee/AWS Axelerant US/AWS CLI/access key id
+      secret_access_key: op://Employee/AWS Axelerant US/AWS CLI/secret access key
+    rmg:
+      region: us-east-1
+      access_key_id: op://Employee/AWS Recognition Media/Access key/access key id
+      secret_access_key: op://Employee/AWS Recognition Media/Access key/secret access key
