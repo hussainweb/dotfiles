@@ -55,9 +55,9 @@ ExecStart=
 ExecStart=/usr/bin/rex login-server --listen unix:///run/rex/login-server.sock --accounts /etc/rex/accounts.jsonc --runtime-root /run/rex --log-format text --pam-service rex-login-server --extra-listen tailnet://:7297
 EOF
 
-# Disable conflicting shared units and stop any lingering standalone server
+# Disable conflicting shared units and stop any lingering standalone server (unless a session is active)
 sudo systemctl disable --now rex.service rex.socket 2>/dev/null || true
-rex server stop 2>/dev/null || true
+rex server stop --if-idle 2>/dev/null || true
 
 # Reload systemd and enable/start rex-login-server
 sudo systemctl daemon-reload
