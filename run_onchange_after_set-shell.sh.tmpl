@@ -14,11 +14,7 @@ if ! command -v brew &> /dev/null; then
     fi
 fi
 
-{{ if .ssh_host -}}
-WANTED_SHELL=$(command -v zsh)
-{{- else -}}
 WANTED_SHELL=$(command -v fish)
-{{- end }}
 
 if [ -z "$WANTED_SHELL" ]; then
     echo "Wanted shell not found, skipping chsh"
